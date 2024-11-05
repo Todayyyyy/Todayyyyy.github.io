@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>对宿主软件中音频插件的学习了解，会持续补充和更新~</title>
+  
+  <link rel="canonical" href="http://example.com/2024/05/18/%E9%9F%B3%E9%A2%91%E6%8F%92%E4%BB%B6%E6%96%87%E6%A1%A3/">
+  
+  <meta name="description" content="作者：段恺乐 补充：Reverb种类 Chamber（回音室混响）：突出的，明显的 Plate reverb（板式混响）：明亮，平滑，增加存在感、明亮度  增加delaytime&amp;#x2F;reverbtime，然后拉低混响比例，提升润色功能。  Spring reverb：螺旋的，晃动的迅速衰减混">
+  
+  
+  <meta name="author" content="John Doe">
+  
+  <meta property="og:image" content="http://example.comundefined">
+  
+  <meta property="og:site_name" content="Hexo" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="对宿主软件中音频插件的学习了解，会持续补充和更新~" />
+  
+  <meta property="og:description" content="作者：段恺乐 补充：Reverb种类 Chamber（回音室混响）：突出的，明显的 Plate reverb（板式混响）：明亮，平滑，增加存在感、明亮度  增加delaytime&amp;#x2F;reverbtime，然后拉低混响比例，提升润色功能。  Spring reverb：螺旋的，晃动的迅速衰减混">
+  
+  <meta property="og:url" content="http://example.com/2024/05/18/%E9%9F%B3%E9%A2%91%E6%8F%92%E4%BB%B6%E6%96%87%E6%A1%A3/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="对宿主软件中音频插件的学习了解，会持续补充和更新~">
+  
+  <meta name="twitter:description" content="作者：段恺乐 补充：Reverb种类 Chamber（回音室混响）：突出的，明显的 Plate reverb（板式混响）：明亮，平滑，增加存在感、明亮度  增加delaytime&amp;#x2F;reverbtime，然后拉低混响比例，提升润色功能。  Spring reverb：螺旋的，晃动的迅速衰减混">
+  
+  
+  <meta name="twitter:image" content="http://example.comundefined">
+  
+  <meta name="twitter:url" content="http://example.com/2024/05/18/%E9%9F%B3%E9%A2%91%E6%8F%92%E4%BB%B6%E6%96%87%E6%A1%A3/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="../fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">☀️</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>🌑</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
+  </div>
+
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      你好
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/Works" class="ml">Works</a>
+          
+        
+          
+          <a href="/About" class="ml">About</a>
+          
+        
+        
+          
+            <a href="mailto:duan13330357575@126.com" target="_blank" class="ml">Email</a>
+          
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+
+        <div class="trans">
+            <h2>对宿主软件中音频插件的学习了解，会持续补充和更新~</h2>
+
+  <p>作者：段恺乐</p>
+<h2 id="补充：Reverb种类"><a href="#补充：Reverb种类" class="headerlink" title="补充：Reverb种类"></a>补充：Reverb种类</h2><ol>
+<li>Chamber（回音室混响）：<strong>突出的，明显的</strong></li>
+<li>Plate reverb（板式混响）：明亮，平滑，增加存在感、明亮度</li>
+</ol>
+<p>增加delaytime&#x2F;reverbtime，然后拉低混响比例，提升润色功能。</p>
+<ol start="3">
+<li>Spring reverb：螺旋的，晃动的迅速衰减混响，增加维度，适合吉他。</li>
+<li>HallReverb.考虑了空间等物理因素。早期反射声有助于塑造房间&#x2F;空间大小。</li>
+<li>数字混响：反向混响等特殊效果</li>
+<li>Convolution Reverb（卷积混响）</li>
+</ol>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a><strong>插件</strong></h2><h3 id="Sonnox-oxford"><a href="#Sonnox-oxford" class="headerlink" title="Sonnox oxford"></a><strong>Sonnox oxford</strong></h3><h4 id="Inflator响度提升-激励。"><a href="#Inflator响度提升-激励。" class="headerlink" title="Inflator响度提升&#x2F;激励。"></a><strong>Inflator</strong>响度提升&#x2F;激励。</h4><p>​	非压缩&#x2F;限幅的方式来提升音量，而是通过调整音频谐波来提升响度。</p>
+<p>​	Input&#x2F;output：可以在插件内提升电平到0db之上，但是output只能到0db，否则会爆掉、削波。因此可以通过output做一些true peak的限制。</p>
+<p>​	Clip：限波，限制在output的峰值之下。</p>
+<p>​	Effect：推荐100%，也就是激励响度的功能完全打开。并且effect 100%的时候也会达到clip打开的效果。相当于干湿音MIX。</p>
+<p>​	CURVE：数值越大，提升响度效果越明显。</p>
+<h4 id="Limiter限幅器，动态控制"><a href="#Limiter限幅器，动态控制" class="headerlink" title="Limiter限幅器，动态控制"></a><strong>Limiter</strong>限幅器，动态控制</h4><p>​	Autogain：建议一直开着，能预防动态变化过大、失真。</p>
+<p>​	Enhance：与inflator类似的方式来提升你的响度。与inflator类似，调整适量的比例可以增加谐波提升歌曲响度以及更加好听，但是过多的enhance提升会让歌曲更密集，更紧。</p>
+<p>​	Safemode：帮助你去处理truepeak，即使enhance为零。如果关闭，只有在enhance在100%以上才会处理true peak.</p>
+<p>​	Reconmeter&#x2F;auto comp：显示&#x2F;处理所有采样点之间的peak。</p>
+<p>​	Peak hold：将output中的高峰值常显示，只有手动点击才会消失。</p>
+<p>​	Dither：降比特输出时候使用。</p>
+<p>​	Type：处理噪音，type4处理中高频噪音，但损失超高频。</p>
+<p>​	Depth：处理噪音的强度。</p>
+<h3 id="Accentize"><a href="#Accentize" class="headerlink" title="Accentize"></a><strong>Accentize</strong></h3><h5 id="Voicegate2"><a href="#Voicegate2" class="headerlink" title="Voicegate2"></a><strong>Voicegate2</strong></h5><p>​	效果很好，延迟过大，有100多.</p>
+<h3 id="Accusonus"><a href="#Accusonus" class="headerlink" title="Accusonus"></a><strong>Accusonus</strong></h3><h5 id="ERA-6-Reverb-ReverbMover-De-reverb"><a href="#ERA-6-Reverb-ReverbMover-De-reverb" class="headerlink" title="ERA 6 Reverb ReverbMover(De-reverb)"></a><strong>ERA 6 Reverb ReverbMover(De-reverb)</strong></h5><p>​	效果还行，延迟过大。</p>
+<h3 id="Analog-Obesession"><a href="#Analog-Obesession" class="headerlink" title="Analog Obesession"></a><strong>Analog Obesession</strong></h3><p>​	<strong>LALA</strong></p>
+<p>​	光学压缩器，很柔顺、丝滑。有sidechain功能。</p>
+<h3 id="Antares人声处理器"><a href="#Antares人声处理器" class="headerlink" title="Antares人声处理器"></a><strong>Antares</strong>人声处理器</h3><h4 id="Auto-key"><a href="#Auto-key" class="headerlink" title="Auto-key"></a><strong>Auto-key</strong></h4><p>​	自动修音。</p>
+<h4 id="VOX-Mutator"><a href="#VOX-Mutator" class="headerlink" title="VOX Mutator"></a><strong>VOX Mutator</strong></h4><p>​	人声特殊效果处理器，mutate：增加谐波，alienize：倒放，外星化。Vocal range：调整变声风格。</p>
+<h4 id="VOX-Warm"><a href="#VOX-Warm" class="headerlink" title="VOX Warm"></a><strong>VOX Warm</strong></h4><p>​	velvet-更温暖；crunch-更干脆。Omni-过载；</p>
+<h3 id="APOGEE"><a href="#APOGEE" class="headerlink" title="APOGEE"></a><strong>APOGEE</strong></h3><h4 id="Softlimit"><a href="#Softlimit" class="headerlink" title="Softlimit"></a><strong>Softlimit</strong></h4><p>​	复古的声染色，可以略微衰减高频，更加丝滑。oversample的大小可以调整歌曲整体的清晰度，越小越模糊。</p>
+<h3 id="BBE-Sound"><a href="#BBE-Sound" class="headerlink" title="BBE Sound"></a><strong>BBE Sound</strong></h3><h4 id="Harmonic-Maximizer"><a href="#Harmonic-Maximizer" class="headerlink" title="Harmonic Maximizer"></a><strong>Harmonic Maximizer</strong></h4><p>​	谐波生成器，通过谐波提升目标频率的响度。</p>
+<h4 id="Tremor"><a href="#Tremor" class="headerlink" title="Tremor"></a><strong>Tremor</strong></h4><p>​	让声音产生上下不断震荡的效果。</p>
+<h3 id="Black-Salt-Audio"><a href="#Black-Salt-Audio" class="headerlink" title="Black Salt Audio"></a><strong>Black Salt Audio</strong></h3><h4 id="Reviver"><a href="#Reviver" class="headerlink" title="Reviver"></a><strong>Reviver</strong></h4><p>​	通过调整谐波成分提升目标频段的响度。效果比较轻微。</p>
+<h3 id="Cableguys"><a href="#Cableguys" class="headerlink" title="Cableguys"></a><strong>Cableguys</strong></h3><h4 id="Pancake2"><a href="#Pancake2" class="headerlink" title="Pancake2"></a><strong>Pancake2</strong></h4><p>​	声像偏移插件，根据节拍调整，有很多预设效果，可以做特殊处理。</p>
+<h3 id="Cymatics"><a href="#Cymatics" class="headerlink" title="Cymatics"></a><strong>Cymatics</strong></h3><h4 id="Vortex"><a href="#Vortex" class="headerlink" title="Vortex"></a><strong>Vortex</strong></h4><p>​	过载效果处理器，有不同的过载效果。</p>
+<h3 id="DDMF"><a href="#DDMF" class="headerlink" title="DDMF"></a><strong>DDMF</strong></h3><h4 id="Metaplugin"><a href="#Metaplugin" class="headerlink" title="Metaplugin"></a><strong>Metaplugin</strong></h4><p>​	插件桥接箱。</p>
+<h3 id="Flux"><a href="#Flux" class="headerlink" title="Flux"></a><strong>Flux</strong></h3><h4 id="traxV3"><a href="#traxV3" class="headerlink" title="traxV3"></a><strong>traxV3</strong></h4><p>​	人声效果处理器。延迟过高</p>
+<h3 id="Klevgrand"><a href="#Klevgrand" class="headerlink" title="Klevgrand"></a><strong>Klevgrand</strong></h3><h4 id="Brusfri"><a href="#Brusfri" class="headerlink" title="Brusfri"></a><strong>Brusfri</strong></h4><p>​	智能降噪。</p>
+<p>​	<strong>Haaze2</strong></p>
+<p>​				Haas：通过调整某个声像的延迟，将L&#x2F;R的到达时间不同，可以模拟出声音在声场的具体位置，而非只是调整声道。</p>
+<p>​				Pan：将某一频率整体向某一声像移动。</p>
+<p>​				…</p>
+<h4 id="Kleverb"><a href="#Kleverb" class="headerlink" title="Kleverb"></a><strong>Kleverb</strong></h4><p>​	damping-控制高频的；diffusion-离散&#x2F;弥散，越高声音越软，越融合；spread-宽度。</p>
+<p>​			 Duck-闪避（混响被音源压缩）；modulation-调制，rate-速率，depth-增益。</p>
+<h4 id="Rum"><a href="#Rum" class="headerlink" title="Rum"></a><strong>Rum</strong></h4><p>​	房间混响模拟插件，较真实的场景。</p>
+<h3 id="Lexicon"><a href="#Lexicon" class="headerlink" title="Lexicon"></a><strong>Lexicon</strong></h3><h4 id="Lexhall"><a href="#Lexhall" class="headerlink" title="Lexhall"></a><strong>Lexhall</strong></h4><p>​	大厅混响模拟，预制效果很多，可调参数很多。</p>
+<h3 id="Nuro-Audio"><a href="#Nuro-Audio" class="headerlink" title="Nuro Audio"></a><strong>Nuro Audio</strong></h3><h4 id="Xvox"><a href="#Xvox" class="headerlink" title="Xvox"></a><strong>Xvox</strong></h4><p>​	加载，选预制，无脑即可。</p>
+<h3 id="Overloud"><a href="#Overloud" class="headerlink" title="Overloud"></a><strong>Overloud</strong></h3><h4 id="Breverb"><a href="#Breverb" class="headerlink" title="Breverb"></a><strong>Breverb</strong></h4><p>​	很多预制和效果的混响插件。</p>
+<h4 id="Gem-Comp-76"><a href="#Gem-Comp-76" class="headerlink" title="Gem Comp 76"></a><strong>Gem Comp 76</strong></h4><p>​	复刻1176的插件。UAD&#x2F;WAVES CLA76同。</p>
+<p>​	Realse&#x2F;Attack：数值越大，启动时间越短。</p>
+<p>​	Rev.：三种压缩模式。</p>
+<p>​		1176A：蓝脸，复古，中低频多，染色多。</p>
+<p>​		1176D：偏现代，低噪音，</p>
+<p>​		1176F：偏现代，干净</p>
+<p>​		Harmonics：染色程度，偏左则小。</p>
+<p>​		 LN-SENDS：低频保护。为零则所有频段均压缩。</p>
+<h3 id="Polyverse-Music"><a href="#Polyverse-Music" class="headerlink" title="Polyverse Music"></a><strong>Polyverse Music</strong></h3><h4 id="Manipulator"><a href="#Manipulator" class="headerlink" title="Manipulator"></a><strong>Manipulator</strong></h4><p>​	电音插件。功能特别多，可以做出很多特效声音的插件。</p>
+<h4 id="Wider"><a href="#Wider" class="headerlink" title="Wider"></a><strong>Wider</strong></h4><p>​	声场扩展。</p>
+<h3 id="Presonus"><a href="#Presonus" class="headerlink" title="Presonus"></a><strong>Presonus</strong></h3><h4 id="Ampire"><a href="#Ampire" class="headerlink" title="Ampire"></a><strong>Ampire</strong></h4><p>​	电吉他的放大器和音响整合包。</p>
+<h4 id="Anolog-Delay"><a href="#Anolog-Delay" class="headerlink" title="Anolog Delay"></a><strong>Anolog Delay</strong></h4><p>​	电吉他的delay效果插件。</p>
+<h3 id="Autofilter"><a href="#Autofilter" class="headerlink" title="Autofilter"></a><strong>Autofilter</strong></h3><p>​	自动循环filter。</p>
+<h4 id="BeatDelay"><a href="#BeatDelay" class="headerlink" title="BeatDelay"></a><strong>BeatDelay</strong></h4><p>​	delay效果器。</p>
+<h4 id="Binaural-pan"><a href="#Binaural-pan" class="headerlink" title="Binaural pan"></a><strong>Binaural pan</strong></h4><p>​	声像调节。	</p>
+<h4 id="BitCrusher"><a href="#BitCrusher" class="headerlink" title="BitCrusher"></a><strong>BitCrusher</strong></h4><p>​	降采样，降位深度。</p>
+<h4 id="Chorus"><a href="#Chorus" class="headerlink" title="Chorus"></a><strong>Chorus</strong></h4><p>​	吉他的和声插件</p>
+<h3 id="Pulsar"><a href="#Pulsar" class="headerlink" title="Pulsar"></a><strong>Pulsar</strong></h3><h3 id="1178"><a href="#1178" class="headerlink" title="1178"></a><strong>1178</strong></h3><p>​	1176的弟弟，立体声版本。</p>
+<p>​	可视化，声染色模式可调，cal.按钮可以调整声染色程度。</p>
+<h4 id="8200"><a href="#8200" class="headerlink" title="8200"></a><strong>8200</strong></h4><p>​	EQ，L&#x2F;R分开调整</p>
+<h3 id="Softtube"><a href="#Softtube" class="headerlink" title="Softtube"></a><strong>Softtube</strong></h3><h4 id="FET-Compressor"><a href="#FET-Compressor" class="headerlink" title="FET Compressor"></a><strong>FET Compressor</strong></h4><p>​	attack非常快。Detector：侧链。适用于箱琴、鼓。染色偏脆，清晰。</p>
+<h4 id="EQF-100"><a href="#EQF-100" class="headerlink" title="EQF-100"></a><strong>EQF-100</strong></h4><p>​	电子管均衡，中频很饱满。</p>
+<h4 id="Tube-Tech-CL-1B"><a href="#Tube-Tech-CL-1B" class="headerlink" title="Tube Tech CL 1B"></a><strong>Tube Tech CL 1B</strong></h4><p>​	光学压缩。人声更饱满圆润，弥补中高频的缺失，更有包裹感（更宽）。</p>
+<p>​	SideChain low cut：低切保护低频。</p>
+<p>​	Attack&#x2F;Release SELECT：fixed模式：固定启动时间（1ms和50ms），模拟光学压缩。</p>
+<p>​	Fixed&#x2F;Mannual模式：attack固定为1ms，attack按钮调整为hold的时长。</p>
+<p>​	Mannual：手动模式。</p>
+<h3 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a><strong>SSL</strong></h3><h4 id="SSL-Native-Bus-Compressor-2"><a href="#SSL-Native-Bus-Compressor-2" class="headerlink" title="SSL Native Bus Compressor 2"></a><strong>SSL Native Bus Compressor 2</strong></h4><p>​	总线压缩处理，少量处理，让整体更加融合，记得补偿动态。</p>
+<h3 id="Tegeler"><a href="#Tegeler" class="headerlink" title="Tegeler"></a><strong>Tegeler</strong></h3><h4 id="Manufaktur-Raummaschine"><a href="#Manufaktur-Raummaschine" class="headerlink" title="Manufaktur Raummaschine"></a><strong>Manufaktur Raummaschine</strong></h4><p>​		Decay：混响时间</p>
+<p>​		Density：散射度</p>
+<p>​		Size：空间</p>
+<h3 id="Tone-Project"><a href="#Tone-Project" class="headerlink" title="Tone Project"></a><strong>Tone Project</strong></h3><h4 id="Unisum"><a href="#Unisum" class="headerlink" title="Unisum"></a><strong>Unisum</strong></h4><p>​	总线压缩。</p>
+<h3 id="ToneBooster"><a href="#ToneBooster" class="headerlink" title="ToneBooster"></a><strong>ToneBooster</strong></h3><h4 id="TB-EQZ"><a href="#TB-EQZ" class="headerlink" title="TB_EQZ"></a><strong>TB_EQZ</strong></h4><p>​	调整人声音色感觉。</p>
+<h3 id="UVI"><a href="#UVI" class="headerlink" title="UVI"></a><strong>UVI</strong></h3><h4 id="Plate"><a href="#Plate" class="headerlink" title="Plate"></a><strong>Plate</strong></h4><p>​	平板混响。</p>
+<h3 id="Valhalla"><a href="#Valhalla" class="headerlink" title="Valhalla"></a><strong>Valhalla</strong></h3><h4 id="Shimmer"><a href="#Shimmer" class="headerlink" title="Shimmer"></a><strong>Shimmer</strong></h4><p>​	诡异，惊异，太空，广阔。</p>
+<p>​	Shift：变调，混响会往哪个音调Tune靠近。</p>
+<p>​	PitchMode</p>
+<p>​		dual：会朝高&#x2F;低两个方向发展shift的效果。</p>
+<p>​		Feedback：delay。</p>
+<p>​		Diffusion：离散度。更模糊，不清晰，缺少颗粒感。</p>
+<h4 id="Delay"><a href="#Delay" class="headerlink" title="Delay"></a><strong>Delay</strong></h4><p>​		MODE，有众多的模式，TAPE、BBD更温暖，BBD会随着delay而不断损失频段；</p>
+<p>​		DIGITAL，更阴冷；ghost，变调；</p>
+<p>​		PITCH，左右会差音分；ERA，调整不同时代的音频特点。</p>
+<p>​		Style：single，spread让左右耳朵有差异；</p>
+<p>​		dual，双儿有不同效果，单独设置；</p>
+<p>​		tap，等分delay设置的时间，swell模式会将声音feedback（比较抽象，可以听听）;</p>
+<p>​		Age，声染色程度；Drive，过载;</p>
+<p>​		DIff，delay的离散度。</p>
+<p>​		MOD：WOW、flutter设置。模拟tape的感觉。</p>
+<h4 id="Plate-1"><a href="#Plate-1" class="headerlink" title="Plate"></a><strong>Plate</strong></h4><p>​	好听到爆，有不同模式，不同模式有风格的说明。</p>
+<h4 id="Room"><a href="#Room" class="headerlink" title="Room"></a><strong>Room</strong></h4><p>​	区分早期和反射声，在反射声中，高低频的混响时间衰减分开调控。</p>
+<p>​	Depth调整早期、反射声比例。</p>
+<h4 id="Vintageverb"><a href="#Vintageverb" class="headerlink" title="Vintageverb"></a><strong>Vintageverb</strong></h4><p>​	Ambience模式下，attack调整的是早期和反射声比例。（amb模式适合做合唱）</p>
+<h3 id="Waves"><a href="#Waves" class="headerlink" title="Waves"></a><strong>Waves</strong></h3><h4 id="CLA-2A"><a href="#CLA-2A" class="headerlink" title="CLA 2A"></a><strong>CLA 2A</strong></h4><p>​	压缩控制在5db内，通过gain和trim来控制响度音量增益，为的是以获得更好的声音细节和声音染色的同时，能够控制音量。</p>
+<h4 id="CLA-1176"><a href="#CLA-1176" class="headerlink" title="CLA 1176"></a><strong>CLA 1176</strong></h4><p>​	可以用1176并联压缩＋all的模式来获得厚重的音色染色效果。</p>
+
+  <p> — May 18, 2024</p>
+  
+
+
+          <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+        at <a href="https://www.wuyou.com/" target="_blank" rel="noreferrer">Joymeida</a>.</p>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/Todayyyyy/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://space.bilibili.com/285916796?spm_id_from=333.1007.0.0" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Bilibili">
+        <svg class="bilibili svg-hov" width="24" height="20" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Bilibili</title>
+          <path d="M23.0146 10.3832C22.9074 10.3832 22.811 10.3832 22.7252 10.3725C22.543 10.3618 22.3608 10.3511 22.1786 10.3511C22.0608 10.3511 22.0608 10.3511 22.05 10.2332L21.8785 8.28256L21.7071 6.66424L21.5892 5.66753L21.482 4.79943L21.289 3.44901C21.2247 2.96678 21.1498 2.4952 21.0533 2.01287C21.0426 1.93791 21.0426 1.92715 21.1284 1.9164C21.4606 1.85209 21.8035 1.81993 22.1465 1.81993H22.2644C22.3179 1.83069 22.3501 1.86284 22.3608 1.92715L22.4037 2.66662L22.7038 6.66424L22.8538 8.4969L22.9503 9.54728L23.0146 10.3832ZM9.87499 1.81993H10.0679C10.1644 1.81993 10.1858 1.85209 10.1858 1.94855L10.2716 3.24543L10.4645 5.93542L10.5824 7.3394L10.6681 8.42194L10.8397 10.2867C10.8397 10.3725 10.8289 10.3832 10.7432 10.3832L9.97145 10.3511C9.9179 10.3618 9.88574 10.3297 9.88574 10.276L9.85359 9.90088C9.82143 9.57943 9.78928 9.25788 9.76788 8.92568L9.59634 7.23229L9.41416 5.69968L9.28554 4.61726L9.14627 3.63118C9.08196 3.19176 9.00689 2.74169 8.93194 2.30227L8.87827 2.00222C8.86763 1.94855 8.87827 1.92715 8.93194 1.9164C9.23198 1.86284 9.52139 1.80929 9.87499 1.81993ZM20.6568 6.13911C20.9247 6.13911 20.9568 6.14986 20.9998 6.407C21.0533 6.72855 21.0962 7.05011 21.1284 7.37156L21.2462 8.41118L21.4713 10.619C21.482 10.6726 21.4713 10.694 21.4177 10.694L20.5817 10.7905C20.496 10.8011 20.4745 10.7905 20.4639 10.7048L19.9815 8.23976L19.6815 6.59993L19.6386 6.37484C19.6279 6.33204 19.6493 6.29989 19.6922 6.28913C20.0244 6.21417 20.346 6.16051 20.6568 6.13911ZM8.471 6.13911C8.7604 6.12835 8.79256 6.16051 8.82472 6.42851C8.89978 6.86793 8.95334 7.2966 8.99625 7.73603L9.13552 9.02203L9.22123 9.89024L9.2963 10.5868C9.2963 10.6833 9.28554 10.7048 9.19983 10.7154L8.4068 10.7905C8.32098 10.8011 8.29958 10.7905 8.28882 10.7048L7.63507 7.3394L7.46364 6.3856C7.45289 6.33204 7.47429 6.29989 7.52795 6.28913C7.86015 6.21417 8.17096 6.16051 8.471 6.13911ZM12.5651 9.46146V10.8333C12.5758 10.8976 12.5437 10.9298 12.4794 10.9191H12.2221C12.04 10.9191 11.8578 10.9298 11.6756 10.9405C11.5791 10.9513 11.5684 10.9513 11.5576 10.8333L11.3862 8.90416L11.3005 7.95036L11.1719 6.49282C11.1611 6.37484 11.1826 6.35344 11.279 6.34269C11.5791 6.31053 11.8792 6.31053 12.1793 6.32129L12.4043 6.35344C12.4901 6.3856 12.5008 6.39635 12.5008 6.48206L12.5329 7.06076L12.5437 7.70387C12.5544 8.29332 12.5651 8.87201 12.5651 9.46146ZM24.7294 9.52577V10.844C24.7294 10.8976 24.708 10.9298 24.6543 10.9191H24.2685C24.1185 10.9191 23.9684 10.9298 23.8291 10.9405C23.7434 10.9513 23.7327 10.9405 23.7219 10.844L23.4969 8.33612L23.3789 7.09291L23.3361 6.46066C23.3254 6.37484 23.3468 6.35344 23.4326 6.35344C23.7862 6.31053 24.1507 6.29989 24.5043 6.34269C24.6437 6.35344 24.6651 6.39635 24.6758 6.53562L24.708 7.96101L24.7294 9.52577ZM20.346 3.85627C20.4531 3.85627 20.5496 3.86703 20.6246 3.87767C20.6782 3.88843 20.6996 3.90983 20.7104 3.9635L20.8496 5.45319C20.8818 5.58182 20.8604 5.60322 20.7318 5.60322L20.3674 5.62462C20.2923 5.63537 20.2602 5.64613 20.2602 5.52826L20.1101 4.3171L20.0673 3.97414C20.0566 3.90983 20.078 3.87767 20.1423 3.86703L20.346 3.85627ZM8.20311 3.85627C8.28882 3.85627 8.37465 3.86703 8.4496 3.87767C8.49251 3.88843 8.51391 3.90983 8.52467 3.9635L8.56747 4.33861L8.67469 5.50675C8.68545 5.59246 8.68545 5.60322 8.59963 5.60322L8.18171 5.62462C8.096 5.63537 8.08525 5.62462 8.07449 5.5389L7.97802 4.68157L7.89231 3.9635C7.88156 3.90983 7.90307 3.87767 7.95662 3.87767C8.03169 3.86703 8.1174 3.85627 8.20311 3.85627ZM12.4794 4.92806V5.66753C12.4901 5.78539 12.4686 5.78539 12.3722 5.78539C12.2329 5.78539 12.1043 5.77475 11.9756 5.76399C11.8899 5.75324 11.8792 5.75324 11.8899 5.66753L11.8578 4.75652C11.8578 4.55294 11.8578 4.34925 11.847 4.14568C11.8364 4.04921 11.847 4.03845 11.9435 4.03845C12.0935 4.03845 12.2435 4.04921 12.3937 4.07061C12.4794 4.07061 12.4794 4.09212 12.4794 4.17783V4.92806ZM24.6543 4.9387V5.67828C24.6543 5.77475 24.6437 5.78539 24.5472 5.78539L24.1399 5.76399C24.0756 5.75324 24.0435 5.72108 24.0542 5.66753L24.0221 4.13492C24.0221 4.04921 24.0327 4.03845 24.1185 4.03845C24.2578 4.03845 24.3864 4.04921 24.515 4.05996C24.6758 4.07061 24.6543 4.10276 24.6543 4.22063V4.9387ZM7.87091 5.5175C7.88156 5.64613 7.87091 5.66753 7.74229 5.67828L7.48504 5.74259C7.39933 5.77475 7.38858 5.75324 7.37793 5.67828L7.10993 4.16708C7.07777 4.07061 7.09917 4.04921 7.19564 4.03845L7.57075 3.97414C7.65658 3.9635 7.67798 3.9635 7.67798 4.04921C7.71013 4.23139 7.74229 4.41357 7.76369 4.59574L7.87091 5.45319V5.5175ZM19.2742 4.04921C19.435 4.01705 19.6064 3.99565 19.7779 3.97414C19.8315 3.9635 19.8529 3.99565 19.8637 4.04921L19.9494 4.63866C19.9923 4.92806 20.0244 5.21735 20.0352 5.50675V5.59246C20.0458 5.63537 20.0244 5.66753 19.9815 5.67828L19.6386 5.75324C19.585 5.76399 19.5636 5.74259 19.5529 5.68893L19.2742 4.09212V4.04921ZM11.6648 5.2067C11.6648 5.37813 11.6541 5.5389 11.6434 5.68893C11.6434 5.74259 11.6219 5.76399 11.5684 5.77475L11.2362 5.8069C11.1826 5.81755 11.1611 5.78539 11.1611 5.73184C11.1397 5.57106 11.1289 5.42104 11.1183 5.26026C11.0968 4.97086 11.0754 4.67081 11.0646 4.37076L11.0432 4.15643C11.0325 4.11352 11.054 4.09212 11.0968 4.09212L11.5362 4.05996C11.6113 4.05996 11.6327 4.07061 11.6327 4.15643L11.6648 5.2067ZM23.8184 5.03517C23.8291 5.23886 23.8291 5.45319 23.8184 5.65677C23.8291 5.75324 23.8077 5.77475 23.7113 5.77475L23.4111 5.8069C23.3575 5.81755 23.3254 5.78539 23.3254 5.73184C23.3146 5.46395 23.2932 5.1853 23.2718 4.9173L23.2289 4.16708C23.2182 4.11352 23.2397 4.09212 23.2825 4.09212L23.7113 4.05996C23.7862 4.05996 23.797 4.07061 23.797 4.15643C23.8184 4.44572 23.8291 4.74588 23.8184 5.03517ZM7.45289 8.68983C7.62442 8.89352 7.65658 9.1185 7.58151 9.36499C7.5172 9.60083 7.39933 9.80441 7.2278 9.97595C6.94915 10.2653 6.6277 10.5011 6.27399 10.6833C5.66314 11.0048 5.03079 11.2299 4.35552 11.3478C3.87329 11.4442 3.39096 11.5086 2.90873 11.5407C2.75871 11.5514 2.60868 11.5514 2.45855 11.5514H2.1371C2.05128 11.5514 2.02988 11.53 2.01913 11.4442L1.94417 10.4046L1.74048 8.35763L1.5155 6.407L1.38688 5.36748L1.2475 4.37076C1.17254 3.82412 1.07608 3.27758 0.979611 2.73094C0.904544 2.29151 0.829587 1.85209 0.73312 1.41277C0.722365 1.35911 0.73312 1.31631 0.786677 1.30555L2.27637 0.683948C2.37284 0.641037 2.45855 0.608881 2.55502 0.587481C2.61933 0.576726 2.65149 0.598236 2.64073 0.662547C2.64073 0.833971 2.64073 1.0055 2.63009 1.18768L2.61933 1.32695C2.60868 1.94855 2.60868 2.57016 2.61933 3.20252C2.63009 3.74916 2.66224 4.30645 2.6944 4.85299C2.74795 5.71044 2.83366 6.56778 2.91949 7.41447C2.91949 7.50018 2.93013 7.50018 3.0266 7.48954C3.20878 7.45738 3.38031 7.44662 3.56249 7.44662C4.13054 7.44662 4.69847 7.51094 5.24512 7.6502C5.72735 7.76818 6.18828 7.92896 6.6491 8.13254C6.87419 8.23976 7.07777 8.36827 7.27071 8.51841C7.34577 8.57196 7.39933 8.62552 7.45289 8.68983ZM19.5315 8.59336C19.7565 8.77554 19.8315 9.02203 19.7672 9.31143C19.7136 9.54728 19.6064 9.75086 19.4456 9.93304C19.1885 10.2224 18.8883 10.4475 18.5561 10.6297C17.9131 10.9834 17.2272 11.2299 16.4984 11.3585C16.1019 11.4335 15.7053 11.4978 15.3087 11.53C15.0837 11.5514 14.8372 11.5621 14.5907 11.5514H14.3013C14.2371 11.5621 14.2049 11.53 14.2049 11.4656C14.1834 11.1656 14.162 10.8654 14.1299 10.5654L13.9583 8.73274L13.7761 7.13582L13.5512 5.33532C13.519 5.02452 13.4761 4.70297 13.4225 4.39217L13.2296 3.19176C13.1439 2.62382 13.0367 2.05578 12.9188 1.48773L12.908 1.41277C12.8866 1.35911 12.908 1.31631 12.9616 1.30555C13.4868 1.09122 14.0012 0.855371 14.5264 0.651792C14.6657 0.598236 14.8372 0.533925 14.8265 0.662547C14.7836 1.05906 14.7944 1.45557 14.7836 1.84144C14.7729 2.16289 14.7729 2.48445 14.7944 2.79525V3.04174C14.7944 3.42761 14.805 3.81347 14.8372 4.18848C14.8587 4.69221 14.8908 5.2067 14.9336 5.71044L15.0301 6.79287C15.0409 6.99644 15.0623 7.18938 15.0944 7.39307C15.0944 7.51094 15.1158 7.50018 15.2123 7.48954C15.4052 7.45738 15.5981 7.44662 15.7911 7.44662C16.4662 7.45738 17.12 7.56449 17.763 7.74667C18.2024 7.86465 18.6205 8.02532 19.0277 8.23976C19.2099 8.33612 19.3707 8.4541 19.5315 8.59336ZM4.03407 10.4797C4.19485 10.3832 4.47349 10.1903 4.85925 9.89024C5.24512 9.57943 5.48086 9.37574 5.57732 9.26863C4.99863 9.01139 4.39843 8.7863 3.77682 8.58272L4.03407 10.4797ZM17.7202 9.32219C17.7524 9.29003 17.7416 9.26863 17.7094 9.24712L17.4522 9.14001C17.0021 8.94708 16.552 8.77554 16.0911 8.62552L16.0268 8.60412C16.0054 8.59336 15.984 8.60412 15.9519 8.61487L16.209 10.4689C16.2412 10.4689 16.2627 10.4582 16.2733 10.4475C16.6913 10.1474 17.1092 9.83657 17.5273 9.50437L17.7202 9.32219Z" fill="#07A3D7"/>>
+          </svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.douyin.com/user/MS4wLjABAAAAPE9XVgwPCmNIxdhblhGfnr4QLbMTdl4hC7znBVYbzXo" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="bilibili svg-hov" width="21" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.88975 11.7577V10.9278C7.60167 10.8822 7.3107 10.8572 7.01905 10.853C4.19551 10.847 1.69577 12.6768 0.847855 15.37C-5.47213e-05 18.0631 1.0008 20.9949 3.31841 22.6075C2.46854 21.6979 1.90009 20.5618 1.68168 19.3363C1.46327 18.1108 1.60423 16.8483 2.08755 15.7011C2.57087 14.5539 3.37589 13.5712 4.40543 12.8715C5.43498 12.1718 6.64504 11.785 7.88957 11.7578L7.88975 11.7577Z" fill="#25F4EE"/>
+          <path d="M8.0463 21.1585C9.62495 21.1563 10.9226 19.9127 10.9917 18.3355V4.2615H13.5628C13.5104 3.96741 13.4853 3.66908 13.4881 3.37036L9.97126 3.37036V17.4308C9.91277 19.016 8.61204 20.2716 7.02585 20.2741C6.55183 20.2701 6.08555 20.1535 5.66541 19.934C5.93771 20.3113 6.29532 20.6189 6.70908 20.8316C7.12284 21.0444 7.58103 21.1564 8.0463 21.1585ZM18.3653 9.03666V8.25439C17.419 8.25476 16.4938 7.97554 15.7056 7.45178C16.3965 8.25495 17.3301 8.81129 18.3653 9.03666Z" fill="#25F4EE"/>
+          <path d="M15.7057 7.45179C14.9293 6.56773 14.5013 5.43124 14.5017 4.25464H13.5629C13.6841 4.90516 13.9367 5.52416 14.3051 6.07385C14.6735 6.62354 15.15 7.09239 15.7057 7.45179ZM7.01909 14.3698C6.36067 14.3731 5.72227 14.5965 5.20538 15.0043C4.68849 15.4122 4.32278 15.9811 4.16639 16.6207C4.01001 17.2603 4.07192 17.9338 4.34229 18.5342C4.61266 19.1345 5.07596 19.6273 5.65855 19.934C5.34002 19.4942 5.14928 18.975 5.10738 18.4335C5.06549 17.8921 5.17408 17.3497 5.42115 16.8661C5.66822 16.3826 6.04417 15.9767 6.50744 15.6934C6.97072 15.4101 7.50329 15.2604 8.04632 15.2608C8.34153 15.2647 8.63469 15.3106 8.91692 15.3973V11.8189C8.62869 11.7757 8.33776 11.7529 8.04632 11.7509H7.88979V14.4717C7.60605 14.3956 7.31273 14.3613 7.01909 14.3698Z" fill="#FE2C55"/>
+          <path d="M18.3654 9.03687V11.7578C16.6136 11.7544 14.9073 11.1999 13.4881 10.1729V17.3221C13.4806 20.8895 10.5865 23.7776 7.01913 23.7776C5.69422 23.78 4.40122 23.3712 3.31848 22.6076C4.20138 23.5572 5.34981 24.219 6.61416 24.5066C7.87851 24.7943 9.20019 24.6945 10.407 24.2203C11.6139 23.7461 12.65 22.9195 13.3803 21.8481C14.1106 20.7767 14.5014 19.5101 14.5017 18.2135V11.0844C15.9256 12.1047 17.634 12.652 19.3857 12.649V9.14546C19.0428 9.14443 18.7009 9.10804 18.3654 9.03687Z" fill="#FE2C55"/>
+          <path d="M13.4881 17.3219V10.1727C14.9115 11.1939 16.6202 11.7413 18.3721 11.7372V9.01633C17.3371 8.79776 16.4013 8.24865 15.7057 7.45179C15.15 7.09239 14.6735 6.62354 14.3051 6.07385C13.9366 5.52416 13.6841 4.90516 13.5628 4.25464H10.9917V18.3357C10.9667 18.9486 10.7513 19.5385 10.3756 20.0234C9.99988 20.5083 9.48243 20.8642 8.89518 21.0414C8.30792 21.2187 7.68002 21.2087 7.09874 21.0127C6.51746 20.8167 6.01167 20.4445 5.65166 19.9478C5.06897 19.6411 4.60557 19.1483 4.33513 18.5479C4.06469 17.9475 4.00274 17.274 4.15914 16.6343C4.31554 15.9947 4.6813 15.4257 5.19826 15.0178C5.71522 14.6099 6.35371 14.3866 7.0122 14.3833C7.30751 14.386 7.60086 14.4318 7.8829 14.5194V11.7984C6.63168 11.8196 5.41367 12.2045 4.37738 12.9059C3.34108 13.6074 2.53127 14.5953 2.04669 15.749C1.56211 16.9028 1.4237 18.1726 1.64832 19.4037C1.87295 20.6348 2.45091 21.7739 3.31174 22.6822C4.40511 23.4206 5.69995 23.8031 7.01907 23.7774C10.5865 23.7774 13.4805 20.8893 13.4881 17.3219Z" fill="black"/>
+          </svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.xiaohongshu.com/user/profile/63c792d100000000260123b4" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="bilibili svg-hov" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_6_11)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M23.3473 1.32454C23.1602 1.07019 22.9346 0.835033 22.6707 0.64787C22.1284 0.244751 21.4709 0 20.751 0H3.24415C2.5243 0 1.85723 0.244751 1.31494 0.64787C1.06059 0.835033 0.825435 1.06059 0.638272 1.32454C0.244751 1.86203 0 2.5243 0 3.24895V20.7558C0 21.4757 0.244751 22.1428 0.64787 22.6755C0.835033 22.9298 1.06059 23.165 1.32454 23.3521C1.86683 23.7552 2.5243 24 3.24415 24H20.751C21.4709 24 22.138 23.7552 22.6707 23.3521C22.925 23.165 23.1602 22.9394 23.3473 22.6755C23.7504 22.1332 23.9952 21.4757 23.9952 20.7558V3.24895C23.9952 2.5243 23.7409 1.86203 23.3473 1.32454ZM8.59028 10.9466C8.97421 10.0972 9.40612 9.26215 9.81404 8.42711H11.2202C10.8746 9.11338 10.4907 9.78524 10.246 10.4379C10.817 10.4043 11.3353 10.3755 11.9448 10.3419C11.6185 10.9946 11.3305 11.5753 11.0426 12.156C11.0042 12.2328 10.9658 12.3143 10.9274 12.3911C10.6251 12.9958 10.6251 13.0006 11.2969 13.015C11.3689 13.015 11.4361 13.0246 11.5657 13.039C11.3785 13.4085 11.2106 13.7445 11.033 14.0756C11.0042 14.1284 10.9226 14.1908 10.8698 14.1908C10.3755 14.1908 9.87642 14.2052 9.38212 14.1524C9.02699 14.114 8.88782 13.8404 9.02699 13.5045C9.19496 13.087 9.39652 12.6791 9.58368 12.2663C9.64607 12.1224 9.71326 11.9832 9.80444 11.772C9.53089 11.772 9.32933 11.7768 9.12777 11.772C8.54709 11.7481 8.35033 11.4841 8.59028 10.9466ZM1.78524 15.4289C1.4877 14.9106 1.21896 14.4307 0.945411 13.9508C0.945411 13.8932 1.4829 12.2519 1.36293 10.3947H2.84103C2.84103 10.3947 2.89382 13.874 1.78524 15.4289ZM5.23575 15.2418C5.25015 16.1104 4.65027 16.1104 4.65027 16.1104H3.80084L2.90822 14.9298H3.84403V8.42711H5.25015C5.25015 10.5579 5.24535 13.111 5.23575 15.2418ZM7.28014 15.3521C6.60828 14.7618 6.24355 13.0006 6.25315 10.3851H7.64007C7.53449 11.7624 7.9808 13.6005 7.9808 13.6005C7.9808 13.6005 7.57289 14.5027 7.28014 15.3521ZM10.3227 15.9616C10.2843 16.0336 10.1644 16.1008 10.078 16.1056C9.42531 16.1152 8.76785 16.1104 8.0192 16.1104C8.30234 15.5441 8.53749 15.0834 8.74385 14.6803H10.985C10.7355 15.1698 10.5387 15.5729 10.3227 15.9616ZM16.0528 16.1152H11.009C11.2537 15.6305 11.6905 14.7666 11.6905 14.7666H13.1302V10.3563H12.2328V8.979H15.4817V10.3371H14.5939V14.7714H16.0528V16.1152ZM22.7235 15.0978C22.7235 16.1152 21.7301 16.0864 21.7301 16.0864H20.4343L19.892 14.9202L21.2981 14.925C21.2981 14.925 21.3125 13.8692 21.2981 13.5045C21.2885 13.1974 21.1206 13.0006 20.8086 12.9958C20.1848 12.9814 19.5561 12.991 18.8698 12.991V16.0912H17.4781V13.0102H16.072V11.5753H17.4397V10.3611H16.5327V9.003H17.4541V8.42711H18.8602L18.8698 9.003H19.988C19.988 9.003 21.0198 8.979 21.0246 9.982C21.0294 10.2795 21.0342 11.2537 21.0342 11.5801C22.2196 11.5753 22.7235 11.8152 22.7235 12.6407V15.0978ZM22.1284 10.3995H21.3797V9.68446C21.3797 9.42532 21.5093 9.18536 21.7301 9.04619C21.9796 8.88782 22.3251 8.78704 22.6515 9.09898C22.6659 9.10858 22.6755 9.12298 22.6851 9.13737C23.1362 9.61248 22.781 10.3995 22.1284 10.3995Z" fill="#FF2742"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8795 11.5754H19.8105V10.3564H18.8699L18.8795 11.5754Z" fill="#FF2742"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_6_11">
+          <rect width="24" height="24" fill="white"/>
+          </clipPath>
+          </defs>
+          </svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/js/nanobar.min.js"></script>
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>

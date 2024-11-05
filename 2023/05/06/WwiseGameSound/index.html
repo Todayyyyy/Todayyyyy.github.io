@@ -1,0 +1,3665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>关于游戏开发第三方音频开发软件Wwise的功能归纳</title>
+  
+  <link rel="canonical" href="http://example.com/2023/05/06/WwiseGameSound/">
+  
+  <meta name="description" content="Wwise与Unity集成TIPS:本文中出现的任何词汇均可以使用crtl+f在词汇表中进行查询。 文档归档逻辑： 依据不同的工作内容进行归类，例如：在设计初期使用到的是designer layout，然后是mixer layout进行混音，然后再soundbank layout集成，后续需要测试b">
+  
+  
+  <meta name="author" content="John Doe">
+  
+  <meta property="og:image" content="http://example.comundefined">
+  
+  <meta property="og:site_name" content="Hexo" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="关于游戏开发第三方音频开发软件Wwise的功能归纳" />
+  
+  <meta property="og:description" content="Wwise与Unity集成TIPS:本文中出现的任何词汇均可以使用crtl+f在词汇表中进行查询。 文档归档逻辑： 依据不同的工作内容进行归类，例如：在设计初期使用到的是designer layout，然后是mixer layout进行混音，然后再soundbank layout集成，后续需要测试b">
+  
+  <meta property="og:url" content="http://example.com/2023/05/06/WwiseGameSound/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="关于游戏开发第三方音频开发软件Wwise的功能归纳">
+  
+  <meta name="twitter:description" content="Wwise与Unity集成TIPS:本文中出现的任何词汇均可以使用crtl+f在词汇表中进行查询。 文档归档逻辑： 依据不同的工作内容进行归类，例如：在设计初期使用到的是designer layout，然后是mixer layout进行混音，然后再soundbank layout集成，后续需要测试b">
+  
+  
+  <meta name="twitter:image" content="http://example.comundefined">
+  
+  <meta name="twitter:url" content="http://example.com/2023/05/06/WwiseGameSound/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="../fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">☀️</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>🌑</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
+  </div>
+
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      你好
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/Works" class="ml">Works</a>
+          
+        
+          
+          <a href="/About" class="ml">About</a>
+          
+        
+        
+          
+            <a href="mailto:duan13330357575@126.com" target="_blank" class="ml">Email</a>
+          
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+
+        <div class="trans">
+            <h2>关于游戏开发第三方音频开发软件Wwise的功能归纳</h2>
+
+  <h1 id="Wwise与Unity集成"><a href="#Wwise与Unity集成" class="headerlink" title="Wwise与Unity集成"></a>Wwise与Unity集成</h1><p><em><strong>TIPS:本文中出现的任何词汇均可以使用crtl+f在词汇表中进行查询。</strong></em></p>
+<p>文档归档逻辑：</p>
+<p>依据不同的工作内容进行归类，例如：在设计初期使用到的是designer layout，然后是mixer layout进行混音，然后再soundbank layout集成，后续需要测试bug以及优化性能则需要在profiler layout等。</p>
+<p><strong>声音管线</strong></p>
+<p><img src="/image%5CTypora%5C1.png" alt="1"></p>
+<p><img src="/image%5CTypora%5C2.png" alt="2"></p>
+<p>[TOC]</p>
+<h2 id="1-Designer-Layout"><a href="#1-Designer-Layout" class="headerlink" title="1.Designer Layout"></a>1.Designer Layout</h2><p>在该流程下，我们需要完成SFX、InteractiveMusic在Audio界面的design设计，其中包括GameSyncs(Swtiches\States\Parameters\Triggers)、ShareSets(Effects\Attenuations...)，并且在Event界面进行事件编辑。</p>
+<p>下面的逻辑是：通过ProjectExplorer界面对各个板块进行详细介绍。</p>
+<h3 id="1-1-Audio"><a href="#1-1-Audio" class="headerlink" title="1.1 Audio"></a>1.1 Audio</h3><h4 id="1-Type"><a href="#1-Type" class="headerlink" title="1.Type"></a>1.Type</h4><p>audio界面下，主要的几种文件夹类型如下。</p>
+<h5 id="1-Virtual-Folder"><a href="#1-Virtual-Folder" class="headerlink" title="1.Virtual Folder"></a>1.Virtual Folder</h5><p>虚拟的文件夹类型，只是助于分类文件，实际则没有任何作用。</p>
+<h5 id="2-Random-Container"><a href="#2-Random-Container" class="headerlink" title="2.Random Container"></a>2.Random Container</h5><p>该文件夹内的SFX，会在每一次播放的时候，随机挑选。</p>
+<h5 id="3-Swtich-Contianer"><a href="#3-Swtich-Contianer" class="headerlink" title="3.Swtich Contianer"></a>3.Swtich Contianer</h5><p>切换容器。其中的对象&#x2F;容器可以映射到一系列 Switch（切换开关），它们对应游戏中特定条件的不同选项。</p>
+<p>Contents Editor:</p>
+<ol>
+<li>在 Play 列中选择 <strong>1st only</strong> 选项，那么将仅当 Switch&#x2F;State 有变化时才播放该对象。如果您不勾选 1st only 选项，那么游戏每次触发切换容器时，无论 Switch&#x2F;State 是否有变化，都将播放该对象。</li>
+<li>在 Across Switches 列中选择 <strong>Continue to play</strong> 选项，那么如果音频对象同时指派至源和目标 Switches&#x2F;States ，则在 Switch&#x2F;State 变化期间对象将继续播放。如果您不勾选 Continue to play 选项，那么对象将停止并从开头重新播放。</li>
+<li>在 Switch&#x2F;State 发生变化时让新对象淡入&#x2F;现对象淡出，则请在 Fade-In&#x2F;Fade-out 文本框中输入时间长度。</li>
+</ol>
+<h5 id="4-Blend-Container"><a href="#4-Blend-Container" class="headerlink" title="4.Blend Container"></a>4.Blend Container</h5><p>混合容器。其中的对象&#x2F;容器将<strong>同时</strong>播放。</p>
+<p><strong>Blend Track</strong></p>
+<p>Blend Track 用于将混合容器内的对象及其属性值进行编组。</p>
+<p>同一个 track内的对象属性可以通过 RTPC映射到游戏参数，即由参数值来控制对象属性。</p>
+<p>Cross Fade:两个对象间也可以基于游戏参数值来进行交叉淡变。</p>
+<p>fademode:右键crossfade，选择：</p>
+<ul>
+<li><p><strong>None（无）：</strong>当参数值进入方块重叠的部分，RTPC 的属性立即从其最大值过渡到最小值（或由小到大）。</p>
+</li>
+<li><p><strong>Automatic（自动）（默认）：</strong>淡变范围等于相邻方块的重叠部分宽度。如果没有相邻方块，则没有淡变。</p>
+</li>
+<li><p><strong>Manual（手动）：</strong>您可以移动淡入结束或淡出起始的点。淡入起始或淡出结束的点将总是在重叠块的外部下角处开始。</p>
+<blockquote>
+<p>TIPS:</p>
+<ul>
+<li><p>音频文件长度</p>
+<ul>
+<li>音频文件长度必须大于或等于 0.2 秒。</li>
+<li>交叉淡变时间最短为 0.1 秒。</li>
+</ul>
+</li>
+<li><p>交叉淡变时间与音频文件长度的关系</p>
+<ul>
+<li><p>从声音 A 交叉淡变至声音 B 时，声音引擎所允许的淡变时间最长为音频文件 A 长度的一半。如果淡变时间大于允许的最大值，那么将被自动调整为淡出文件长度的一半。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><em>备注</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">如果交叉淡变对于容器内的若干个音频文件过长，则 Wwise 将不会进行限制或提示点。如果需要对交叉淡变时间进行调整，声音引擎会在运行时进行处理。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>暂停和交叉淡变</p>
+<ul>
+<li>如果暂停播放使用交叉淡变过渡的声音，同时向暂停操作应用淡出，交叉淡变的时机可能会不准确。</li>
+</ul>
+</li>
+<li><p>音高和交叉淡变</p>
+<ul>
+<li>如果您使用 RTPC 设置了容器的音高值，或在播放容器时触发了 Set Pitch 事件动作，则对声音应用交叉淡变时可能会产生意外结果。</li>
+</ul>
+</li>
+<li><p>源插件与交叉淡变</p>
+<ul>
+<li>对源插件应用交叉淡变时，如果无法确定源的结束时间，那么淡变可能会被忽略。例如，当正弦波生成源的时长基于一个 RTPC 时，就会发生这种情况。在这些情况下，交叉淡变被忽略，并且过渡将会在没有交叉淡变的情况下完成。</li>
+</ul>
+</li>
+<li><p>切换容器与交叉淡变</p>
+<ul>
+<li>当 <strong>Switch Container</strong> 作为 <strong>Sequence Container</strong> 的子容器时，会根据指派给切换开关的对象数量，区别应用交叉淡变过渡。</li>
+</ul>
+</li>
+<li><p>两个声部</p>
+<ul>
+<li>交叉淡变期间，声音引擎会使用两个不同的声部。</li>
+</ul>
+</li>
+<li><p>虚声部和交叉淡变</p>
+<ul>
+<li>根据定义，在低于音量阈值或超过播放数量限制时，<strong>Play from Beginning</strong> 和 <strong>Resume</strong> 虚声部行为会影响声音持续时间，这不在交叉淡变时间机制的考虑范围之内。</li>
+<li>当声部的音量低于阈值时，声部会变为虚声部。对于任何声音，会使用其所有音频通道的实际有效音量与阈值相比较。这个有效音量包括 Actor-Mixer Hierarchy、淡变过渡、互动音乐过渡、RTPC、状态、定位和衰减等所有的音量影响。</li>
+<li>当计算声音的有效音量时，淡变过渡的音量影响也计算在内。因此，在 <strong>Random</strong>、<strong>Sequence</strong> 或 <strong>Blend Container</strong> 内的交叉淡变过渡期间，淡变声音在某些时候将有可能低于音量阈值。如果它们从虚声部恢复时的行为是<strong>Play from Beginning</strong>或<strong>Resume</strong>，则其真实时长将长于容器淡变的逻辑所预期的时长。这将导致不可预测的行为。更糟糕的是，当声音淡出至低于阈值时，它会停止发声，但仍进行“虚拟”播放，因此永远不会结束。因此，容器将可能停止播放后续声音。</li>
+</ul>
+<p>总而言之，应该避免对使用交叉淡变过渡的容器设置这两种类型的虚声部。如果希望对这些容器使用虚声部，则应选择 <strong>Play from Elapsed Time</strong> 行为。</p>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h5 id="5-Physical-Folders"><a href="#5-Physical-Folders" class="headerlink" title="5.Physical Folders"></a>5.Physical Folders</h5><p>实文件夹。一种高层元素，可以包含一组工程中其它的 Physical Folder 或 Work Unit。实文件夹不能作为容器或声音的子对象。</p>
+<h5 id="6-Music-Segment"><a href="#6-Music-Segment" class="headerlink" title="6.Music Segment"></a>6.Music Segment</h5><p>由若干 Music Track组成，每个 Music Track 都包含 Music Clip。这些片段可以在 Music Segment 内进行排列对齐。</p>
+<p>music track:music segment中的每个轨道。</p>
+<p>music clip:音乐片段，代表的是每一个音源文件。</p>
+<ul>
+<li>Bars&#x2F;Beats（栏&#x2F;节奏）</li>
+<li>Cues（提示点）</li>
+<li>Clips&#x2F;Loops（片段&#x2F;循环）</li>
+</ul>
+<p>​	<strong>1.子音轨</strong></p>
+<p>​	将子音轨添加至音轨：</p>
+<p>​		添加子音轨这一功能仅适用于被定义为 Random Step、Sequence Step 或 Switch 的音轨。</p>
+<p>​		强制播放子音轨：使用 Force Usage 功能来取消音轨的随机或序列行为。</p>
+<p>​	将子音轨关联至Switch&#x2F;State：</p>
+<p>​		在property editor中的General Settings中的Switch选项中选择即可。  </p>
+<p>​	<strong>2.使用片段</strong></p>
+<ul>
+<li>循环片段</li>
+</ul>
+<ol>
+<li>点击片段裁剪点，并拖动以延展片段。</li>
+<li>延展片段，直至片段边缘标志显示在时间线上。</li>
+</ol>
+<ul>
+<li>移动片段</li>
+</ul>
+<p>​	使用 Snap 功能，可以准确沿时间线间隔对齐片段。</p>
+<ul>
+<li>分割片段</li>
+</ul>
+<p>​	在音轨中，右键点击要分割的片段，然后从快捷菜单中选择 <strong>Split on Play Cursor</strong>。</p>
+<ul>
+<li>重叠片段</li>
+</ul>
+<p>​	重叠片段时，更改片段的堆叠方式十分实用，特别是当要查看已重叠片段的同步点时。可以通过快捷菜单中的 Bring to Front 和 Send to Back 命令实现。</p>
+<p>​	<strong>3.Cue</strong></p>
+<p>​		1.Entry&#x2F;Exit Cue</p>
+<p>​	音乐片段的入口和出口提示点。Entry前为pre-entry，Exit后为post-exit。</p>
+<p>​	右键选择的音乐片段，选择Move Entry&#x2F;Exit Cues to Selection：将入口和出口提示点与所选片段对齐。</p>
+<p>​		2.Custom Cue</p>
+<p>​	用于状态更改、过渡或插播乐句插入。右键，从快捷菜单中选择Add Custon Cue。</p>
+<p>​	右键，Show in Multi Editor，可以调整精确位置和颜色等。</p>
+<p>​		3.链接Event</p>
+<p>​	在音乐片段的任意位置添加Action Event(Dialogue Event不行)，在播放 Music Segment 时，一旦 Play Cursor	（播放光标）到达相应 Event 所在位置，便会自动触发该 Event。</p>
+<p>​	右键快捷菜单Add Music Event Cue&#x2F;直接从Event菜单拖拽&#x2F;从已有的复制。</p>
+<h5 id="7-Music-Playlist-Container"><a href="#7-Music-Playlist-Container" class="headerlink" title="7.Music Playlist Container"></a>7.Music Playlist Container</h5><p>Music Playlist中的Group&#x2F;Segment</p>
+<ul>
+<li>Sequence continuous:序列连续模式。每次播放组时依次按顺序播放该组中的所有音乐对象。</li>
+<li>Sequence step:序列步进模式。每次播放组时，仅播放组中的一个音乐对象。下次播放该组时，将播放组中的下一个音乐对象。</li>
+<li>Random continuous:随机连续模式。每次播放组时随机逐一播放该组中的所有音乐对象。</li>
+<li>Random step:随机步进模式。每次播放组时，仅随机播放所选组中的一个音乐对象。</li>
+</ul>
+<p>Weight:权重，在random container中播放它的概率。</p>
+<h5 id="8-Music-Switch-Container"><a href="#8-Music-Switch-Container" class="headerlink" title="8.Music Switch Container"></a>8.Music Switch Container</h5><p>​	1.将GameSync与Music Switch关联</p>
+<p>通过&gt;&gt;按钮来添加Switch Group或者State Group</p>
+<p>​	2.将GameSync与Music Playlist&#x2F;Segment关联</p>
+<p>通过Add Path，将选中的State&#x2F;Switch添加到Path，在相应的Path中，点击object旁的“…”来选择你要链接的对象。</p>
+<p>​	3.将RTPC与其关联</p>
+<p>将RTPC与Switch Group关联即可。</p>
+<table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">![add generic path](image\Typora\add generic path.png)</td>
+<td align="left">创建完整的通用路径（*.*），来适用任意状态或切换开关。此选项仅在通用路径尚不存在时才可用。</td>
+</tr>
+<tr>
+<td align="left">![add path](image\Typora\add path.png)</td>
+<td align="left">适用所选的状态&#x2F;切换开关组或状态&#x2F;切换开关值创建路径。</td>
+</tr>
+<tr>
+<td align="left">![update path](image\Typora\update path.png)</td>
+<td align="left">更新路径。针对所选音频对象更新路径。此选项会将所选对象的路径替换为当前选择的 State 或 Switch。此选项仅在所选路径尚未出现在列表中，并且在列表中选择了一个对象时才可用。</td>
+</tr>
+<tr>
+<td align="left">![remove path](image\Typora\remove path.png)</td>
+<td align="left">从路径列表中删除所选路径。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5CunselectAll.png" alt="unselectAll"></td>
+<td align="left">取消选中 States&#x2F;Switches 窗格中的所有 State 和 Switch。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">（States&#x2F;Switches 窗格）</td>
+<td align="left">显示已分配给当前所选 Music Switch Container 的 State Group 和 Switch Group。您可以选择不同的状态或切换开关，来创建不同路径组合。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Cchoose.png" alt="choose"></td>
+<td align="left">打开可让用户从备选 Switch Group 或 State Group 对象列表中进行选择的菜单。用户还可以通过选择 “New.. “ ，从该菜单创建新的状态组或开关组。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Mode</td>
+<td align="left">模式。在运行时触发的状态或切换开关有不只一条预定义路径可以匹配的情况下，指定声音引擎将选择哪条路径。<strong>Best Match</strong> – 最佳匹配。选择与运行时触发的状态或切换开关最匹配的路径。如果不能完全匹配，则将会选择具有最少通配符 (<em>) 的路径。*<em>Weighted</em></em> – 加权。基于各路径的权重值，随机选择匹配路径之一。因为在路径中可以使用通配符（*），所以可能同时有几条预定义的路径都能够匹配在运行时触发的状态或切换开关。Default value: Best Match</td>
+</tr>
+<tr>
+<td align="left">Path Filter</td>
+<td align="left">路径筛选器。显示可用于筛选路径的列表。可以使用以下筛选器：<strong>All</strong> – 所有。显示所有已创建的路径。<strong>Current Selection</strong> – 当前选中项。仅显示包含所选切换开关或状态的路径。</td>
+</tr>
+<tr>
+<td align="left">Object Filter</td>
+<td align="left">路径筛选器。显示可用于筛选路径的列表。可以使用以下筛选器：<strong>All</strong> – 所有。显示所有已创建的路径。<strong>Assigned object</strong> – 指派对象。仅显示与对象关联的路径。<strong>Missing</strong> – 缺失。仅显示与已删除的对象相关联的路径。<strong>None</strong> – 无。仅显示未与对象进行关联的路径。</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5CconfigureColumns.png" alt="configureColumns"></td>
+<td align="left">点击列标题区 **Configure Columns…**（配置列…）快捷方式（右键点击）选项。p此时将会打开 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=configure_columns">“Configure Columns 对话框”一节</a>。指定要显示的列及其顺序。</td>
+</tr>
+<tr>
+<td align="left">Path</td>
+<td align="left">路径。包含 Music Switch Container 中可能存在的 Switch 或 State 的多种组合之一的特定路径。这些路径与音乐对象相关联。路径可能包含通配符，这将匹配任何相应的 Switch 或 State。通配符由星号表示。</td>
+</tr>
+<tr>
+<td align="left">Weight</td>
+<td align="left">权重。当存在其它匹配路径的情况下，该路径被选择的可能性。在一条匹配路径的权重为 100 时，其它权重低于 100 的匹配路径会被自动弃用。在一条配路径的权重为 0 时，除非其它所有匹配路径的权重也都为 0，否则该路径会被弃用。此选项仅在 Dialogue Event 处于“Weighted”模式时才适用。单位：% Default value: 50 Range: 0 to 100</td>
+</tr>
+<tr>
+<td align="left">Object</td>
+<td align="left">指派给路径的对象。可以将指派给路径的对象与其它平台断开链接，以便为相同路径根据不同平台来指派不同的对象</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora....png" alt="..">(浏览)</td>
+<td align="left">浏览。打开Project Explorer - Browser（工程浏览器 —— 浏览器），可以在其中选择将指派给此路径的对象。您还可以直接从 Project Explorer 中拖拽对象。</td>
+</tr>
+</tbody></table>
+<h5 id="9-Sound-Type"><a href="#9-Sound-Type" class="headerlink" title="9.Sound Type"></a>9.Sound Type</h5><p>​	1.SFX</p>
+<p>音效声。即音效对象。</p>
+<p>​	2.Voice</p>
+<p>语音。即语音对象。</p>
+<h4 id="2-General-Settings"><a href="#2-General-Settings" class="headerlink" title="2.General Settings"></a>2.General Settings</h4><p>在generalSetting界面下，有部分简单基础的功能，会根据当前所选中的SFX和Folder类型有些许改变。</p>
+<h5 id="1-Voice"><a href="#1-Voice" class="headerlink" title="1.Voice"></a>1.Voice</h5><p>​	1.音量</p>
+<p>​	2.音高</p>
+<p>​	值1200&#x3D;2倍速度，且相当于一个八度。</p>
+<p>​	3.低通&#x2F;高通滤波器</p>
+<p>​	4.补偿增益</p>
+<p>​	应用于所有其他音量调整之后，并且在Actor-Mixer Hierarchy中具有叠加特性。</p>
+<p>​	可用于最终的响度归一化。</p>
+<h5 id="2-Output-Bus"><a href="#2-Output-Bus" class="headerlink" title="2.Output Bus"></a>2.Output Bus</h5><p>​	1.Volume</p>
+<p>​	输出到音频总线时，信号的衰减或增幅。</p>
+<blockquote>
+<p>​	**TIPS:**如果使用了User-Defined Auxiliary Sends（辅助总线）的湿声（reverb）的话，Output Bus Volum将于干声电平链接，Auxiliary Bus Volume将与湿声电平链接。在游戏中可以用RTPC分别控制两者来控制游戏平衡。</p>
+</blockquote>
+<p>​	2.高通\低通滤波器</p>
+<p>​	输出到Bus时用滤波器。</p>
+<h5 id="3-Game-Defined-Auxilary-Sends"><a href="#3-Game-Defined-Auxilary-Sends" class="headerlink" title="3.Game-Defined Auxilary Sends"></a>3.Game-Defined Auxilary Sends</h5><p>​	Use Or Not:</p>
+<p>​	决定是否使用该游戏对象的游戏定义的辅助发送，其中包括Auxiliary Bus以及Volume。若启用，则对象会受到以下函数值的影响：</p>
+<p>1.ak.soundengine.setGameObjectAuxSendValues 设置 Auxiliary Bus 以输出给定游戏对象（湿声）。</p>
+<blockquote>
+<p>其Arguments：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>gameObject</strong> *</td>
+<td align="left">integer</td>
+<td align="left">关联游戏对象 ID。 游戏对象 ID，64 位无符号整数。范围: [0,18446744073709551615]</td>
+</tr>
+<tr>
+<td align="left"><strong>auxSendValues</strong> *</td>
+<td align="left">array</td>
+<td align="left">此数组中包含一系列 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=SDK&id=struct_ak_aux_send_value.html">AkAuxSendValue</a> 结构。</td>
+</tr>
+<tr>
+<td align="left">auxSendValues <strong>[…]</strong></td>
+<td align="left">object</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=SDK&id=struct_ak_aux_send_value.html">AkAuxSendValue</a> 结构。</td>
+</tr>
+<tr>
+<td align="left">auxSendValues[…].<strong>listener</strong> *</td>
+<td align="left">integer</td>
+<td align="left">与此 Aux Send 关联的听者的游戏对象 ID。 游戏对象 ID，64 位无符号整数。范围: [0,18446744073709551615]</td>
+</tr>
+<tr>
+<td align="left">auxSendValues[…].<strong>auxBus</strong> *</td>
+<td align="left">any of:</td>
+<td align="left">Auxiliary Bus 的 ID (<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=SDK&id=struct_g_u_i_d.html">GUID</a>)、名称或 Short ID。</td>
+</tr>
+<tr>
+<td align="left">string</td>
+<td align="left">对象的名称。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">string</td>
+<td align="left">以下形式的对象 GUID：{aabbcc00-1122-3344-5566-77889900aabb}。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">integer</td>
+<td align="left">Wwise 对象的 Short ID。 32 位无符号整数。范围: [0,4294967295]</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">auxSendValues[…].<strong>controlValue</strong> *</td>
+<td align="left">number</td>
+<td align="left">范围为 [0.0f:1.0f] 的值，Auxiliary Bus 的发送电平。</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p>2.ak.soundengine.setGameObjectOutputBusVolume 设置给定游戏对象的输出总线音量（直达声）。</p>
+<blockquote>
+<p>其Arguments：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Type</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>emitter</strong> *</td>
+<td align="left">integer</td>
+<td align="left">关联“发声体”游戏对象 ID。 游戏对象 ID，64 位无符号整数。</td>
+</tr>
+<tr>
+<td align="left"><strong>listener</strong> *</td>
+<td align="left">integer</td>
+<td align="left">关联“听者”游戏对象 ID。 游戏对象 ID，64 位无符号整数。</td>
+</tr>
+<tr>
+<td align="left"><strong>controlValue</strong> *</td>
+<td align="left">number</td>
+<td align="left">倍数：0 表示静音，1 表示不变。也就是说，在值介于 0 ~ 1 之间时会将声音减小，在大于 1 时会将声音放大。</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p><strong>TIPS：</strong>若游戏已spatial audio并且将Room和Portal数据发送到Wwise，则此属性决定是否要将对象发送到游戏对象当前所在的Room定义的AuxiliaryBus。</p>
+<h5 id="4-Early-Reflections"><a href="#4-Early-Reflections" class="headerlink" title="4.Early Reflections"></a>4.Early Reflections</h5><p>早期反射辅助发送。用于处理模拟声波在几何表面发生的反射。</p>
+<p>因为最初的几次反射会携带更多的信息，所以需要在后期的混响中单独处理，使用ReflectVST生成更多细节。</p>
+<p><strong>TIPS：在Unity中通过SpatialAudio来为游戏对象指定AuxBus(创建对象)。</strong></p>
+<p>为了计算反射，WwiseSpatialAudio库必须初始化，并且将上层几何构造发送到WwiseSpatialAudio。</p>
+<h5 id="5-InitialDelay"><a href="#5-InitialDelay" class="headerlink" title="5.InitialDelay"></a>5.InitialDelay</h5><p>初始延迟。即播放事件发生后，需要等待几秒才会开始播放。</p>
+<h5 id="6-Loop"><a href="#6-Loop" class="headerlink" title="6.Loop"></a>6.Loop</h5><p>是否循环。</p>
+<h5 id="7-Stream流播放-文件包"><a href="#7-Stream流播放-文件包" class="headerlink" title="7.Stream流播放&#x2F;文件包"></a>7.Stream流播放&#x2F;文件包</h5><p>启用后，可直接从游戏媒体中流播放音频。</p>
+<p>SoundBank不包含流媒体文件。</p>
+<blockquote>
+<p><strong>流播放&#x2F;流管理器StreamManager</strong></p>
+<p>流管理模块的公共接口在 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=SDK&id=IAkStreamMgr.h">IAkStreamMgr.h</a> 中定义，供声音引擎和游戏共同使用。前者使用此接口来加载 SoundBank 和流播放音频文件，而后者可用它来加载图形、纹理、游戏关、保存的游戏等。</p>
+<p><strong>文件包</strong></p>
+<p>文件包（*.PCK）是通过将 Wwise 工程中的所有 SoundBank 和流音频文件组合形成单一文件。您还可以将 SoundBank 和流文件分配给不同的文件包。</p>
+<p>在生成 SoundBank 后，将“FilePackager”可执行文件作为生成 SoundBank 的后续步骤，可以让该 Wwise 工具使用 SoundBank 和流文件自动生成文件包。</p>
+</blockquote>
+<p><strong>Non-cachable</strong></p>
+<p>不可缓存。在流播放管理器中启用缓冲区时，禁用此文件的缓存。可以避免长循环或者不经常播放的文件消耗流播放缓存区。</p>
+<p><strong>Zero Latency</strong></p>
+<p>零延迟。创建包含音频文件开头部分的小型音频缓冲区，其中包括预取文件的其余部分所需要的延迟时间，以达到无延迟的流播放整个声音。</p>
+<p>Delay和Zero Latency设置按声轨进行。若各个声轨有多个音乐源，则各个源开头部分需要加载到内存中。</p>
+<p><strong>Prefetch length</strong></p>
+<p>加载到内存中声音开头部分，单位：ms。</p>
+<h5 id="8-Scope"><a href="#8-Scope" class="headerlink" title="8.Scope"></a>8.Scope</h5><ul>
+<li><strong>Global</strong> 全局 —— 将游戏中使用的所有该容器作为一个对象进行处理，因此可以针对所有游戏对象避免重复声音或语音对象。</li>
+<li><strong>Game object</strong> 游戏对象 —— 将该容器的各个实例作为单独实体进行处理。即不会在所有游戏对象间共用声音内容。</li>
+</ul>
+<blockquote>
+<p>TIPS:</p>
+<p>Scope 选项不适用于 Continuous 播放模式下的序列容器，因为每次事件触发该容器时都将播放全部播放列表。</p>
+</blockquote>
+<h5 id="9-PlayType"><a href="#9-PlayType" class="headerlink" title="9.PlayType"></a>9.PlayType</h5><p>1.Random</p>
+<ul>
+<li><p>standard。播放完后不会从列表中拿出。</p>
+</li>
+<li><p>shuffle洗牌模式。播放对象后将他们从播放列表中移除。</p>
+</li>
+<li><p>avoid repeating。standard模式下，最后播放的x个对象将从列表中弃用；shuffle模式下，在列表中排除最近播放的X个对象。</p>
+</li>
+</ul>
+<p>2.Sequence</p>
+<ul>
+<li>Restart。从头开始播放。</li>
+<li>In reverse。逆向开始播放。</li>
+</ul>
+<h5 id="10-PlayMode"><a href="#10-PlayMode" class="headerlink" title="10.PlayMode"></a>10.PlayMode</h5><p>1.Step</p>
+<p>每次播放，仅播放容器内的一个对象。</p>
+<p>2.Continuous</p>
+<p>每次播放会完整播放容器内所有对象。</p>
+<p>​	1.Always reset playlist</p>
+<p>​	确定在播放期间停止播放之后，时继续播放还是从头开始。勾选则是从头播放。</p>
+<p>​	2.Loop</p>
+<p>​	不再赘述</p>
+<p>​	3.Transitions</p>
+<p>​	过渡。启用后，在对象与对象之间创建和定义过渡。</p>
+<p>​		①Type过渡类型。</p>
+<ul>
+<li><strong>Xfade (amp)</strong> 淡变（恒定振幅），在两个对象之间保持恒定振幅进行交叉淡变。</li>
+<li><strong>Xfade (power)</strong> 淡变（恒定功率），在两个对象之间保持恒定功率进行交叉淡变。</li>
+<li><strong>Delay</strong> 延迟，在两个对象之间添加无声段落。</li>
+<li><strong>Sample Accurate</strong> 精确到采样点，对象之间进行零延迟的无缝过渡。请注意，Opus（在从磁盘进行流播放时）和 XMA 音频格式不支持精确到采样点的过渡。</li>
+<li><strong>Trigger rate</strong> 触发速率，使用特定速率来触发容器内的对象。该选项对于模拟快速枪声十分实用。除此之外，也可使用 MIDI 来以更高的精度发送每个子弹声音。有关详细信息，请参阅 SDK 文档中的<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=goingfurther_rapidgunfire.html">模拟快速射击</a>章节。</li>
+</ul>
+<p>​		②Duration持续时间。</p>
+<p>​		输入所需的交叉淡变、延迟或触发速率的时长。</p>
+<h5 id="11-Time-Settings"><a href="#11-Time-Settings" class="headerlink" title="11.Time Settings"></a>11.Time Settings</h5><ol>
+<li>在 Tempo（速度）文本框中，键入原始音乐的速度（单位为每分钟节拍数，即 bpm）。</li>
+<li>在 Time Signature（拍号）文本框中，键入原始音乐每小节的拍数和长度。</li>
+<li>在 Frequency（网格频率）下拉菜单中，选择用多长的网格来划分 Music Segment，例如 4 bars（每 4 小节）、beat（每拍）、whole note（每个全音符）等。</li>
+<li>Offset，若要为频率值设定偏置，请从列表中选择预定义选项，或者通过选择 Custom（自定义）并在对应 Offset（偏置）文本框中键入数值（单位为毫秒）来创建自定义偏置。</li>
+</ol>
+<h5 id="12-Play-Option"><a href="#12-Play-Option" class="headerlink" title="12.Play Option"></a>12.Play Option</h5><p>Continue to play on Switch change</p>
+<p>如果希望 Switch&#x2F;State 改变时，源和目标共用的音乐对象继续播放，请选择 <strong>Continue to play on Switch change</strong>（在 Switch 更改时继续播放）选项。</p>
+<p>如果希望 Switch&#x2F;State 改变时，源和目标共用的音乐对象在下一个同步点停止并从头播放，则不应勾选 <strong>Continue to play on Switch change</strong> 选项。</p>
+<h4 id="3-Conversion"><a href="#3-Conversion" class="headerlink" title="3.Conversion"></a>3.Conversion</h4><h5 id="1-Conversion-Settings-Editor"><a href="#1-Conversion-Settings-Editor" class="headerlink" title="1.Conversion Settings Editor"></a>1.Conversion Settings Editor</h5><h6 id="1-转码设置"><a href="#1-转码设置" class="headerlink" title="1.转码设置"></a>1.转码设置</h6><table>
+<thead>
+<tr>
+<th>Notes</th>
+<th>备注。有关转码的详细信息。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Platform</td>
+<td>工程中的平台列表。转码设置是为工程中的每个平台设置的。</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>声道数。您希望包含在转码文件中的音频声道数。以下选项可用：<strong>As Input</strong> – 同输入。将音频声道数保持与原始媒体文件相同。<strong>Mono</strong> – 单声道。所有声道将混合为一个声道，但 LFE 除外，该声道将被弃用。<strong>Mono drop</strong> – 单声道弃用。除了第一个声道外，其它所有声道都将被弃用。<strong>Stereo</strong> – 立体声。所有声道都将混合到左前和右前声道，但 LFE 除外，该声道将被弃用。<strong>Stereo drop</strong> – 立体声弃用。除了左声道和右声道外，其它所有声道都被弃用。有关 Wwise 如何处理音频声道的下混转换的详细信息，请参阅 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=creating_audio_conversion_settings_sharesets">创建音频转码设置 ShareSet</a> 。Default value: As Input</td>
+</tr>
+<tr>
+<td>L-R Mix</td>
+<td>左右混音。左扬声器和右扬声器的信号功率电平，其中 <C> 代表两个扬声器上的功率均等指派。L-R Mix 控制仅在将单声道声音转换为立体声（反之亦然）时应用。对于所有其它转换，混音都由 Wwise 完成。有关 Wwise 如何处理 L-R Mix 的详细信息，请参阅<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=creating_audio_conversion_settings_sharesets#about_audio_channels">“关于音频声道”一节</a>。</td>
+</tr>
+<tr>
+<td>Sample Rate</td>
+<td>数字音频信号每秒采样的次数，单位为赫兹 (Hz)。您可以选择以下选项中的任何一个选项：<strong>As Input</strong> - 使用与原始音频文件相同的采样率对文件做转码。如果特定平台或音频格式不支持该采样率，则会改用最接近的可用采样率。<strong>Auto (Low&#x2F;Medium&#x2F;High)</strong> - 在对文件执行 FFT 分析后，使用 Wwise 选定的采样率对文件做转码。低品质、中品质和高品质设置之间的区别是截止频率阈值，该阈值将用于确定转码结果文件的最佳采样率。您可以通过在 Project Setting（工程设置）对话框中定义频率阈值，来微调各个品质设置的品质高低。<strong>300 to 48,000</strong> – 300 至 48,000。使用特定采样率对文件做转码。各种平台和格式对应的采样率范围可能有所不同。Default value: 0</td>
+</tr>
+<tr>
+<td>Min Sample Rate</td>
+<td>最小采样率。仅在 <strong>Sample Rate</strong> 设置为 <strong>As Input</strong> 或 <strong>Auto</strong> 时才会采用。定义转码文件的最小采样率。</td>
+</tr>
+<tr>
+<td>Max Sample Rate</td>
+<td>最小采样率。仅在 <strong>Sample Rate</strong> 设置为 <strong>As Input</strong> 或 <strong>Auto</strong> 时才会采用。定义转码文件的最大采样率。</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>格式。要针对各个平台将音频源转码成的音频格式。其中包括：***<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_aac">AAC</a>*** <em><strong><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_adpcm">ADPCM</a>*</strong> <em><strong><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_opus">WEM Opus</a>*</strong></em></em> <em><strong><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_pcm">PCM</a></strong></em>*<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_vorbis">Vorbis</a>***<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=creating_audio_conversion_settings_sharesets#about_audio_channels">并非所有音频格式都支持多声道文件</a>。例如，如果原始文件是多声道文件，并且要转换为 AAC，则应从 Channel 列表中选择以下选项之一：Mono、Mono drop、Stereo 或 Stereo drop。如果选择 <strong>As Input</strong> 选项，Wwise 将强制下混为立体声或单声道。</td>
+</tr>
+<tr>
+<td>Sample rate conversion quality</td>
+<td>品质。压缩文件的品质设置。某些音频格式（例如 Vorbis）允许进行品质设置。更高的品质设置意味着：更多的磁盘空间需求。更好的音频品质。Default value: Normal</td>
+</tr>
+<tr>
+<td>Adv.</td>
+<td>高级。针对某些音频格式的特殊设置。点击 <strong>Edit</strong>（编辑）以对这些格式进行设置。</td>
+</tr>
+</tbody></table>
+<h6 id="2-Options"><a href="#2-Options" class="headerlink" title="2.Options"></a>2.Options</h6><table>
+<thead>
+<tr>
+<th>采样率转码品质</th>
+<th>采样率转换品质。确定用于转换采样率的方法。您可以选择以下方法之一；<strong>Normal</strong>: 正常。转码品质较好，比“High”（高）选项快 3 到 6 倍。<strong>High</strong> —: 最佳转码品质。如果原始音频内容包含高频，并且您的转码采样率低于 24 kHz，则建议您使用“High”选项。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Insert filename marker</td>
+<td>插入文件名标记。确定是否在文件开头添加带有文件名的标记。对于将特定动作绑定到声音引擎中的特定文件，例如对口型这种情况，可能会非常有用。标记仅包含文件名，而没有文件的路径和扩展名。Default value: false</td>
+</tr>
+<tr>
+<td>Remove DC offset</td>
+<td>移除直流偏置。移除已转码音频文件的 <em><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_dc_offset">DC Offset</a></em> 。直流偏置可能会导致 clicking 噪声、音量损失和失真。下列情况下，最好移除直流偏置：源文件录制质量较差，波形相对于 0 点不对称；效果器导致声音存在累积偏置（这种情况很难预测，但有可能是造成问题的原因。）不过对于以下情况，最好不要移除直流偏置：位于精确到采样点的容器中的声音。归一化为 0 dB 的声音。精确到采样点的循环播放声音。事实上，我们建议不要为循环播放的声音消除直流偏置。消除机制采用高通滤波器，因此不保证将以相同方法修改循环的第一个采样和最后一个采样，因为并不知道这两个样本将连续播放。这可能产生信号中断，导致听到爆音。Default value: false</td>
+</tr>
+<tr>
+<td>Apply dither</td>
+<td>应用抖动。对音频源进行比特率转换时应用抖动。抖动是在量化之前添加到信号中的噪声，目的是减少量化过程导致的失真和噪声调制。抖动仅在采样位深更改（例如从 16 位变为 8 位）时才会应用。如果不勾选此选项，则将不会应用抖动。默认情况下，此选项已启用。Default value: false</td>
+</tr>
+<tr>
+<td>Allow channel upmix</td>
+<td>允许声道上混。如果选中此选项并且 Channel 列表设置为 Stereo 或 Stereo drop，则单声道源文件将在转码期间上混为该立体声配置。如果未选中此选项，则无论 Channel 如何设置，单声道源文件转码时都不会进行上混。Default value: true</td>
+</tr>
+</tbody></table>
+<h6 id="3-Audio-Sources"><a href="#3-Audio-Sources" class="headerlink" title="3.Audio Sources"></a>3.Audio Sources</h6><table>
+<thead>
+<tr>
+<th>Show</th>
+<th>显示。确定哪些信息显示在 Audio Source 列中。您可以选择以下选项之一：<strong>Name</strong>: 名称。仅显示音频源名称。<strong>Path</strong>: 路径。显示完整路径，包括音频源名称。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Convert…</td>
+<td>为使用此转码设置的音频源打开 Audio File Conversion 对话框。还可以使用音频源列表中的快捷菜单，来对音频源做转码。</td>
+</tr>
+<tr>
+<td>Copy to clipboard</td>
+<td>将所选平台的转码结果复制到 Windows 剪贴板，以便将它们粘贴到其它应用程序。</td>
+</tr>
+<tr>
+<td>Audio Source</td>
+<td>音频源。音频源的名称。在 Show 选项设置为 Path（路径）时，完整路径将会与音频源的名称一起显示。</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>音频源的语言。</td>
+</tr>
+<tr>
+<td>Orig. Chan.</td>
+<td>源声道。原始音频源的声道配置。</td>
+</tr>
+<tr>
+<td>Conv. Chan.</td>
+<td>转码后声道。转码后音频源的声道配置。</td>
+</tr>
+<tr>
+<td>Original SR</td>
+<td>原始音频源的采样率。</td>
+</tr>
+<tr>
+<td>Converted SR</td>
+<td>转码后音频源的实际采样率。</td>
+</tr>
+<tr>
+<td>Original Size</td>
+<td>原始音频源大小。</td>
+</tr>
+<tr>
+<td>Converted Size</td>
+<td>转码后的源大小。</td>
+</tr>
+<tr>
+<td>Size Ratio</td>
+<td>大小比率。原始音频源大小和转码源大小的比率。</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>时长。转码后音频源的长度（单位为秒）。</td>
+</tr>
+<tr>
+<td>Bandwidth</td>
+<td>带宽。在给定时间内可能传输的最大数据量。单位：KB&#x2F;s（每秒千字节数）如果您将鼠标指针放在带宽列中的某个值上，则将会出现以千位&#x2F;秒（kbps）显示的带宽值提示点。</td>
+</tr>
+</tbody></table>
+<h5 id="2-Loudness-Normalization（没懂）"><a href="#2-Loudness-Normalization（没懂）" class="headerlink" title="2.Loudness Normalization（没懂）"></a>2.Loudness Normalization（没懂）</h5><p>Enable   Loudness Normalization</p>
+<p>启用响度归一化。</p>
+<h4 id="4-Postioning"><a href="#4-Postioning" class="headerlink" title="4.Postioning"></a>4.Postioning</h4><h5 id="1-Center-（中置百分比）"><a href="#1-Center-（中置百分比）" class="headerlink" title="1.Center%（中置百分比）"></a>1.Center%（中置百分比）</h5><p>通过中置扬声器的音量百分比。</p>
+<p>​	对于Direct Assignment模式，仅当单声道对象输出到带中置声道的<u>总线</u>时才适用。</p>
+<p>​	对于Balance-Fade模式，仅适用于带中置声道的输出（例如单声道、3.0、5.1和7.1）。</p>
+<p>​	对于3D化模式，仅适用于带中置声道的输出；并且只有开启此值，信号才会发送中置声道。</p>
+<h5 id="2-Speaker-Panning"><a href="#2-Speaker-Panning" class="headerlink" title="2.Speaker Panning"></a>2.Speaker Panning</h5><p>​	Direct Assignment。FL对应FL扬声器，FR对应FR扬声器。</p>
+<p>​	Balance-Fade。允许调节2.0-7.1Audio Bus中各个声道的音量。离远点较近的声道音量更大，反之更小。</p>
+<p>​	Steering。允许在输出总线声道中重新分配不同声道的声音，配比按照panner中计算。</p>
+<h5 id="3-Listener-Relative-Routing"><a href="#3-Listener-Relative-Routing" class="headerlink" title="3.Listener Relative Routing"></a>3.Listener Relative Routing</h5><p>听者相对通路。启用后，会针对该对象计算发声体和听者的关系。</p>
+<p>确保信号链中至少有一个对象启用了Listener Relative Routing，否则可能导致混音图完全重复。</p>
+<p>​	1.3D spatialization</p>
+<p>​		Position模式。将使用环绕声配置中特定扬声器进行播放，来表现声源移动。</p>
+<p>​		Position+Orientation模式。除此之外，还会随着发声体和听着的相对朝向进行旋转。仅当音频为多声道时才起作用。</p>
+<p>​		None。依据speaker panning摆位。</p>
+<p>​	2.Attenuation</p>
+<p>​		启用衰减。可以应用衰减曲线ShareSet，并添加RTPC控制。</p>
+<p>​		①Height Spread。高度散布。</p>
+<p>​		启用高度散布。若在2D 配置下实施声像摆位，则 Height Spread 根据高度角自动计算最小散布值: 若在 7.1.4之类的 3D 配(半球空间)下实施声像摆位，则直接根据负高度角计算最小散布值。藉此，可帮助实现 3D 声音从听者上方或下方掠过时声像摆位的平滑过渡。</p>
+<p>​		在默认情况下，始终启用 Height Spread，即便声音没有衰减。只能通过取消选中Height Spread 来禁用该属性。若想在声音没有意减的情况下禁用 Height Spread,须专门为此创建 Attenuation ShareSet，并设置恒定不变的 Output Bus Volume。</p>
+<p>​		②Cone Use。声锥衰减。创建不同角度上的锥形来控制声音衰减。其中，Cone filter可以通过RTPC来控制。</p>
+<h5 id="4-3D-Postion（3D定位）"><a href="#4-3D-Postion（3D定位）" class="headerlink" title="4.3D Postion（3D定位）"></a>4.3D Postion（3D定位）</h5><p>​	①Emitter（发声体）：由实时游戏位置数据来定义“发声体”游戏对象的空间定位。在选择 Emitter 时，Wwise 中所定义的传播属性将直接关联至游戏中听者和发声体的位置或朝向。</p>
+<p>​			<strong>Hold Emitter Position and Orientation</strong></p>
+<p>​			储存声音开始播放时游戏对象的瞬时位置和朝向，以及声音播放期间相对该基准位的偏移。</p>
+<p>​			<strong>Diffraction and Transmission</strong></p>
+<blockquote>
+<p>启用衍射。针对声音在 Spatial Audio 中启用衍射和透射处理。</p>
+<p>衍射用于模拟声波在障碍物周围发生弯曲的声学现象，透射则用于模拟声波在虚拟环境中穿透障碍物的传播情形。障碍物由通过 API 从游戏传到 SpatialAudio 的 Room、Portal 或几何构造定义。声波在障碍物周围的弯曲取决于衍射设置，声波穿透障碍物的传播情形则取决于透射损失。两者都会影响声音的最终音量和滤波效果。</p>
+<p>为了对衍射和透射进行模拟，游戏必须定义上层几何构造或 Room 和 Portal.<br>并将其发送到 Wwise Spatial Audio。</p>
+<p>在针对声音启用衍射和透射时，Wwise Spatial Audio 中会发生以下情况:</p>
+<ul>
+<li>计算发声体和听者之间的声音路径。该路径由一条直达&#x2F;透射路径和零条或多条衍射路径构成。</li>
+<li>针对直达&#x2F;透射路径计算透射损失系数(0%-100%)。透射损失由声音所穿透的 Room 和几何构造决定。</li>
+<li>按照 Wwise 工程设置中定义的 ocdlusion 曲线将透射损失系数 (%) 换算为音量&#x2F;低通&#x2F;高通滤波器值。声音会相应地被衰减和滤波。</li>
+<li>根据衍射路径中的角度之和计算衍射系数(0%-100%)。直线路径视为0%衍射，弯曲角度达到或超过 180 度的路径视为 100% 衍射。</li>
+<li>按照 Wwise 工程设置中定义的 obstruction 曲线将行射系数 () 换算为音量&#x2F;低通&#x2F;高通滤波器值。声音会相应地被衰减和滤波。</li>
+<li>对于衍射路径，通过计算声音相对于听者的视位置创建虚声源位置让听者感觉声音就像围绕角落或通过 Portal 传播一样。</li>
+</ul>
+<p>备注:3D Game Object Viewer 允许用户查看 Wwise Spatial Audio 内发生了什么包括上层几何构造、Portal 以及声音的衍射路径和生成的虚声源位置。</p>
+<p>备注:为了使衍射和透射生效，Wwise Spatial Audio 库必须初始化，而且游戏必须将上层几何构造或 Room 和 Portal 发送到 Wwise Spatial Audio。</p>
+</blockquote>
+<p>​	②Emitter+Automation（发声体自动化）：通过在 Wwise 中创建相对于关联“发声体”游戏对象位置的路径来定义对象的空间定位。</p>
+<p>这种情况下，需要使用游戏对象来定义能听到该声音的区域。</p>
+<p>​	③Listener+Automation（听者自动化）：通过在 Wwise 中创建相对于关联“听者”游戏对象位置的路径来定义对象的空间定位。</p>
+<p>​			<strong>Hold Listener Orientation</strong></p>
+<blockquote>
+<p>跟踪听者方向。确定动画路径的位置是否锁定到听者的朝向.</p>
+<p>若未选中此选项，则路径将随听者移动。这意味着无论听者的朝向是什么总是能够通过相同的扬声器	听到声音。若选中，则听者将独立于路径移动。这意味着当听者转身时将通过不同的扬声器听到声音。</p>
+<p>比如可以在听者周围使用自动化路径，在游戏中创建非固定位置的鸟叫声有一个单点路径位于右前象限中。当听者在游戏中转身时，将发生以下情况:</p>
+<p>Hold Listener Orientation (OFF): 始终通过右前扬声器播放鸟叫声.</p>
+<p>Hold Listener Orientation (ON): 通过不同的扬声器播放鸟叫声.</p>
+<p>此选项可用于创建非固定位置的环境声此选项只能在游戏中测试，因为 Wwise 设计工具中还没有听者的概念.</p>
+</blockquote>
+<h4 id="5-Transition"><a href="#5-Transition" class="headerlink" title="5.Transition"></a>5.Transition</h4><h5 id="Source-Desitination"><a href="#Source-Desitination" class="headerlink" title="Source&#x2F;Desitination"></a>Source&#x2F;Desitination</h5><ul>
+<li><strong>Music object：</strong>音乐对象，可以是 Music Segment（音乐段落）、Music Playlist Container，也可以是 Music Switch Container。</li>
+<li><strong>Virtual Folder：</strong>虚拟文件夹，Music Switch Container 内的音乐对象可组织到虚拟文件夹中。将 Virtual Folder 选为音乐过渡的 Source 或 Destination 时，过渡规则将对该文件夹内的所有音乐对象生效。</li>
+<li><strong>Any：</strong>任意对象，表示容器中的任何音乐对象都可用作 Source 或 Destination。</li>
+<li><strong>Nothing：</strong>无对象，表示 Source 或 Destination 为空，即不播放任何音乐对象。</li>
+</ul>
+<h5 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h5><p>1.若source为Switch Container,可以调整Exit source at:</p>
+<ul>
+<li>​	<strong>Immediate（立刻）：</strong>立即停止播放 Source。</li>
+<li>​	<strong>Next Grid（下一网格线）：</strong>在下一个网格线停止播放 Source。通过 Grid（网格线），可以按任意间隔长度来划分音乐对象。</li>
+<li>​	<strong>Next Bar（下一小节）：</strong>在下一小节停止播放 Source。</li>
+<li>​	<strong>Next Beat（下一拍）：</strong>在下一拍停止播放 Source。</li>
+<li>​	<strong>Next Cue（下一提示点）</strong>：在下一个提示点停止播放 Source，可以是 Custom Cue，也可以是 Exit Cue（出口提示点）。</li>
+<li>​	<strong>Next Custom Cue（下一自定义提示点）</strong>：在下一个 Custom Cue 停止播放 Source。如果当前 Music Segment（音乐段落）不包含 Custom Cue，则 Wwise将继续播放下一段落，直到遇到 Custom Cue 为止。</li>
+<li>​	<strong>Exit Cue（出口提示点）：</strong>在出口提示点处停止播放 Source。</li>
+</ul>
+<blockquote>
+<p>tips:如果您选择 Next Cue 或 Next Custom Cue，就可以在 <strong>Match</strong> 文本框中输入提示点名称，精确筛选对该过渡规则有效的提示点。</p>
+</blockquote>
+<p>2.Play post-exit：播放Exit cue后的内容。</p>
+<p>3.Fade-out可对衰弱曲线进行调整。</p>
+<h5 id="Destination"><a href="#Destination" class="headerlink" title="Destination"></a>Destination</h5><ol>
+<li></li>
+</ol>
+<p>若destination为Music Playlist，可以在jump to中选择开始播放的时刻：</p>
+<ul>
+<li>Start of Playlist :播放列表的开头。跳到第一个播放列表项</li>
+<li>Specific Playlist ltem :特定播放列表项。跳到指定的播放列表项。若要指定所要跳到的播放列表项，请单击”浏览”按钮。此项仅在目标对象为 MusicPlaylist Container 时可用</li>
+<li>Last Played Segment:上次播放的段落。跳到上次播放的段落</li>
+<li>Next Segment:下一段落。跳到上次播放的段落之后的下一播放列表项</li>
+</ul>
+<p>若destination为Music Switch Container,则在sync to中选择：</p>
+<ul>
+<li><strong>Entry Cue（入口提示点）：</strong>将从入口提示点处开始播放 Destination。</li>
+<li><strong>Same Time as Playing Segment（与现有音乐时间相同）：</strong>Destination 开始播放的位置将与 Source 段落切出的时间点相同。例如，如果 Source 段落已经播了 10 秒，则 Destination 也将从 10 秒处开始播放。</li>
+<li><strong>Random Cue（随机提示点）</strong>：从随机选择的提示点处开始播放 Destination。勾选该选项即选择了所有提示点，包括 Entry Cue（入口提示点）和所有 Custom Cue。</li>
+<li><strong>Random Custom Cue（随机自定义提示点）</strong>：将从随机选择的 Custom Cue 处开始播放 Destination。如果段落中没有自定义提示点，则使用入口提示点。</li>
+<li><strong>Last Exit Position（上次退出位置）</strong>：根据上次 Destination 的段落播了多久施加相应的时间偏置，然后再开始播放 Destination。例如，若上次 Destination 的第三个段落播了 15 秒，则将从 15 秒处开始播放 Destination。</li>
+</ul>
+<blockquote>
+<p>tips:若使用了Random Cue&#x2F;Random Custom Cue，则可通过 Custom Cue Filter（自定义提示点筛选器）进一步精确筛选有效的开始位置。</p>
+<ul>
+<li><strong>Match（匹配名称）：</strong>只有用了该名称的提示点才会被选为开始位置。</li>
+<li><strong>Match source cue name（匹配源提示点名称）：</strong>仅当提示点与 Source 段落所用提示点名称相同时，才会作为开始位置。</li>
+</ul>
+</blockquote>
+<p>2.过渡时如果要播放 Destination 的 Pre-entry（前导段），请选择 <strong>Play pre-entry（播放前导段）</strong>。</p>
+<h5 id="Transition-Segment"><a href="#Transition-Segment" class="headerlink" title="Transition Segment"></a>Transition Segment</h5><p>选择Trasition Segment片段之后 ，</p>
+<ul>
+<li>如果要播放过渡段的 Pre-entry，请勾选 <strong>Play pre-entry</strong>。</li>
+<li>如果播放过渡段时需要淡入，请勾选 <strong>Fade-in</strong>。</li>
+<li>如果要播放过渡段的 Post-exit，请勾选 <strong>Play transition post-exit</strong>。</li>
+<li>如果停止过渡段时需要淡出，请选择 <strong>Fade-out</strong>。</li>
+</ul>
+<h4 id="6-Stinger"><a href="#6-Stinger" class="headerlink" title="6.Stinger"></a>6.Stinger</h4><p>插播乐句。Stinger 是一种简短乐句，可以与当前播放的音乐<u>叠加并混合</u>播放。游戏会调用与 Stinger Music Segment相关联的 Trigger，从而播放 Stinger。</p>
+<h5 id="1-添加stinger"><a href="#1-添加stinger" class="headerlink" title="1.添加stinger"></a>1.添加stinger</h5><p>将音乐对象加载，在其Stinger界面进行关联Trigger和Music segment</p>
+<p>play at(播放位置)：</p>
+<ul>
+<li><strong>Immediate</strong> —— 立即切换状态。如果为 Music Track（音乐轨）设置了 Look-ahead Time（预读时间），则须等到这段时间过后才能播放该 Stinger。</li>
+<li><strong>Next Grid</strong> – 下一网格线。在下一网格线处播放 Stinger。通过 Grid，可以按想要的频率将音乐对象进行虚拟划分。</li>
+<li><strong>Next Bar</strong> – 下一小节。在下一小节处播放 Stinger。</li>
+<li><strong>Next Beat</strong> – 下一拍。在下一拍播放 Stinger。</li>
+<li><strong>Next Cue</strong> – 下一提示点。在下一提示点处播放 Stinger。下一提示点可以是 Entry Cue（入口提示点）、Exit Cue（出口提示点）或者 Custom Cue（自定义提示点）。</li>
+<li><strong>Next Custom Cue</strong> – 下一自定义提示点。在下一个自定义提示点处播放 Stinger。</li>
+<li><strong>Entry Cue</strong> – 入口提示点。在入口提示点处播放 Stinger。</li>
+<li><strong>Exit Cue</strong> – 出口提示点。在出口提示点处播放插播乐句。</li>
+</ul>
+<h5 id="2-stringer-option"><a href="#2-stringer-option" class="headerlink" title="2.stringer option"></a>2.stringer option</h5><p> <strong>Don’t play this Stinger again for</strong> <u>x</u> <strong>seconds</strong>（在 x 秒内不再播放该插播乐句）字段中键入须经过几秒才能再次播放该 Stinger。</p>
+<p>若当前段落剩余时间不够而需在下一段落中播放 Stinger，请选中 <strong>Allow playing the Stinger in next segment</strong>（允许在下一段落中播放插播乐句）选项。</p>
+<h5 id="3-预演stinger"><a href="#3-预演stinger" class="headerlink" title="3.预演stinger"></a>3.预演stinger</h5><p>在 transport control（就是播放界面）</p>
+<h4 id="7-Advanced-Settings（动态混音）"><a href="#7-Advanced-Settings（动态混音）" class="headerlink" title="7.Advanced Settings（动态混音）"></a>7.Advanced Settings（动态混音）</h4><h5 id="1-Playback-Limit"><a href="#1-Playback-Limit" class="headerlink" title="1.Playback Limit"></a>1.Playback Limit</h5><p>Limit sound instances to: X  &#x2F;   XX；</p>
+<p>限制发声数。X为数量，XX为：</p>
+<ul>
+<li>Per game object:每个游戏对象。分别为此层级中的每个游戏对象 应用发声限制。</li>
+<li>Globally:全局。为此层级中所有游戏对象的发声总数 应用限制。</li>
+</ul>
+<p>​	When limit is reached:</p>
+<ul>
+<li>kill vioce for lowest priority:停止播放具有最低优先级的实例。会执行几毫秒的淡出。</li>
+<li>use virtual voice settings for lowest priority:为优先级最低的声部应用其virtual voice behavior。</li>
+</ul>
+<p>​	When priority is equal:当达到上限且优先级相等</p>
+<ul>
+<li>Discard oldest instance——丢弃最早播放的优先级最低的实例。</li>
+<li>Discard newest instance——丢弃最新播放的优先级最低的实例。</li>
+</ul>
+<h5 id="2-Virtual-voice"><a href="#2-Virtual-voice" class="headerlink" title="2.Virtual voice"></a>2.Virtual voice</h5><p>Virtual voicce behavior:</p>
+<p>当对象音量低于音量阈值或者播放数量超出限制时，对象的行为 ：</p>
+<ul>
+<li>Continnue to play.即使无法听见也继续播放。</li>
+<li>Kill voice.停止播放对象，并且没有淡出处理。</li>
+<li>Send to virtual voice.将对象发送到虚声部列表。当某个对象被发送到虚声部列表时，该对象的某些参数将由声音引擎监视，但不会对音频或震动进行任何处理。</li>
+<li>Kill if finite else virtual.如果对象不是无限循环，则停止播放；如果对象无限循环，则将发送到虚声部列表。对于此选项，On return to physical voice行为将自动设置为Play from elpsed time,而不考虑其父级设置行为。</li>
+</ul>
+<h5 id="3-Playback-Priority"><a href="#3-Playback-Priority" class="headerlink" title="3.Playback Priority"></a>3.Playback Priority</h5><p>Priority:</p>
+<p>优先级。优先级为1的对象具有最低的优先级，而优先级为100的对象具有最高的优先级。</p>
+<p>Offset priority by X at max distance:</p>
+<p>在最大距离时，对优先级做量为x的偏置。指定一个值，当对象达到Attenuation Editor中指定的最大距离时，可以用此值来升高或降低该对象的优先级。</p>
+<h5 id="动态混音技术"><a href="#动态混音技术" class="headerlink" title="动态混音技术"></a>动态混音技术</h5><p>在 Advanced Setting 选项卡中可应用下面的动态混音技术。</p>
+<ul>
+<li><p><strong>限制总线或主角混音结构上的播放次数，为重要声音留出空间</strong></p>
+<p>例如，当有大量动作、爆炸或玩家应关注的任何元素上时，应减少环境声音和拟音的数量。查找环境声和拟音与枪声和爆炸声并存的总线，对该总线设置限制，并降低前者的优先级。</p>
+</li>
+<li><p><strong>对优先级使用距离偏置</strong></p>
+<p>例如，在环境声音中，结合基于距离的优先级使用播放数限制，以将焦点集中在更近的声音上。<strong>Offset priority by</strong> 选项指定最大距离处的优先级偏置值，此值插值于 0 和 <strong>at max distance</strong> 之间。</p>
+</li>
+<li><p><strong>闪避不重要的声音的音量</strong></p>
+<p>有时候不可使用播放数限制。例如，如果您在游戏关卡一开始就启动无限循环的环境声音，则应该避免使用播放数限制功能来停止这些声音，因为通过这种方式停止后，它们就不会再重新播放了。在这种情况或者您认为合适的任何情况下，当游戏音频的其它更重要区域中有活动时，应使用需要的技术来闪避它们的音量。例如，在配音或格斗期间关闭环境声音。当炸弹在您附近爆炸时，您无需听到电灯的嗞嗞声。此过程可视为元数据*<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=Help&id=glossary#glossary_side_chaining">侧链</a>*。使用控制总线上的总线闪避功能或特定事件中的 <strong>Set Voice Volume</strong> 动作可用来触发音量变化。</p>
+<p>在特定场合中，一旦通过降低不重要声音的音量来清理混音后，微调它们的“under <strong>Volume Threshold</strong>”行为，以在它们无法被听见时使用尽可能少的 CPU 和内存资源。</p>
+</li>
+<li><p><strong>实现代码侧动态混音系统</strong></p>
+<p>注意，播放数限制、优先级和优先级偏置可通过 RTPC 将控制接口交给游戏。您可以毫无障碍地实现一个系统，以根据游戏中的情况来调整这些设置。</p>
+</li>
+</ul>
+<h3 id="1-2-Events"><a href="#1-2-Events" class="headerlink" title="1.2 Events"></a>1.2 Events</h3><h4 id="1-Events"><a href="#1-Events" class="headerlink" title="1.Events"></a>1.Events</h4><p>Event Actions：</p>
+<p>详情可见：<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/edge/?source=Help&id=event_actions_list#bp1305022">Event Action 列表 (audiokinetic.com)</a></p>
+<h5 id="通用属性"><a href="#通用属性" class="headerlink" title="通用属性"></a><em>通用属性</em></h5><table>
+<thead>
+<tr>
+<th>Target</th>
+<th>目标。Action 的应用对象。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scope</td>
+<td>通过以下两个选项指定 Action 应用于哪些游戏对象：<strong>Game object</strong>，将事件动作作用于触发事件的游戏对象。<strong>Global</strong>，将事件动作作用于所有游戏对象。Default value: Game Object</td>
+</tr>
+<tr>
+<td>Delay</td>
+<td>延时，执行 Action 之前的时间量。单位：s Default value: 0 Range: 0 to 600</td>
+</tr>
+<tr>
+<td>Fade Time</td>
+<td>Action 逐渐生效所需的时间。渐变将在指定的延迟（如果存在）后开始。单位：s Default value: 0 Range: 0 to 60</td>
+</tr>
+<tr>
+<td>Fade-in Curve</td>
+<td>定义 Action 的淡入曲线形状。Default value: Linear</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>值。Default value: 0</td>
+</tr>
+<tr>
+<td>Absolute&#x2F;Relative</td>
+<td>绝对&#x2F;相对。设置如何应用 Action：<strong>Absolute</strong>:直接使用指定值。<strong>Relative</strong>:目标值将按指定量增减。Default value: Absolute</td>
+</tr>
+</tbody></table>
+<h5 id="1-Play"><a href="#1-Play" class="headerlink" title="1.Play"></a>1.Play</h5><p>播放该关联的对象。</p>
+<h5 id="2-Stop"><a href="#2-Stop" class="headerlink" title="2.Stop"></a>2.Stop</h5><ul>
+<li><p>stop</p>
+<p>停止播放这个对象。</p>
+<p>可以将多个对象放入一个stop event，然后用一个event就实现了多个对象的控制。</p>
+</li>
+<li><p>stop all</p>
+<p>停止播放所有对象，可添加<u>例外</u>（add exceptions…）</p>
+</li>
+</ul>
+<h5 id="3-Pasue"><a href="#3-Pasue" class="headerlink" title="3.Pasue"></a>3.Pasue</h5><ul>
+<li><p>Pasue&#x2F;Pasue all</p>
+<p>pasue:暂停播放。</p>
+<p>pasue all:停止所有对象的播放，但可以添加例外。</p>
+</li>
+<li><p>Resume&#x2F;Resume all</p>
+<p>resume:继续播放该对象。</p>
+<p>resume all:全部继续。继续播放所有暂停的 Wwise 对象，但可添加。</p>
+</li>
+</ul>
+<h5 id="4-Break"><a href="#4-Break" class="headerlink" title="4.Break"></a>4.Break</h5><p>中断。停止播放循环声音、振动对象或连续容器，但允许当前对象播放完毕。</p>
+<h5 id="5-Seek"><a href="#5-Seek" class="headerlink" title="5.Seek"></a>5.Seek</h5><ul>
+<li><p>seek</p>
+<p>更改关联 Wwise 对象的播放位置。</p>
+</li>
+<li><p>seek all</p>
+<p>更改所有 Wwise 对象的播放位置，但可以添加<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=event_editor#add_exceptions">例外</a>。</p>
+<p>此操作不会影响当前未播放的对象。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Seek Type</th>
+<th>跳转位置使用什么类型的值。共有以下值可用：<strong>Percent</strong>（百分比，默认类型）：以声音总时长的百分比来表示跳转位置。<strong>Time</strong>:* <strong>Time</strong>（时间）：以文件开始后的时间的绝对值来表示跳转位置，单位为秒。Default value: Percent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Seek Percent</td>
+<td>以声音总时长的百分比来表示跳转位置。此时长会将循环考虑在内。例如，定位到自己循环两次的声音的 50% 会将光标置于第二次循环的开头。无限循环的声音是一种例外情况，因为时长是无限的。在此类情况下，有效跳转位置的计算会以声音未循环来进行计算，然后通过考虑循环来应用。因此，不可能在无限循环声音的循环区域之后（“尾声部分”）进行跳转。在音乐段落内进行定位时，定位是相对于 Entry Cue（开始提示）进行的并且对象持续时间由 Entry Cue 和 Exit Cue（退出提示）进行定义。因此，不可能在 Entry Cue 之前（Pre-Entry（预开始））或在 Exit Cue 之后（Post-Exit（退出后））进行定位。单位：% Default value: 0 Range: 0 to 100</td>
+</tr>
+<tr>
+<td>Seek Time</td>
+<td>以时间绝对值来表示跳转位置。此时长会将循环考虑在内。例如，跳转到自己循环两次的 10 秒声音的 10 秒处会将光标置于第二次循环的开头。同样，不可能在无限循环声音的循环区域后（在结尾部分）进行定位。在音乐段落内进行跳转时，跳转是相对于 Entry Cue 进行的。因此，不可能在 Entry Cue 之前（前导段）进行定跳转但是，可以使用此选项在 Exit Cue 之后（后尾段）进行跳转。单位：s Default value: 0 Range: 0 to 3600</td>
+</tr>
+<tr>
+<td>Seek To Nearest Marker</td>
+<td>将最近的标记点作为跳转位置。在标记导入到 Wwise 时将标记嵌入到波形文件中并予以保留。在音乐段落内进行定位时，此选项旨在将有效的位置和 Segment Editor 中编写的最近的 Segment Custom Cue（段落自定义提示点）或 Segment Entry Cue（段落开始提示点）对齐。Exit Cue 将始终会被忽略。Default value: false</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Seek&#x2F;SeekAll 备注和限制</strong></p>
+<ul>
+<li>创建 Event 时，若要从第一个 Wwise 声音对象的特定位置开始播放，请在 Seek 动作之后添加 Play 动作。</li>
+<li>在跳转时不执行任何音量淡入淡出，因此在声音播放期间进行跳转则可能导致爆音。</li>
+<li>Music Playlist Container（音乐播放列表容器）和振动对象不支持跳转。</li>
+<li>当声音是插件源时，如果插件中实现了跳转，则跳转将由插件执行。当前，只有 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=wwise_silence_plug_in">“Silence”一节</a> 支持跳转。</li>
+<li>跳转仅适用于当前播放的声音。您不能使用此选项以在属于连续序列部分的对象之间跳转。</li>
+<li>如果跳转位置大于声音长度，则声音将停止播放。</li>
+<li>如果播放声音的其中一个上层对象是具有以下特殊过渡的连续（随机或序列）容器，则跳转将失败：<ul>
+<li>Trigger rate（触发率）</li>
+<li>交叉淡变（幅度）</li>
+<li>交叉淡变（功率）</li>
+<li>精确到采样点（只有在当前播放的声音是连续序列的第一个声音时，跳转才会对连续序列生效并做精确到采样点的过渡。）</li>
+</ul>
+</li>
+<li>跳转时间或百分比会将循环（和循环区域）考虑在内（请参阅“Seek percent”和“Seek time”参数的说明）。</li>
+<li>在跳转之后，播放可能会因流播放延迟而延迟。在 Music Segment 这种情形中，此延迟等于段落的预读时间（请参阅音乐轨的属性）。段落的预读时间是所有采用流播放的子音轨中最大的流播放预读值。</li>
+</ul>
+</blockquote>
+<h5 id="6-Post"><a href="#6-Post" class="headerlink" title="6.Post"></a>6.Post</h5><p>发送事件。从事件内触发别的事件。</p>
+<h5 id="7-Bus-Volume"><a href="#7-Bus-Volume" class="headerlink" title="7.Bus Volume"></a>7.Bus Volume</h5><ul>
+<li><p>Set</p>
+<p>发送事件。从事件内触发别的事件。</p>
+</li>
+<li><p>Reset</p>
+<p>重置音量。将关联 Wwise 总线的音量复位至其原始电平。</p>
+</li>
+<li><p>Reset Bus Volume All</p>
+<p>重置所有音量。将所有 Wwise 总线的音量复位至其原始值, 可以添加例外。</p>
+</li>
+</ul>
+<h5 id="8-Voice-Volume"><a href="#8-Voice-Volume" class="headerlink" title="8.Voice Volume"></a>8.Voice Volume</h5><ul>
+<li><p>Set</p>
+<p>设置音量。更改关联 Wwise 对象的音量电平。</p>
+</li>
+<li><p>Reset</p>
+<p>重置音量。将关联 Wwise 对象的音量复位至其原始电平。</p>
+</li>
+<li><p>Reset Voice Volume All</p>
+<p>重置所有音量。将所有 Wwise 对象的音量复位至其原始值, 可以添加例外。</p>
+</li>
+</ul>
+<h5 id="9-Voice-Pitch"><a href="#9-Voice-Pitch" class="headerlink" title="9.Voice Pitch"></a>9.Voice Pitch</h5><ul>
+<li><p>Set</p>
+<p>设置音高。更改关联 Wwise 对象的音高。</p>
+</li>
+<li><p>Reset</p>
+<p>重置音高，将关联对象的音高复位至其原始值。</p>
+</li>
+<li><p>Reset Voice Pitch All</p>
+<p>重置所有声部音高。将所有 Wwise 对象的音高恢复至其原始值，但可添加<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=event_editor#add_exceptions">例外</a>。</p>
+</li>
+</ul>
+<h5 id="10-Voice-High-pass-Filter"><a href="#10-Voice-High-pass-Filter" class="headerlink" title="10.Voice High-pass Filter"></a>10.Voice High-pass Filter</h5><ul>
+<li><p>Set LPF</p>
+<p>更改作用于关联 Wwise 对象的高通滤波器效果量。</p>
+</li>
+<li><p>Reset LPF</p>
+<p>将作用于关联 Wwise 对象的高通滤波器效果量复位至其原始值。</p>
+</li>
+<li><p>Reset LPF All</p>
+<p>将作用于所有 Wwise 对象的 Low-Pass Filter 效果量复位至其原始值，但可以添加<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=event_editor#add_exceptions">例外</a>。</p>
+</li>
+</ul>
+<h5 id="11-Voice-Low-pass-Filter"><a href="#11-Voice-Low-pass-Filter" class="headerlink" title="11.Voice Low-pass Filter"></a>11.Voice Low-pass Filter</h5><ul>
+<li><p>Set HPF</p>
+<p>更改作用于关联 Wwise 对象的高通滤波器效果量。</p>
+</li>
+<li><p>Reset HPF</p>
+<p>将作用于关联 Wwise 对象的高通滤波器效果量复位至其原始值。</p>
+</li>
+<li><p>Reset HPF All</p>
+<p>将作用于所有 Wwise 对象的 Low-Pass Filter 效果量复位至其原始值，但可以添加<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=event_editor#add_exceptions">例外</a>。</p>
+</li>
+</ul>
+<h5 id="12-Mute"><a href="#12-Mute" class="headerlink" title="12.Mute"></a>12.Mute</h5><ul>
+<li><p>Mute</p>
+<p>将关联 Wwise 对象静音。</p>
+</li>
+<li><p>Unmute</p>
+<p>解除静音。将关联 Wwise 对象恢复为其“静音前”的原始音量电平。</p>
+</li>
+<li><p>Unmate All</p>
+<p>将所有 Wwise 对象恢复为其原始“静音前”音量电平, 但可以添加<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=event_editor#add_exceptions">例外</a>。</p>
+</li>
+</ul>
+<h5 id="13-Game-Parameter"><a href="#13-Game-Parameter" class="headerlink" title="13.Game Parameter"></a>13.Game Parameter</h5><ul>
+<li><p>Set Game Parameter</p>
+<p>更改游戏参数值。</p>
+</li>
+<li><p>Reset Game Parameter</p>
+<p>重置游戏参数。将 Game Parameter 值改回默认值。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Bypass Game Parameter Interpolation</th>
+<th>旁通游戏参数插值。该选项用于旁通 Game Parameter 的内部渐变。Default value: false</th>
+</tr>
+</thead>
+</table>
+<h5 id="14-State"><a href="#14-State" class="headerlink" title="14.State"></a>14.State</h5><ul>
+<li><p>Enable State</p>
+<p>在应用 Disable State Action 后，为相关 Wwise 对象重新启用 State。</p>
+</li>
+<li><p>Disable State</p>
+<p>为关联 Wwise 对象禁用状态。</p>
+<blockquote>
+<p>TIPS:</p>
+<table>
+<thead>
+<tr>
+<th align="left">技巧</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">此功能基本上可以用 State 的 <strong>None</strong>（无）选项来替代。在很多情况下，将全局 State 目标更改为 <strong>None</strong> 更为简便；不过，有时仍需为特定 Wwise 对象调用 <strong>Disable State</strong> 事件动作。</td>
+</tr>
+</tbody></table>
+</blockquote>
+</li>
+<li><p>Set State</p>
+<p>激活特定状态。</p>
+<p>Action 属性分组框中所选 State Group（状态组）和 State（状态）显示在 <strong>Objects</strong>（对象）列中。</p>
+</li>
+</ul>
+<h5 id="15-Set-Switch"><a href="#15-Set-Switch" class="headerlink" title="15.Set Switch"></a>15.Set Switch</h5><p>​	激活特定状态。</p>
+<p>​	Action 属性分组框中所选 State Group（状态组）和 State（状态）显示在 <strong>Objects</strong>（对象）列中。</p>
+<h5 id="16-Trigger"><a href="#16-Trigger" class="headerlink" title="16.Trigger"></a>16.Trigger</h5><p>调用 Trigger，以启动 Stinger。</p>
+<p>所选 Trigger 显示在 Objects 列中。</p>
+<h5 id="17-Bypass-Effect"><a href="#17-Bypass-Effect" class="headerlink" title="17.Bypass Effect"></a>17.Bypass Effect</h5><ul>
+<li><p>Enable Bypass</p>
+<p>旁通作用于关联 Wwise 对象的效果器。</p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">只有使用同一范围选项（All 或者 Specific）时，Enable Bypass 和 Disable Bypass 动作才会相互影响。若针对效果器应用了 Enable&#x2F;Disable Bypass 动作，必须使用相同范围的选项才能撤消该动作。</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p>例如：使用选项 Specific 的 Enable Bypass 仅可使用带选项 Specific 的 Disable Bypass 进行撤消。</p>
+</li>
+<li><p>Disable Bypass</p>
+<p>禁用旁通。取消 Effect 旁通设置，并将 Effect 重新应用于相关的 Wwise 对象。</p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">只有使用同一范围选项（All 或者 Specific）时，Enable Bypass 和 Disable Bypass 动作才会相互影响。若针对效果器应用了 Enable&#x2F;Disable Bypass 动作，必须使用相同范围的选项才能撤消该动作。</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p>例如：使用选项 Specific 的 Enable Bypass 仅可使用带选项 Specific 的 Disable Bypass 进行撤消。</p>
+</li>
+<li><p>Reset Bypass Effect</p>
+<p>重置旁通效果器。将关联对象的旁通效果器选项复位至其原始设置。</p>
+</li>
+<li><p>Reset Bypass Effect All</p>
+<p>重置旁通效果器。将关联对象的旁通效果器选项复位至其原始设置。</p>
+</li>
+</ul>
+<h5 id="18-Release-Envelope"><a href="#18-Release-Envelope" class="headerlink" title="18.Release Envelope"></a>18.Release Envelope</h5><p>释音包络。使<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=modulator_envelope">包络调制器</a>进入释音段，从而结束延音段。</p>
+<h5 id="19-Reset-Playlist"><a href="#19-Reset-Playlist" class="headerlink" title="19.Reset Playlist"></a>19.Reset Playlist</h5><p>重置播放列表。返回 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=random_sequence_container_property_editor">Sequence Container</a>播放列表的开头，而不播放下一对象。</p>
+<h4 id="2-Dynamic-Dialogue"><a href="#2-Dynamic-Dialogue" class="headerlink" title="2.Dynamic Dialogue"></a>2.Dynamic Dialogue</h4><p><strong>Dialogue Event Editor</strong></p>
+<p>操作逻辑等同于Music Switch Editor。</p>
+<h3 id="1-3-Soundbanks"><a href="#1-3-Soundbanks" class="headerlink" title="1.3 Soundbanks"></a>1.3 Soundbanks</h3><p>详情请见**<u><em>3.Soundbank  Layout</em></u>**</p>
+<h3 id="1-4-Game-Syncs"><a href="#1-4-Game-Syncs" class="headerlink" title="1.4 Game Syncs"></a>1.4 Game Syncs</h3><h4 id="1-RTPC"><a href="#1-RTPC" class="headerlink" title="1.RTPC"></a>1.RTPC</h4><p>RealTimeParametersController</p>
+<p>将特定的对象属性与游戏中的某些参数值绑定。</p>
+<p>备注:如果RTPC绑定到初始延迟或优先级（Initial Delay&amp;Priority），使用内置参数来控制RIPC会导致出问题。使用给定游戏对象播放声音时，会计算这些内置参数。因此，它们对大部分声音属性来说都很适用。内置参数控制的 RIPC 不适用于对象的播放逻辑属性 (如 Initial Delay和 Priority) ，因为触发 Play Action 时它们的值是未知的。</p>
+<h5 id="1-将游戏参数绑定到内置参数（build-in-parameter）"><a href="#1-将游戏参数绑定到内置参数（build-in-parameter）" class="headerlink" title="1.将游戏参数绑定到内置参数（build-in parameter）"></a>1.将游戏参数绑定到内置参数（build-in parameter）</h5><ul>
+<li><p><strong>Distance</strong></p>
+<p>距离。游戏对象和听者之间的距离。当多个听者或位置指定到同一个游戏对象时，将使用所有听者与声音位置组合之间的最短距离值。</p>
+</li>
+<li><p><strong>Azimuth</strong></p>
+<p>方位角。投射在水平面上的听者与游戏对象之间的角，单位为度。0 度值表示声音来自听者正前方，-90 度表示声音来自左侧，90 度表示声音来自右侧，+&#x2F;- 180 度表示声音位于听者正后方。</p>
+<p>当为游戏对象指定了多个听者或声音位置时，则使用听者和声音之间位置最靠近的角度值。</p>
+</li>
+<li><p><strong>Elevation</strong></p>
+<p>仰角。听者与游戏对象之间相对于水平线的顶角，单位为度。0 度值表示声音位于听者的同一水平面上；90 度值表示声音位于正上方；-90 度表示声音位于正下方。</p>
+<p>当为游戏对象指定了多个听者或声音位置时，则使用听者和声音之间位置最靠近的角度值。</p>
+</li>
+<li><p><strong>Emitter Cone</strong></p>
+<p>Emitter Cone（发声体锥）表示发声体朝向与发声体和听者间连线所形成的向量之间的 3D 角度。0 度表示发声体直接朝向听者，180 度表示发声体完全背朝听者。</p>
+<p>当为游戏对象指定了多个听者或声音位置时，则使用听者和声音之间位置最靠近的角度值。</p>
+</li>
+<li><p><strong>Obstruction</strong></p>
+<p>声障。通过 Obstruction，可访问通过 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_a1b3e18a25b405e55ba82de9b70cd11ba.html">SetObjectObstructionAndOcclusion </a>API 为游戏对象设置的声障值。</p>
+<p>如果为游戏对象指定了多个听者，则声障取值为给距离当前声音位置最近的听者指定的值。</p>
+</li>
+<li><p><strong>Occlusion</strong></p>
+<p>声笼。通过 Occlusion，可访问通过 SetObjectObstructionAndOcclusion API 为游戏对象设置的声笼值。</p>
+<p>当为游戏对象指定了多个听者时，则声笼取值为给距离当前声音位置最近的听者指定的值。</p>
+</li>
+<li><p><strong>Listener Cone</strong></p>
+<p>Listener Cone（听者锥）表示听者朝向与发声体和听者间连线形成的向量之间的 3D 夹角。0 度表示听者直接朝向发声体，180 度表示听者完全背朝发声体。</p>
+<p>当为游戏对象指定了多个听者或声音位置时，则使用听者和声音之间位置最靠近的角度值。</p>
+</li>
+<li><p><strong>Diffraction</strong></p>
+<p>在使用带有 Room 和 Portal 或几何构造的声音传播路径时，Diffraction 可提供由 Wwise Spatial Audio 计算得出的衍射角度。</p>
+<p>要想接收此内置参数，必须在 Property Editor 的 Positioning 选项卡中选中 Diffraction and Transmission 复选框，并且发声体和听者必须处在由一个或多个 Portal 连通的单独 Room 中或被传给 Wwise Spatial Audio 的几何构造阻挡。</p>
+<p>通过 Room 和 Portal，“发声体”游戏对象可接收与其干声衍射相关的值；由发散角（度）表示传播路径与发声体和听者之间直线路径的偏差角度。由 Spatial Audio 内部注册的房间游戏对象也会接收到一个衍射值，但与其“湿声”衍射相关——即房间内声音扩散后，声场的衍射保留区。湿声衍射角度是传播路径与从门户开口法线之间的发散角，以度为单位。</p>
+<p>在声音可通过多个 Portal 或多条路径到达听者所在位置时，将选用各条路径当中的最小衍射角度。衍射值的范围为 0 - 100，其代表衍射百分比而非衍射角度。</p>
+</li>
+<li><p><strong>Transmission Loss</strong></p>
+<p>在使用带有 Room 和 Portal 或几何构造的声音传播路径时，Transmission Loss 可提供由 Wwise Spatial Audio 计算得出的透射损失。</p>
+<p>要想接收此内置参数，必须在 Property Editor 的 Positioning 选项卡中选中 Diffraction and Transmission 复选框，并且发声体和听者必须处在由一个或多个 Portal（无论是否启用）连通的单独 Room 中或被传给 Wwise Spatial Audio 的几何构造阻挡。</p>
+<p>计算得出的 Transmission Loss 可应用于直接连接发声体和听者的射线。几何构造的 Transmission Loss 可在几何构造上定义 (AkAcousticSurface::transmissionLoss)，Room 的 Transmission Loss 则在 Room 上定义 (AkRoomParams::TransmissionLoss)。该参数的值域为 0 ~ 100。</p>
+<p>将最大值用于发声体和听者所在 Room 以及与之交叉的所有几何构造表面。</p>
+</li>
+</ul>
+<h5 id="2-创建智能音高曲线"><a href="#2-创建智能音高曲线" class="headerlink" title="2.创建智能音高曲线"></a>2.创建智能音高曲线</h5><p>智能音高曲线基于以下两个变量：</p>
+<ul>
+<li><strong>Native value:</strong> 原始音高对应的 Game Parameter 值。</li>
+<li><strong>Subdivision level</strong> ：曲线的精度，从 1 到 10 分为十个等级。</li>
+</ul>
+<p><strong>创建智能音高曲线的方法是：</strong></p>
+<ol>
+<li><p>在 RTPC 坐标图视图中创建音高曲线。</p>
+</li>
+<li><p>右键点击音高曲线，然后从菜单中选择 <strong>Build Smart Pitch Curve</strong>。</p>
+<p>此时将打开 Build Smart Pitch Curve 对话框。</p>
+</li>
+<li><p>输入智能音高曲线的原声值。原声值是指录制声音所对应的属性值。</p>
+</li>
+<li><p>输入智能音高曲线的细分等级。曲线细分等级越高，曲线节段越多，运行时评估时间越长。</p>
+</li>
+<li><p>点击 <strong>OK</strong>。</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">只可为 4800 和 -4800 音分之间的音高值创建智能音高曲线。在此范围之外，曲线将在一个极端值处“锁定”。</td>
+</tr>
+</tbody></table>
+<h5 id="3-查看GameObject"><a href="#3-查看GameObject" class="headerlink" title="3.查看GameObject"></a>3.查看GameObject</h5><p>在RTPC界面找到图标</p>
+<p><img src="/image%5CTypora%5Cimage-20230417220546976.png" alt="image-20230417220546976"></p>
+<h5 id="4-侧链压缩"><a href="#4-侧链压缩" class="headerlink" title="4.侧链压缩"></a>4.侧链压缩</h5><p>侧链压缩对游戏来说是非常强大的工具，它方便控制玩家关注焦点，并减少喧闹环境下的嘈杂声。另外对于同类对象，它还有助于安排优先级并获得清晰的混音。</p>
+<p>通常，会先在同类对象之间设置优先级系统，再在不同类别之间设置优先级系统。例如，按照这一规则，游戏可判定玩家角色 (PC) 的武器声比非玩家角色 (NPC) 的武器声更重要。然后，旁链压缩就可设置为 PC 武器声播放时降低 NPC 武器声的音量。PC 和 NPC 之间的武器声非常相似；但是，在这种情况下，系统需要确保始终将 PC 声音作为玩家的主要关注焦点。</p>
+<blockquote>
+<p><strong>TIPS：闪避信号</strong></p>
+<p>可以通过修改以下属性和行为来控制信号闪避方式：</p>
+<ul>
+<li>Ducking volume（闪避音量）</li>
+<li>Fade out（淡出）</li>
+<li>Fade in（淡入）</li>
+<li>Curve shape（曲线形状）</li>
+<li>Recovery time（恢复时间）</li>
+<li>Maximum ducking volume（最大闪避音量）</li>
+</ul>
+<p><img src="/image%5CTypora%5Cduck.png" alt="duck"></p>
+<p><strong>闪避某信号的方法如下：</strong></p>
+<ol>
+<li><p>将一条<strong>总线</strong>加载到 Property Editor。</p>
+</li>
+<li><p>在 <strong>Auto-ducking</strong>（自动闪避）组框中，点击 <strong>Insert</strong>（插入）。</p>
+<p>此时将会打开 Project Explorer - Browser 以及可被该总线要求闪避的总线列表。</p>
+<table>
+<thead>
+<tr>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">总线无法要求自己或其直接父总线闪避。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>从列表中，选择在当前总线收到信号时您要求闪避的总线。</p>
+</li>
+<li><p>点击 <strong>OK</strong>。</p>
+<p>所选总线已经添加到了闪避列表中。</p>
+</li>
+<li><p>通过修改以下设置，定义闪避总线的属性和行为：</p>
+<ul>
+<li><strong>Volume</strong>：音量。在当前总线收到信号时，所选总线要降低的音量。</li>
+<li><strong>Fade Out</strong>：淡出。从原始音量淡出至闪避音量的时间。</li>
+<li><strong>Fade In</strong>：淡入。逐渐返回原始音量的时间。</li>
+<li><strong>Curve</strong>：曲线。用于定义淡出和淡入的曲线形状。</li>
+</ul>
+</li>
+<li><p>在 <strong>Recovery time</strong>文本框中，指定您要当前总线信号结束到做出闪避的信号淡入开始的时间量。</p>
+</li>
+<li><p>在 <strong>Maximum ducking volume</strong>文本框中，指定当前总线在被若干条总线要求闪避后可以衰减的最大量。</p>
+</li>
+</ol>
+</blockquote>
+<p>可利用实时参数控制 (RTPC) 和 Meter 效果器轻松设置侧链压缩。以下示例分三步介绍了如何让 PC Weapon 音频总线的信号自动压缩 NPC Weapon 音频总线的信号音量。</p>
+<ol>
+<li><p><strong>创建 Game Parameter</strong>：首先，创建一个游戏参数（即 PC_Weapon_Volume），并将取值区间设为 -48 ~ 0，近似代表游戏的动态范围。该游戏参数将被用作总线之间的沟通渠道。</p>
+<p><img src="/image%5CTypora%5C3.png" alt="3"></p>
+</li>
+<li><p><strong>在总线上插入 Meter 效果器</strong>：然后，对于需要确保信号清晰可闻的总线（本例中为 PC_Weapon 总线），为其插入 Meter 效果器，并选择 Output Game Parameter（输出游戏参数）。</p>
+<p><img src="/image%5CTypora%5C4.png" alt="4"></p>
+<p>Meter 效果器会监控输入的音频信号。在将效果器用于旁链压缩时，将使用 Mode（模式）、Attack（起音）、Release（释音）和 Hold（保持）参数来降低输出信号的响应速度，并将平滑处理后的值发送给游戏参数（本例中为 PC_Weapon_Volume）。</p>
+</li>
+<li><p><strong>创建 RTPC 曲线</strong>：最后，为需要衰减的总线创建 RTPC 曲线。在本例中，先将总线音量关联至 PC_Weapon_Volume 游戏参数，然后创建衰减曲线。X 轴代表 Meter 效果器计算得出的 RMS 信号，Y 轴代表 NPC Weapon 音频总线音量的衰减量。</p>
+<p><img src="/image%5CTypora%5C5.png" alt="5"></p>
+</li>
+</ol>
+<p>若要使用旁链压缩构建总线层级结构，只需重复上述三个简单步骤即可。</p>
+<p>因为 Meter 效果器输出的是通用游戏参数，所以任何可关联至 RTPC 的属性都可由旁链压缩驱动。例如，可以用旁链压缩控制 EQ 频段的增益，从而对特定频段进行陷波处理。再如，可以驱动 Compressor 效果器的阈值、修改 Flanger 效果器的 LFO 频率或者增大 FutzBox Lo-Fi 效果器的失真强度。</p>
+<h4 id="2-State"><a href="#2-State" class="headerlink" title="2.State"></a>2.State</h4><p>利用最少的内存、CPU、素材和磁盘空间创建最动听音频，这是设计师日常面临的挑战。一种创新而高效的应对方案就是 State。</p>
+<p>一个state group内有多个不同的state，然后再在property editor界面选择创建的state group以及其中的state。</p>
+<h5 id="1-为同一个state-group内的state之间设置切换过渡"><a href="#1-为同一个state-group内的state之间设置切换过渡" class="headerlink" title="1.为同一个state group内的state之间设置切换过渡"></a>1.为同一个state group内的state之间设置切换过渡</h5><p>①设置统一的过渡。</p>
+<ol>
+<li>选中一个state group到property editor。</li>
+<li>在 Default transition time 中，为该 State Group 中所有 State 切换设置默认过渡时长。</li>
+</ol>
+<p>②自定义state之间的过渡。</p>
+<ol>
+<li><p>在 States 层级中，双击 State Group 将其加载到 Property Editor 中。</p>
+</li>
+<li><p>点击 <strong>Insert</strong>。</p>
+<p>Transition Time 列表中将新增一行。</p>
+</li>
+<li><p>在 From 列中，选择源 State。</p>
+</li>
+<li><p>在 Time 列中，设置两个 State 之间的过渡时间。</p>
+</li>
+<li><p>在 To 列中，选定目标 State。</p>
+</li>
+<li><p>要为两个切换方向设置相同的过渡时间，请勾选双向复选框（标记为：&lt;-&gt;）。</p>
+</li>
+</ol>
+<h5 id="2-将state指派给对象和总线"><a href="#2-将state指派给对象和总线" class="headerlink" title="2.将state指派给对象和总线"></a>2.将state指派给对象和总线</h5><h6 id="1-为音乐对象设置state切换点"><a href="#1-为音乐对象设置state切换点" class="headerlink" title="1.为音乐对象设置state切换点"></a><strong>1.为音乐对象设置state切换点</strong></h6><p>在音乐对象属性级别和总线级别都可以设置切换时间点。</p>
+<p><strong>为音乐对象和总线定义 State 切换点的方法如下：</strong></p>
+<ol>
+<li><p>将音乐对象或总线加载到 Property Editor。</p>
+</li>
+<li><p>切换到 States 选项卡。</p>
+</li>
+<li><p>对于采用的 State Group，在 <strong>Change occurs at</strong> 列中选择下列之一：</p>
+<ul>
+<li><strong>Immediate</strong> —— 立即切换状态。如果音轨设置了 Look-ahead time（预读时间），那么经过预读时间之后 State 才会切换。</li>
+<li><strong>Next Grid</strong> —— 在下一网格线处 <strong>切换状态</strong>。网格线允许您按照任意间隔长度来分割音乐对象。</li>
+<li><strong>Next Bar</strong> —— 在下一小节<strong>切换状态</strong>。</li>
+<li><strong>Next Beat</strong> —— 在下一拍<strong>切换状态</strong>。</li>
+<li><strong>Next Cue</strong> —— 在下一提示点处<strong>切换状态</strong>。下一提示点可以是 Entry cue（入口提示点）、Exit cue（出口提示点），也可以是 Custom Cue（自定义提示点）。</li>
+<li><strong>Next Custom Cue</strong> —— 在下一自定义提示点处<strong>切换状态</strong>。</li>
+<li><strong>Entry Cue</strong> —— 在 Entry cue 处<strong>切换状态</strong>。</li>
+<li><strong>Exit Cue</strong> —— 在 Exit cue 处<strong>切换状态</strong>。</li>
+</ul>
+<p>当前 State Group 中的所有 State 切换都将发生在指定时间点。</p>
+</li>
+</ol>
+<h6 id="2-自定义对象的State属性"><a href="#2-自定义对象的State属性" class="headerlink" title="2.自定义对象的State属性"></a><strong>2.自定义对象的State属性</strong></h6><p>将 State Group 指派给对象后，您可以自定义该对象在各 State 下的属性。</p>
+<p><strong>为对象自定义 State 属性值的方法如下：</strong></p>
+<ol>
+<li>将对象加载到 Property Editor 中。</li>
+<li>切换到 States 选项卡。</li>
+<li>通过单击 <strong>Properties</strong>按钮来打开 <strong>State Properties</strong>（状态属性）对话框。</li>
+<li>选中受 State Group影响的属性，然后单击 <strong>OK</strong>（确定）按钮。</li>
+<li>为各个 State设置属性值。</li>
+</ol>
+<p>在工程中使用 State 之前，有必要先了解 State 值会如何与现有属性值和其他适用修改因子（如 RTPC）进行交互。</p>
+<p>在将修改因子应用于现有属性值时，会按照以下某一方式决定最终属性值：</p>
+<ul>
+<li><strong>Absolute</strong>：使用由 RTPC 决定的值，忽略对象的现有属性值。仅可应用一个 RTPC，不支持应用 State（状态）。</li>
+<li><strong>Sum All Values</strong>：将由 RTPC 或 State 决定的值添加到对象的现有属性值。</li>
+<li><strong>Use Highest Value</strong>：使用由 RTPC 和对象的现有属性值决定的最大值。</li>
+<li><strong>Boolean</strong>：使用逻辑 OR 结合由 RTPC 或 State 决定的值。也就是说，若仅设置了一个 RTPC 或 State 值，则设置最终属性值。在这种情况下，会忽略对象的现有属性值。</li>
+</ul>
+<p>应用修改因子时所用的方式决定是否使用对象的原始属性值。若属性为绝对值或布尔值，则禁用原始属性控制。否则，原始属性控制保持可用状态。</p>
+<h6 id="3-在State之间复制属性值"><a href="#3-在State之间复制属性值" class="headerlink" title="3.在State之间复制属性值"></a>3.在State之间复制属性值</h6><p>①在不同State Group之间将State值复制到State</p>
+<p>可在不同 State Group 和不同对象类型之间复制粘贴 State 值，包括在 Master-Mixer Hierarchy、Actor-Mixer Hierarchy 和 Interactive Music Hierarchy 之间进行复制粘贴。甚至，还可选择多个目标对象并将值一键粘贴到所有目标对象。</p>
+<p><strong>将 State 值复制到任意 State：</strong></p>
+<p>选择 <strong>Copy</strong>或者按下 <strong>Ctrl+C</strong>，选择 <strong>Paste</strong>或者按下 <strong>Ctrl+V</strong>。</p>
+<p>②在同一State Group内复制State值</p>
+<p>利用 Copy State Values 对话框，可将 State 值复制到同一 State Group 内的现有或新建 State。另外，还可指定哪些与 State Group 关联的对象会受源对象的 State 值影响。</p>
+<ol>
+<li><p>在以下任一视图中单击 <strong>Copy State Values</strong> 按钮：</p>
+<ul>
+<li>Property Editor 中的 States 选项卡。</li>
+<li>Mixing Desk。</li>
+</ul>
+<p>这时将打开 Copy States Values对话框。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><em>技巧</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">另外，也可在 Property Editor 的 States 选项卡中或在 Mixing Desk 内右键单击 State 并选择 <strong>Copy State Values</strong>。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>点击 <strong>State Group</strong> 选择器（**&gt;&gt;**），并选择要复制自定义属性值的 State 所在的 State Group。</p>
+</li>
+<li><p>点击 <strong>From</strong> 选择器（**&gt;&gt;**），并选择要复制自定义属性值的 State。</p>
+<p>采用该 State Group 的所有对象都将显示在 Affected Object 列表中。</p>
+</li>
+<li><p>点击 <strong>To</strong> 选择器（**&gt;&gt;**），并执行下列操作之一：</p>
+<ul>
+<li>要将自定义属性值复制到新 State，请选择 <strong>New</strong>，为新 State 命名并点击 <strong>OK</strong>。</li>
+<li>要将自定义属性值复制到现有 State，则只需从列表中选择该 State 即可。</li>
+</ul>
+<p>Wwise 将分别处理 <strong>Affected Object</strong> 列表中的对象。</p>
+</li>
+<li><p>在 <strong>Use</strong>列中，针对所有要使用新的 State设置的对象选中复选框。</p>
+</li>
+<li><p>单击 <strong>OK</strong>来将 State设置应用于所选对象。</p>
+</li>
+</ol>
+<h4 id="3-Switch"><a href="#3-Switch" class="headerlink" title="3.Switch"></a>3.Switch</h4><p>在 Wwise 中，需要先将 Switch置于 Switch Group中才能使用。通过用 Switch Group 对 Switch 进行编组，您可以高效管理游戏中不同条件下的声音、音乐和振动对象。</p>
+<h5 id="1-将Game-Parameter值映射到Switch"><a href="#1-将Game-Parameter值映射到Switch" class="headerlink" title="1.将Game Parameter值映射到Switch"></a>1.将Game Parameter值映射到Switch</h5><p>复选Use Paremeter选项，并在右下角&gt;&gt;勾选RTPC。</p>
+<h5 id="2-StateGroup-State-用于动态对话-DynamicDialogue"><a href="#2-StateGroup-State-用于动态对话-DynamicDialogue" class="headerlink" title="2.StateGroup(State)用于动态对话(DynamicDialogue)"></a>2.StateGroup(State)用于动态对话(DynamicDialogue)</h5><p>假定您正在开发一款带有现场解说的高尔夫游戏，需要先为其中各个不同类别分别创建 State Group，每个 State Group 包含该类别相应的所有 State。高尔夫游戏需要多种 State Group，包括选手（Player）、俱乐部（Club）、球场（Course）、击球（Shot）、位置（Location）、反应（Reaction）等。</p>
+<p>下图说明了高尔夫游戏中，如何将部分类别与 State Group 和其中的 State 进行对应。</p>
+<p><img src="/image%5CTypora%5C6.png" alt="6"></p>
+<h4 id="4-Trigger"><a href="#4-Trigger" class="headerlink" title="4.Trigger"></a>4.Trigger</h4><p>Trigger（触发器）将调用 Stinger（插播乐句），让一段简短的 Music Segment与当前音乐叠加播放。</p>
+<h3 id="1-5-ShareSets"><a href="#1-5-ShareSets" class="headerlink" title="1.5 ShareSets"></a>1.5 ShareSets</h3><h4 id="1-Attenuations"><a href="#1-Attenuations" class="headerlink" title="1.Attenuations"></a>1.Attenuations</h4><p>详见1.1.4 Positioning部分。</p>
+<h4 id="2-Conversion"><a href="#2-Conversion" class="headerlink" title="2.Conversion"></a>2.Conversion</h4><p>详见1.1.3 Conversion部分。</p>
+<h4 id="3-Effects"><a href="#3-Effects" class="headerlink" title="3.Effects"></a>3.Effects</h4><p>给该audio添加效果器。</p>
+<h5 id="1-Soundbank-管理"><a href="#1-Soundbank-管理" class="headerlink" title="1.Soundbank 管理"></a>1.Soundbank 管理</h5><p>效果器必须打包到 SoundBank 中并由游戏加载。如何将效果器打包到 SoundBank 中取决于其本身的用法。</p>
+<ul>
+<li><p><strong>Actor-Mixer：</strong>对于 Actor-Mixer 对象所在的 SoundBank，会同时打包该对象所用的全部效果器，除非在 SoundBank Editor（音频包编辑器）中特地弃用。</p>
+</li>
+<li><p><strong>Master-Mixer：</strong>Master-Mixer 对象（Audio Bus、Auxiliary Bus）所用的效果器会打包到 Init SoundBank 中。</p>
+<blockquote>
+<p>TIPS:</p>
+<p>在生成 SoundBank 的过程中，Wwise 会自动生成 Init SoundBank。</p>
+<p>Master-Mixer 和 Audio Device 效果器会自动添加到 Init SoundBank，但有些效果器或效果器的组成部分并不会如此。以下条目不会自动添加到 Init SoundBank：</p>
+<ul>
+<li><strong>效果器媒体：</strong>Init SoundBank 不会打包任何媒体文件。效果器媒体必须打包到 User-defined SoundBank 并在使用效果器之前由游戏加载。</li>
+<li><strong>运行时加载的效果器：</strong>游戏可利用 SDK 函数在运行时更改 Audio Bus（音频总线）或 Audio Device 效果器。若所要加载的效果器在生成 SoundBank 的过程中被工程使用（即被 Audio Bus、Auxiliary Bus 或 Audio Device 引用），则会将其打包到 Init SoundBank 中。否则，必须将效果器打包到 User-defined SoundBank 中并在使用之前由游戏加载。</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>Audio Device：</strong>Audio Device（音频设备）对象所用的效果器会打包到 Init SoundBank 中。</p>
+</li>
+</ul>
+<h5 id="2-离线渲染"><a href="#2-离线渲染" class="headerlink" title="2.离线渲染"></a>2.离线渲染</h5><p>到需要离线渲染的对象，打开property editor中的effect，勾选对应效果器的render即可。</p>
+<p>若针对某个效果器同时选中了 Bypass 和 Render 选项，则将优先应用 Bypass 选项而不会对效果器进行渲染。</p>
+<p>无法将 RTPC 应用于经过渲染的处理器，因为在渲染后无法更改这些效果器的属性。</p>
+<p>在效果器链中渲染一个效果时，也将自动渲染它之前所有的效果器。（会渲染序号比自己小的所有效果器）。</p>
+<h5 id="3-CPU占用"><a href="#3-CPU占用" class="headerlink" title="3.CPU占用"></a>3.CPU占用</h5><p>一般来说，在 Master-Mixer 层级应用效果器时，占用的 CPU 资源会比其他层级少些。</p>
+<h4 id="1-5-4-Modulators"><a href="#1-5-4-Modulators" class="headerlink" title="1.5.4 Modulators"></a>1.5.4 Modulators</h4><h5 id="1-LFO"><a href="#1-LFO" class="headerlink" title="1.LFO"></a>1.LFO</h5><p>LFO（低频振荡器）用于为属性值带来随时间变化的调制。其属性为：</p>
+<table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Depth</td>
+<td align="left">深度。振荡器的幅度变化。最大幅度为 1.0。单位：% Default value: 100 Range: 0 to 100</td>
+</tr>
+<tr>
+<td align="left">Frequency</td>
+<td align="left">频率。每秒钟的周期数。单位：Hz Default value: 1 Range: 0 to 20000 Units: Frequency</td>
+</tr>
+<tr>
+<td align="left">Waveform</td>
+<td align="left">调制器的波形包含以下选项：Sine&#x2F;Triangle&#x2F;Square&#x2F;Saw up&#x2F;Saw down&#x2F;Random:Random：选择 Random 将在调制器每次运行时随机应用电平。Default value: Sine</td>
+</tr>
+<tr>
+<td align="left">Smoothing</td>
+<td align="left">平滑。对波形进行低通滤波，从而平滑尖锐的边缘。单位：% Default value: 0 Range: 0 to 100</td>
+</tr>
+<tr>
+<td align="left">PWM</td>
+<td align="left">脉冲宽度调制。脉冲波的宽度；仅用于Square（方波）波形。单位：% Default value: 50 Range: 0 to 100</td>
+</tr>
+<tr>
+<td align="left">Attack</td>
+<td align="left">起音。振荡器达到满幅度所用的时间。单位：s Default value: 0 Range: 0 to 100000</td>
+</tr>
+<tr>
+<td align="left">Initial Phase Offset</td>
+<td align="left">初相。振荡器波形的初始相位。单位：° Default value: 0 Range: -180 to 180</td>
+</tr>
+<tr>
+<td align="left">Scope</td>
+<td align="left">作用域。定义如何创建 LFO 实例：<strong>Voice</strong>:声部。为每个声音&#x2F;对象播放创建的 LFO 实例。<strong>Note&#x2F;Event</strong>:音符&#x2F;事件。为每个播放实例或在 MIDI 环境中使用时的音符创建一个 LFO 实例。<strong>Game Object</strong>:游戏对象。为每个游戏对象创建一个 LFO 实例。<strong>Global</strong>:全局。为整个工程创建单个 LFO。Default value: Note or Event</td>
+</tr>
+</tbody></table>
+<p><strong>使用 LFO 调制 Voice Volume 的方法是：</strong></p>
+<ol>
+<li>在 Project Explorer 中，选择要添加 LFO 的对象。</li>
+<li>在 Property Editor 中，转至 RTPC 选项卡。</li>
+<li>在 RTPC 列表中，点击 [&gt;&gt;] 按钮。</li>
+<li>从选择器菜单中，选择 <strong>Voice Volume</strong>。</li>
+<li>点击 X 轴选择器按钮。</li>
+<li>从选择器菜单中选择 LFO &gt; Default (Custom)。</li>
+<li>点击 […] 按钮以编辑 LFO 属性。</li>
+<li>编辑曲线以设置调制范围。</li>
+</ol>
+<p>LFO 对象可以被创建成 Custom 或 ShareSet。Custom 对象是原地保存的，即直接保存在拥有该对象的对象内部。ShareSet 被保存在一个单独的工作单元中，并且可以在多个对象之间进行重用。</p>
+<h5 id="2-包络envelope"><a href="#2-包络envelope" class="headerlink" title="2.包络envelope"></a>2.包络envelope</h5><table>
+<thead>
+<tr>
+<th>Attack Time</th>
+<th>起音时间。定义了当琴键第一次被按下时，电平从零值上升至峰值所用的时间。单位：s Default value: 0.2 Range: 0 to 10000</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Attack Curve</td>
+<td>起音曲线。把起音曲线的斜率从线性的默认斜率（50%）调整到其它形式：指数风格的包络（0%），其变化速率在最开始较慢，随后逐渐变快对数包络（100%），其变化速率在最开始较快，随后逐渐变慢单位：% Default value: 50 Range: 0 to 100</td>
+</tr>
+<tr>
+<td>Decay Time</td>
+<td>衰减时间。指随后从起音电平下降到指定延音电平所用的时间。单位：s Default value: 0.2 Range: 0 to 10000</td>
+</tr>
+<tr>
+<td>Sustain Level</td>
+<td>延音电平。指在释放按键前，声音持续期间主序列的电平。单位：% Default value: 100 Range: 0 to 100</td>
+</tr>
+<tr>
+<td>Release Time</td>
+<td>释音时间。指释放按键后电平从延音电平衰减到零值所用的时间。单位：s Default value: 0.5 Range: 0 to 10000</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>作用域。定义如何创建包络实例：<strong>Voice</strong>:<strong>Voice</strong>（声部）：为每个声音&#x2F;对象播放创建的包络实例。<strong>Note&#x2F;Event</strong>:<strong>Note&#x2F;Event</strong>（音符&#x2F;事件）：为每个播放实例或在 MIDI 环境中使用时的音符创建一个包络实例。Default value: Note or Event</td>
+</tr>
+<tr>
+<td>Trigger On</td>
+<td>可能触发包络（即进入起音段）的 Action&#x2F;MIDI Event：<strong>Play</strong>:Play Action 或 MIDI Note 事件<strong>Note-Off</strong>:仅 MIDI Note-Off 事件Default value: Play</td>
+</tr>
+<tr>
+<td>Auto Release</td>
+<td>决定是否需要 Action&#x2F;MIDI Event 才能让包络退出延音段，并进入释音段。如果进行了设置，则该包络将在经过了 <strong>Sustain Time</strong>（延音时间）后退出延音段。如果没有设置，则该包络将在特定情形下退出延音段：游戏可通过 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=Help&id=event_actions_list#release_envelope">Release Envelope</a> 事件让包络进入释音段。如果包络是由 MIDI Note-On Event 触发，还可以通过 MIDI Note-Off Event 让其进入释音段。Default value: false</td>
+</tr>
+<tr>
+<td>Maximum Sustain Time</td>
+<td>延音时间。定义了该包络在进入释音段之前，在延音段中维持的时间。如果已设置 <strong>Auto Release</strong>，则此值有效。单位：s Default value: 0 Range: 0 to 10000</td>
+</tr>
+<tr>
+<td>Stop playback after release</td>
+<td>在释音后停止播放。如果进行了设置，则被关联声音的播放将在释音段完成以后终止。Default value: true</td>
+</tr>
+</tbody></table>
+<p>①用在 MIDI 环境中时，包络配置成在 Note-On 或 Note-Off（音符停止）的方式下播放声音。</p>
+<p>如果以 Note-On 的方式播放声音：</p>
+<ul>
+<li>包络配置成在 Note-On 时触发（<strong>Trigger On</strong> 参数）。</li>
+<li>包络一直持续到第一次出现以下情况：<ul>
+<li>收到 <strong>Release Envelope</strong> 事件，</li>
+<li>收到 MIDI Note-Off 事件，</li>
+<li>出现延音段的最大时长（设置了 <strong>Auto Release</strong>）。</li>
+</ul>
+</li>
+</ul>
+<p>如果以 Note-Off 的方式播放声音：</p>
+<ul>
+<li>包络配置成在 Note-Off 时触发（<strong>Trigger On</strong> 参数）。</li>
+<li>包络一直持续到第一次出现以下情况：<ul>
+<li>收到 <strong>Release Envelope</strong> 事件，</li>
+<li>出现延音段的最大时长（设置了 <strong>Auto Release</strong>）。</li>
+</ul>
+</li>
+</ul>
+<p>②当用于播放声音的一般环境中时：</p>
+<ul>
+<li>包络配置成遇到播放动作时触发（<strong>Trigger On</strong> 参数）。</li>
+<li>包络一直持续到第一次出现以下情况：<ul>
+<li>收到 <strong>Release Envelope</strong> 事件，</li>
+<li>出现延音段的最大时长（设置了 <strong>Auto Release</strong>）。</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-时间的使用"><a href="#3-时间的使用" class="headerlink" title="3.时间的使用"></a>3.时间的使用</h5><p>使用 Time Modulator（时间调制器），其中 RTPC 的 X 轴为时间元素。</p>
+<table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Initial Delay</td>
+<td align="left">初始延迟。等待指定时长后，再开始基于时间的调制。备注：在此延迟期间，属性值在 0 时间点处保持为 RTPC 坐标图所决定的值。单位：s Default value: 0 Range: 0 to 4</td>
+</tr>
+<tr>
+<td align="left">Duration</td>
+<td align="left">时长。在正常播放速率下，基于时间的调制进行一次迭代的时长。备注：实际总时间受 Initial Delay、Playback Rate 和 Loop Count 影响。单位：s Default value: 1 Range: 0.1 to 100</td>
+</tr>
+<tr>
+<td align="left">Loop Count</td>
+<td align="left">循环次数。调制的重复次数。播放容器的次数。Default value: 1 Range: 0 to 100</td>
+</tr>
+<tr>
+<td align="left">Playback Rate</td>
+<td align="left">播放速率。调整关联声音的播放速率：若值等于 1，则正常播放若值小于 1，则减速播放若值大于 1，则加速播放Default value: 1 Range: 0.25 to 4</td>
+</tr>
+<tr>
+<td align="left">Scope</td>
+<td align="left">范围。定义如何创建时变调制器实例：<strong>Voice</strong>:为每个声音&#x2F;对象实例播放创建一个时间调制器实例。<strong>Note&#x2F;Event</strong>:为每个播放实例或在 MIDI 环境下使用时的音符创建一个时间调制器实例。Default value: Note or Event</td>
+</tr>
+<tr>
+<td align="left">Trigger On</td>
+<td align="left">触发时机。可能触发时变调制器的 Action&#x2F;MIDI Event：<strong>Play</strong>:Play Action 或 MIDI Note 事件<strong>Note-Off</strong>:仅 MIDI Note-Off 事件Default value: Play</td>
+</tr>
+<tr>
+<td align="left">Stop playback at end</td>
+<td align="left">若勾选，达到总时长时（初始延迟、循环次数和播放速率都会计入）将停止播放关联声音。 若未勾选，则达到总时长后，经过调制的属性值将保持为 RTPC 曲线图所决定的最终值。Default value: true</td>
+</tr>
+</tbody></table>
+<p>从某些方面来说，Time Modulator 与 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=Help&id=working_with_lfos">LFO Modulator</a> 和 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=Help&id=working_with_envelopes">Envelope Modulator</a> 存在很大差异：</p>
+<ul>
+<li>它的曲线图可以包含多个控制点，而其他调制器最多只有两个控制点。这方便设计师在特定时间点处精确调整属性值。</li>
+<li>它可以使用所有可用的<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.3_8179/?source=Help&id=specifying_shape_of_curve_between_control_points#curve_shapes">坐标图曲线</a>，而其他调制器只能使用线性和分贝标度的曲线。</li>
+<li>它只包含两项可启用 RTPC 的属性：Initial Delay（初始延迟）和 Playback Rate（播放速率）。</li>
+</ul>
+<p>Time Modulator 可创建为 Custom（自定义）或 ShareSet（共享集）。Custom 对象是原地保存的，即直接保存在拥有该对象的对象内部。ShareSet 存储在单独的 Work Unit（工作单元）中，并可被多个对象复用。</p>
+<h4 id="1-5-5-Virtual-Acoustics"><a href="#1-5-5-Virtual-Acoustics" class="headerlink" title="1.5.5 Virtual Acoustics"></a>1.5.5 Virtual Acoustics</h4><h4 id="1-5-6-Metadata"><a href="#1-5-6-Metadata" class="headerlink" title="1.5.6 Metadata"></a>1.5.6 Metadata</h4><h3 id="1-6-Sessions"><a href="#1-6-Sessions" class="headerlink" title="1.6 Sessions"></a>1.6 Sessions</h3><h4 id="1-Sound-Caster"><a href="#1-Sound-Caster" class="headerlink" title="1.Sound Caster"></a>1.Sound Caster</h4><p>详情请见**<u><em>4.Mixer Layout</em></u>**中<u><em><strong>3.Soundcaster</strong></em></u></p>
+<h4 id="2-Mixing-Sessions"><a href="#2-Mixing-Sessions" class="headerlink" title="2.Mixing Sessions"></a>2.Mixing Sessions</h4><p>详情请见**<u><em>4.Mixer Layout</em></u>**</p>
+<h4 id="3-Control-Surface-Binding（难以用到，用到在学）"><a href="#3-Control-Surface-Binding（难以用到，用到在学）" class="headerlink" title="3.Control Surface Binding（难以用到，用到在学）"></a>3.Control Surface Binding（难以用到，用到在学）</h4><p>用来定义控制设备在 Wwise 中的行为。</p>
+<p>控制设备可以用来控制 Wwise 的功能或工程属性。</p>
+<ul>
+<li><p>Group&#x2F;Binding</p>
+<ul>
+<li><p>Global</p>
+<p>Global 组中是与特定对象有关的绑定。</p>
+<p>目标对象可以直接在绑定中指定。</p>
+<p><strong>为键盘快捷键创建绑定。</strong></p>
+<p>Global Binding（全局绑定）可用于触发全局命令，这些命令和 Keyboard Shortcuts（键盘快捷键）管理器中的命令相同。您可以创建一个由 Keyboard Shortcu 管理器和 Control Surface Session 的绑定触发的全局命令。</p>
+<p>在 Control Surface Binding 视图中创建全局绑定的方法如下：</p>
+<ol>
+<li><p>选择 <strong>Global</strong>（全局）组。</p>
+</li>
+<li><p>点击 <strong>Add &amp; Learn Binding</strong>（添加和学习绑定）按钮。</p>
+<p>绑定条目将被添加，并且 <strong>Learn</strong> 按钮也将激活。</p>
+<p>Properties&#x2F;Command 可在 UI 变绿时进行选择。</p>
+</li>
+<li><p>点击 [&gt;&gt;] 按钮选择命令。</p>
+</li>
+<li><p>从菜单中选择 **Global commands…**（全局命令…）</p>
+</li>
+<li><p>浏览找到要启动的全局命令。</p>
+</li>
+<li><p>点击 OK。</p>
+</li>
+<li><p>使用所需的硬件控件来作绑定。</p>
+<p><strong>Learn</strong>（学习）按钮处于已停用状态。</p>
+<p>绑定现在创建好并且就绪了。</p>
+<p>（待续…）</p>
+<p><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=connecting_control_surface_device_to_wwise">将控制设备连接到 Wwise (audiokinetic.com)</a></p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-7-Queries"><a href="#1-7-Queries" class="headerlink" title="1.7 Queries"></a>1.7 Queries</h3><p>在此选项卡中，可创建并管理查询 Work Unit。</p>
+<h4 id="Query-Editor"><a href="#Query-Editor" class="headerlink" title="Query Editor"></a>Query Editor</h4><p>可以创建和运行查询。查询大体上是请求显示工程中的一部分信息。当查找特定对象时，您可创建非常具体的查询；也可创建一般性查询，例如查找特定平台中的所有声音对象。另外，Query Editor 还支持 WAQL 查询。有关 WAQL 查询的详细信息，请参阅<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=waql_introduction.html">了解 Wwise Authoring Query Language (WAQL)</a>。</p>
+<ul>
+<li><p>Query From</p>
+<p>从此处查询。所要搜索的对象类型或其他工程元素，如声音、Audio Bus（音频总线）、SoundBank（音频包）等。</p>
+<p>除此之外，也可从列表中选择 <strong>WAQL Query</strong> 来启用 WAQL Query 字段。</p>
+</li>
+<li><p>Start From</p>
+<p>起始位置。工程层级结构中开始查询的位置。</p>
+</li>
+<li><p>Criteria</p>
+<ul>
+<li><p>Browser</p>
+<p>浏览器。查询所依据的条件列表，如 Name 或 Output Bus。</p>
+</li>
+<li><p>Criteria</p>
+<p>为查询所选择的条件列表。</p>
+<ul>
+<li><p>Operator</p>
+<p> 当查询中包含多个条件时使用的逻辑运算符。</p>
+<p>可使用以下运算符：</p>
+<p><strong>And</strong>，匹配所有条件的项。</p>
+<p><strong>Or</strong>，匹配至少一个条件的项。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Result</p>
+<p>只选了一部分陈述。</p>
+<ul>
+<li><p>Size Preview</p>
+<p>右击选择configure column…选择勾选。</p>
+<ul>
+<li><p>Total Size</p>
+<p>该元素 Media Size 和 Structure Size 大小的总和，近似等于它们将在 SoundBank 中占用的大小。</p>
+</li>
+<li><p>Media Size</p>
+<p>Wwise 对象的媒体文件（包括转换的源文件，事件和效果器）将在 SoundBank 中占用的近似大小。</p>
+<blockquote>
+<p>对于需要授权的 Effect，除非输入相应授权码，否则其大小值将不计入。</p>
+</blockquote>
+<p>如果父对象同时设置了 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=streaming_media">media files are set to stream</a> 与 <strong>Zero latency</strong>，将只显示较小的音频缓冲区大小。如果父对象选择了流播放但未启用 <strong>Zero Latency</strong> 设置，其大小将不会显示。</p>
+<blockquote>
+<p>在很多情况下，对象的媒体大小已改变，但视图未更新。要确保所有的预计大小都是最新的，请使用快捷菜单中的 <strong>Refresh All Size</strong> 命令。要更新一个或多个特定项，请选择它们并使用 <strong>Refresh Size</strong> 快捷菜单选项。</p>
+</blockquote>
+</li>
+<li><p>Object Size</p>
+<p>Wwise 对象将在 SoundBank 中占用的大致大小，不包括磁盘上声音文件的大小。</p>
+<p>Action 不具有大小。只位于 Init Bank 中的对象，如 Game Sync，大小将不计入。</p>
+</li>
+<li><p>When  limit  is reachedStructure</p>
+<p>对象及其子结构将在 SoundBank 中占用的近似大小，其中对象大小即为 Object Size。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Profiler-Layout（暂不用，待完善）"><a href="#2-Profiler-Layout（暂不用，待完善）" class="headerlink" title="2.Profiler Layout（暂不用，待完善）"></a>2.Profiler Layout（暂不用，待完善）</h2><p>三个布局涵盖了不同范围的性能分析。</p>
+<table>
+<thead>
+<tr>
+<th align="left">Layout（布局）</th>
+<th align="left">描述</th>
+<th align="left">所含视图</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Profiler</td>
+<td align="left">Profiler 布局允许您在捕获时监控每个游戏元素的性能。您还可以在将 Soundcaster 触发的模拟内容集成到游戏之前监视这些模拟的性能。</td>
+<td align="left">“Advanced Profiler”一节<br/>“Capture Log”一节<br/>“Performance Monitor”一节</td>
+</tr>
+<tr>
+<td align="left">Voice Profiler</td>
+<td align="left">Voice Profiler（性能分析器）布局允许监控游戏中捕获的声部，并检查驱动每个声部的结构。</td>
+<td align="left">“Advanced Profiler”一节<br/>“Capture Log”一节<br/>“Performance Monitor”一节</td>
+</tr>
+<tr>
+<td align="left">Game Object Profiler</td>
+<td align="left">Game Object Profiler 布局允许您监控游戏中注册的游戏对象，包括发声体、听者或既是发声体又是听者的对象。</td>
+<td align="left">“AdvancedProfiler”一节<br/>“Capture Log”一节&lt;br“Performance Monitor”一节</td>
+</tr>
+</tbody></table>
+<h3 id="2-1-Capture-Log"><a href="#2-1-Capture-Log" class="headerlink" title="2.1 Capture Log"></a>2.1 Capture Log</h3><p>用于捕获并记录来自声音引擎的所有信息。用于捕获并记录来自声音引擎的所有信息。</p>
+<p>双击 Capture Log 中的条目，即可在 Property Editor 或 Event Editor 中加载相关的 Wwise 对象或事件。</p>
+<p>此外，还可在条目上按下 Ctrl+\ 以便移动 Performance Monitor（性能监控器）中的时间光标，并将所有其他视图同步至同一时间。</p>
+<p>可以将列表保存为 PROF 文件，以便之后在 Wwise 中重新加载它。</p>
+<h4 id="1-筛选器工具栏"><a href="#1-筛选器工具栏" class="headerlink" title="1.筛选器工具栏"></a>1.筛选器工具栏</h4><p>此视图中的筛选器工具栏能够帮助您减少视图中显示的信息数量，以便快速锁定想要查看的元素。有关更多详细信息，请参阅 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=filtering_in_profiling_views">“在性能分析视图中筛选数据”一节</a> 章节。</p>
+<p><img src="/image%5CTypora%5CProfilerFilteringToolbar.png" alt="ProfilerFilteringToolbar"></p>
+<p>1.<strong>UnlinkFilter</strong>:禁止在多个筛选器视图之间进行同步。</p>
+<p>2.<strong>Text Filter</strong>：通过指定文本来筛选内容。系统会将您所指定的字词与内容中所含名称或字符串的开头进行匹配。键入的字词越多，显示的结果越细化。匹配项不区分大小写。有关高级用法的信息，请参阅“<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=using_profiler_filter_expressions">“使用性能分析器筛选器表达式”一节</a>”。</p>
+<p>3.<strong>Object Filter</strong>：通过指定 Wwise 对象来筛选内容。系统会将您所指定的 Wwise 工程对象与视图中的内容进行匹配。同时，还会依据对象关系（如父子对象关系和输出总线关系）对内容进行匹配。</p>
+<p>4.<strong>Browse Object Filter</strong>：显示 Project Explorer 浏览器，以便选择所要筛选的对象。</p>
+<p>5.<strong>Mute&#x2F;Solo Filtering</strong>：若启用，则从结果中排除激活了 Mute 的对象，而只显示激活了 Solo 的对象。</p>
+<p>6.<strong>Options</strong>：显示其他操作。</p>
+<h4 id="2-界面元素"><a href="#2-界面元素" class="headerlink" title="2.界面元素"></a>2.界面元素</h4><table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><img src="/image%5CTypora%5Ceyes.png" alt="eyes"></td>
+<td align="left">打开 Capture Log 的 Filter 对话框，您可以在其中定义 Capture Log 输出的筛选条件。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Csave.png" alt="save"></td>
+<td align="left">将 Capture Log 内容保存为 PROF 文件或制表符分隔的文本文件。文本文件将包含任何已作用于列表的筛选或分类。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Csearch_2.png" alt="search_2">        <img src="/image%5CTypora%5Csearch.png" alt="search_2"></td>
+<td align="left">打开搜索框，在其中输入标准字母和数字会筛选掉视图中不相匹配的元素。阅读 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=using_tables">“使用表格”一节</a> 了解详细信息。点击搜索图标左侧的 Close（关闭）图标，以关闭搜索字段并删除筛选器。<em>info_outline</em>备注搜索不包括<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=list_view">“List View（列表视图）”一节</a>, <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=query_editor">“Query Editor”一节</a>, <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=midi_keymap_editor_midi_keymap_editor">“MIDI Keymap Editor 视图”一节</a>, and <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=reference_view">“Reference View 视图”一节</a>中折叠起来的节点。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Cblue.png" alt="blue"><img src="/image%5CTypora%5Corange.png" alt="orange">           （标志）       <img src="/image%5CTypora%5Cgray.png" alt="white"><img src="/image%5CTypora%5Cwhite.png" alt="white"></td>
+<td align="left">圆点的颜色随底色变化：在 Classic（经典）主题下显示为青绿色，在 Dark（深色）主题下显示为橙色。这样方便指示在距离 Performance Monitor 时间光标位置 100 ms 内捕获了 Capture Log 中的哪些条目。颜色越亮，条目离时间光标位置越近。您可以将光标强制移动至特定日志条目所在的时间戳：从快捷菜单 (Ctrl+) 选择 <strong>Move Cursor to Timestamp</strong>（将光标移至时间戳）。或者直接双击时间戳。</td>
+</tr>
+<tr>
+<td align="left">（上行内容）</td>
+<td align="left">关联圆点的颜色随底色变化：在 Classic（经典）主题下显示为深灰色，在 Dark（深色）主题下显示为白色。这样方便指示 Capture Log 中哪些条目是相互关联的。它们只有在日志中选择单个条目时才会显示。</td>
+</tr>
+<tr>
+<td align="left">Timestamp</td>
+<td align="left">时间戳。捕获该条目时的游戏时间。时间戳有助于识别在 Wwise 中模拟中 或游戏中发生的情形的精确时间。<em>info_outline</em>技巧按下 Ctrl+\ 或双击时间戳可将 Game Profiler 光标移动至条目所对应的时间。</td>
+</tr>
+<tr>
+<td align="left">Type</td>
+<td align="left">记录在 Capture Log 中的条目类型。关于 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=capture_log_filter#capture_log_types">不同捕获信息类型</a> 的简短列表和说明，请参阅 Capture Log Filter 页面。</td>
+</tr>
+<tr>
+<td align="left">Description</td>
+<td align="left">有关日志项的描述性信息。还可能包括属性值更改、状态更改等相关信息。</td>
+</tr>
+<tr>
+<td align="left">Wwise Object Name</td>
+<td align="left">Wwise 对象名称。与日志条目关联的 Wwise 对象的名称（如存在）。如果多个 Wwise 对象与日志项相关联，则会显示“Multiple Object”。如果没有与日志项相关联的 Wwise 对象，则会显示“No Element”。</td>
+</tr>
+<tr>
+<td align="left">Wwise Object ID</td>
+<td align="left">Wwise 对象 ID。与日志条目关联的 Wwise 对象的 ID（如存在）。如果多个 Wwise 对象与日志项相关联，则会显示“Multiple Object”。如果没有与日志项相关联的 Wwise 对象，则会显示“No Element”。<em>info_outline</em>备注在使用 Capture Log 中的搜索字段时，ID 必须完整且准确才会匹配。</td>
+</tr>
+<tr>
+<td align="left">Game Object Name（游戏对象名称）</td>
+<td align="left">与日志项关联的游戏对象的名称。“Transport&#x2F;Soundcaster” 可跟没有关联游戏对象的 Wwise 对象所触发的条目相关。</td>
+</tr>
+<tr>
+<td align="left">Game Object ID（游戏对象 ID）</td>
+<td align="left">游戏对象 ID。与日志条目关联的游戏对象的 ID。“Transport&#x2F;Soundcaster” 可跟没有关联游戏对象的 Wwise 对象所触发的条目相关。<em>info_outline</em>备注在使用 Capture Log 中的搜索字段时，ID 必须完整且准确才会匹配。</td>
+</tr>
+<tr>
+<td align="left">Scope</td>
+<td align="left">作用域。日志项作用于游戏内的对象的范围。作用域可以是两种类型之一：<strong>Global</strong>，意味着日志条目适用于所有游戏对象。<strong>Game object</strong>，意味着日志条目仅适用于在游戏对象列中的游戏对象。</td>
+</tr>
+</tbody></table>
+<h4 id="3-Capture-Log筛选器"><a href="#3-Capture-Log筛选器" class="headerlink" title="3.Capture Log筛选器"></a>3.Capture Log筛选器</h4><p>Capture Log Filter（捕获日志筛选器）对话框用来根据条目类型、Wwise 对象名称和作用域针等一系列筛选器选项在 Capture Log 中加入或删除条目。</p>
+<p>图标：<img src="/image%5CTypora%5Ceyes.png" alt="eyes"></p>
+<h5 id="1-Types"><a href="#1-Types" class="headerlink" title="1.Types"></a>1.Types</h5><table>
+<thead>
+<tr>
+<th>Types（类型）</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Notifications</td>
+<td>通知。显示来自声音引擎的通知。通知包含声音引擎处理动作的状态。例如：事件播放。开始延迟。</td>
+</tr>
+<tr>
+<td>Markers（标记）</td>
+<td>显示音频文件标记和音乐片段自定义提示。</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>显示由 Wwise 或游戏引擎触发的动作事件和对话事件。</td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>显示事件中的动作。</td>
+</tr>
+<tr>
+<td>Properties</td>
+<td>属性。显示对属性值所做的更改。</td>
+</tr>
+<tr>
+<td>States</td>
+<td>状态。显示状态更改。</td>
+</tr>
+<tr>
+<td>Switches</td>
+<td>切换开关。显示切换开关更改。</td>
+</tr>
+<tr>
+<td>SoundBanks</td>
+<td>显示与 SoundBank 有关的信息，包括 SoundBank 的名称。</td>
+</tr>
+<tr>
+<td>Events Preparation（事件准备）</td>
+<td>准备事件。显示使用<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_a98b617d05618e6d18680d198845ff3d7.html"> <code>PrepareEvent()</code></a>和<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_ad5fc8ab51eecee6511d5c61b03659fa4.html"> <code>PrepareGameSyncs()</code></a>函数准备的事件和游戏同步器。</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>错误。显示声音引擎出现的任何错误。</td>
+</tr>
+<tr>
+<td>Messages</td>
+<td>消息。显示声音引擎发送的任何消息。消息通常会传达问题或特殊信息。这些消息可在游戏引擎中进行编程。例如：未知事件名。主人公的脚步声。</td>
+</tr>
+<tr>
+<td>MIDI 事件</td>
+<td>MIDI 事件。显示声音引擎播放的所有 MIDI 事件。根据 MIDI 选项卡的 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=midi_tab_actor_mixer_objects#midi_events">MIDI Events 信息</a> 及 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=midi_tab_actor_mixer_objects#midi_filters">Filters</a> 设置，显示从 MIDI 文件得到的信息。其中将显示通道数（1 - 16），MIDI 事件名（Note-on 音符开或 Note-off 音符关），键位以及力度。</td>
+</tr>
+<tr>
+<td>API Calls</td>
+<td>显示对声音引擎的 API 调用。这里显示了 API 的大致类别，可根据需要选择或排除，包括：Event、RTPC、Game Sync、Game Objects、Listener Spatialization （空间定位）、Positions（定位）、Auxiliary Bus、Obstruction&#x2F;OcclusionMotion（振动）、MIDIDynamic Sequence （动态序列）、Spatial Audio、其他，列出的每个调用都将显示相应函数以及传递的参数（如果存在）。</td>
+</tr>
+<tr>
+<td>![select all](image\Typora\select all.png)</td>
+<td>选择列表中的所有类型。</td>
+</tr>
+<tr>
+<td>![select none](image\Typora\select none.png)</td>
+<td>清除列表中所有类型的选择。</td>
+</tr>
+</tbody></table>
+<h5 id="2-Include关系"><a href="#2-Include关系" class="headerlink" title="2.Include关系"></a>2.Include关系</h5><table>
+<thead>
+<tr>
+<th>Include parents and busses（使用 Object Filter 时）</th>
+<th>包含父级和总线。将包含针对所选对象的所有父对象层级和子对象可能连通到的所有总线的通知。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Include game object relations</td>
+<td>包括游戏对象关系。将包含发生在与所选对象具有相同的游戏对象的那些对象上发生的事情。例如，假定您已经选择了 Sound A 作为筛选后的对象，并且它是在已经播放了 Sound B 的某个游戏对象播放。它将在 Capture Log 视图中的该游戏对象上添加所有关于 Sound B 的播放关系。</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td></td>
+</tr>
+<tr>
+<td>Global</td>
+<td>全局。显示适用于所有游戏对象的条目。</td>
+</tr>
+<tr>
+<td>Game object</td>
+<td>游戏对象。仅显示适用于特定游戏对象的条目。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Include playback relation</td>
+<td>显示播放关系。显示目标对象所在事件的所有通知，即使它们与目标对象没有直接联系。它会显示所有元素，用蓝点符号链接在一起。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5CReset.png" alt="Reset"></td>
+<td>将该对话框重置为默认设置。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5CClose.png" alt="Close"></td>
+<td>关闭。关闭窗口。</td>
+</tr>
+</tbody></table>
+<h5 id="3-Capture-Log中-报告的错误"><a href="#3-Capture-Log中-报告的错误" class="headerlink" title="3.Capture Log中 报告的错误"></a>3.Capture Log中 报告的错误</h5><p>不在此文档中陈列，附上文档链接。</p>
+<p><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/edge/?source=Help&id=common_errors_reported_in_capture_log">Capture Log 中报告的错误 (audiokinetic.com)</a></p>
+<h3 id="2-2-Performance-Monitor"><a href="#2-2-Performance-Monitor" class="headerlink" title="2.2 Performance Monitor"></a>2.2 Performance Monitor</h3><p>性能监视器显示有关性能的信息，包括声音引擎执行的各个活动的 CPU、内存和流播放等内容。</p>
+<p>曲线图的右侧列出了一系列关键性能计数器，用于显示图形中各时间点的实际性能。</p>
+<p>可以通过在坐标图中拖动 Performance Monitor 的时间光标来查看特定时间点上各个计数器的性能。</p>
+<p>除此之外，还可按下 <strong>Alt+逗点</strong> (,) 来向左移动一个音频帧，或按下 <strong>Alt+句点</strong> (.) 来向右移动一个音频帧。</p>
+<table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">![performance setting](image\Typora\performance setting.png)</td>
+<td align="left">单击视图右上角的 View Settings 图标以弹出 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=performance_monitor_settings">“Performance Monitor Setting”一节</a> ，可在其中指定曲线图和性能数据列表中显示哪些内容。</td>
+</tr>
+<tr>
+<td align="left">性能数据列表</td>
+<td align="left">性能<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=performance_monitor_settings#profiler_counters">计数器</a>的列表，在捕捉过程中会实时更新相应数值，并且根据曲线图时间轴中的选定时刻显示数值。可以在 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=performance_monitor_settings">“Performance Monitor Setting”一节</a> 的 <strong>Show in List</strong> 列中选定要列出的的性能计数器。</td>
+</tr>
+</tbody></table>
+<h4 id="Performance-Monitor-Setting"><a href="#Performance-Monitor-Setting" class="headerlink" title="Performance Monitor Setting"></a>Performance Monitor Setting</h4><h5 id="1-Counter"><a href="#1-Counter" class="headerlink" title="1.Counter"></a>1.Counter</h5><p>计数器。可在 Performance Monitor 中显示的计数器的名称。</p>
+<p>有些计数器并不适用于所有平台。</p>
+<ul>
+<li><p><strong>API calls</strong>: 在特定时刻，针对声音引擎的 API 调用数量。开放调用的数量包括对同一个函数的多次调用。所以比如在某一时刻有 5 个不同的 API 函数被调用，但由于对同一个函数进行了多次调用，所以总调用次数可能要比 5 高得多。</p>
+</li>
+<li><p><strong>Command Queue Size</strong>：当前为 Command Queue 分配的内存量，用于储存游戏应用程序发送给声音引擎的命令。命令队列的默认大小为 256 KB。最大值可以在 Wwise SDK 中进行设置。</p>
+<p>例如：播放事件（Play Event）。RTPC &#x3D; 50。</p>
+<p>只有在 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=profiler_settings">“Profiler Settings”一节</a> 中启用了 <strong>API Calls</strong> 数据类型，才会在 Capture Log 中显示相应的命令。</p>
+</li>
+<li><p><strong>Command Queue Used</strong>：当前时刻 Command Queue 的占用百分比。</p>
+</li>
+<li><p><strong>CPU - Plug-in Total</strong>：在指定时刻，插件占用的 CPU 比例。</p>
+</li>
+<li><p><strong>CPU - Total</strong>: 音频线程的 CPU 占用量。Audio Thread CPU 所基于的计数器会从唤醒处理音频的音频线程时开始计数，并在音频线程处理完成时结束计数。根据所在平台和运行在同一 CPU 核心上的其它线程的优先级，此数字可能会比声音引擎的实际 CPU 占用大很多。但是，您可以将其视为“音频运算资源百分比”，也就是说，如果它接近 100%，则音频将很有可能无 CPU 可用。</p>
+</li>
+<li><p><strong>Hardware Audio Decoder Usage</strong>：任意时刻所用 Hardware Audio Decode 资源的百分比。</p>
+<p>只有在选择特定平台（PS4 和 PS5）时才会显示此计数器。</p>
+</li>
+<li><p>**Loaded Banks (Memory)**：当前内存中加载的 SoundBank 大小。</p>
+</li>
+<li><p><strong>Loudness Momentary</strong>(Instance A to D)<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=loudness_meter">“Loudness Meter”一节</a>：瞬时（0.4 秒矩形时间窗口）响度级。</p>
+</li>
+<li><p><strong>Loudness Short-term</strong>(Instance A to D)<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=loudness_meter">“Loudness Meter”一节</a>：短期（3 秒矩形时间窗口）响度级。</p>
+</li>
+<li><p><strong>Number of Active Events</strong>：由游戏发送（尚未达到相应 Active Listener 上限）的事件数量。</p>
+</li>
+<li><p><strong>Number of Active Listeners</strong>：活跃的听者数量。</p>
+</li>
+<li><p><strong>Number of Active Sends</strong>：活跃的 Game-defined 或 User-defined 辅助发送数量。</p>
+</li>
+<li><p>**Number of Audio Objects Used (System)**：在任意时刻播放的 System Audio Object 数量。</p>
+</li>
+<li><p><strong>Number of Prepared Events</strong>： 使用函数 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_a98b617d05618e6d18680d198845ff3d7.html"><code>PrepareEvent()</code></a>进行预备的事件数量。</p>
+<p>当预备 Event 时，只有该 Event 关联的特定媒体会被加载到内存中。</p>
+</li>
+<li><p><strong>Number of Registered Objects</strong>：当前时刻已注册的游戏对象数量。</p>
+</li>
+<li><p><strong>Number of State Transitions</strong>：当前时刻 State 之间的过渡数量。</p>
+</li>
+<li><p><strong>Number of Streams</strong>：当前时刻打开的流播放的总数。</p>
+</li>
+<li><p>**Number of Streams (Active)**：激活的流数量。在上一个性能分析帧中，如果流播放需要或正在等待至少一条 I&#x2F;O 传输时，则该流播放处于活跃状态。</p>
+</li>
+<li><p><strong>Number of Transitions&#x2F;Interpolations</strong>：当前时刻活动的淡变&#x2F;过渡&#x2F;插值的数量。</p>
+</li>
+<li><p><strong>Number of Voices (Physical)</strong>: 当前时刻播放的实声部数量。</p>
+</li>
+<li><p><strong>Number of Voices (Total)</strong>: 当前时刻播放的音频声部或独立实例总数（实声部和虚声部）。</p>
+</li>
+<li><p>**Number of Voices (Virtual)**：在指定时刻，虚声部列表中的虚声部数量。</p>
+</li>
+<li><p><strong>Output Peak</strong>：在指定时刻，声音引擎的峰值输出，单位为 dB。</p>
+</li>
+<li><p>**Prepared Events (Memory)**： 已预备的事件所占用的内存大小。该大小也包括预备事件之后，因此而加载到内存中的所有媒体文件的大小。</p>
+</li>
+<li><p><strong>Profiler Bandwidth</strong>：由游戏发送到 Wwise 设计工具的性能分析数据量。单位：KB&#x2F;s（千字节&#x2F;秒）。</p>
+</li>
+<li><p><strong>Spatial Audio - Computed Edges</strong>：此帧当中已处理的衍射边缘数。Spatial Audio 针对边缘可见性构建有相应的内部数据结构。对此，每帧都会逐步加以更新。</p>
+<p>已知问题：在 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=audio_preferences">“Audio Preferences”一节</a> 中选择 Multi-Core Rendering 时，Spatial Audio 计数器（Spatial Audio - CPU 除外）可能无法正确显示数值。</p>
+</li>
+<li><p><strong>Spatial Audio - CPU</strong>：Spatial Audio 的总计 CPU 用量，表示为音频帧的百分比。该值约等于 Spatial Audio - Raytracing CPU、Spatial Audio - Path Validation CPU、Spatial Audio - Portal Raytracing CPU 和 Spatial Audio - Portal Path Validation CPU 之和。注意，这跟 Advanced Profiler CPU 选项卡中显示的 CPU 百分比有所不同：Spatial Audio CPU 表示每次调用 Spatial Audio 时的 CPU 占用率，而 CPU 选项卡中所示 Spatial Audio CPU 百分比则表示一帧之内的累计 CPU 占用率。除此之外，CPU 选项卡中所示实例数表示每帧调用 Spatial Audio 的次数。在调用 Spatial Audio 时并不一定会触发路径的计算。Spatial Audio - CPU 值取决于发声体的数量、几何构造的复杂程度（即三角形和衍射边缘的数量）和所启用的功能（即反射阶数、衍射和对衍射的反射）。</p>
+</li>
+<li><p><strong>Spatial Audio - Diffraction Edges</strong>：当前 3D 环境中的衍射边缘总数。</p>
+</li>
+<li><p><strong>Spatial Audio - Emitters Processed</strong>：由 Spatial Audio 处理的发声体数量：对于每个发声体，Spatial Audio 都会对反射和衍射路径进行验证。</p>
+</li>
+<li><p><strong>Spatial Audio - Path Validation CPU</strong>：Spatial Audio 在路径验证阶段的 CPU 用量，表示为音频帧的百分比。在路径验证阶段，Spatial Audio 会对射线追踪阶段找到的以及之前帧中验证过的潜在反射和衍射路径进行验证。Spatial Audio - Path Validation CPU 成本主要受发声体数量影响：发声体越多，成本就越高。</p>
+</li>
+<li><p><strong>Spatial Audio - Portal Path Validation CPU</strong>：Spatial Audio 在验证从 Portal 到听者和发声体的路径时的 CPU 用量，表示为音频帧的百分比。Spatial Audio - Portal Path Validation CPU 成本主要受发声体数量和 Room 与 Portal 通路的复杂程度影响。</p>
+</li>
+<li><p><strong>Spatial Audio - Portal Raytracing CPU</strong>：Spatial Audio 在对环境进行采样以查找从 Portal 到听者和发声体的潜在路径时的 CPU 用量，表示为音频帧的百分比。Spatial Audio - Portal Raytracing CPU 成本主要取决于几何构造的复杂程度（即三角形和衍射边缘的数量）和所启用的功能（即反射阶数、衍射和对衍射的反射）。该值不受发声体的数量影响。</p>
+</li>
+<li><p><strong>Spatial Audio - Primary Rays</strong>：由 Spatial Audio 标定的初级射线数量。</p>
+</li>
+<li><p><strong>Spatial Audio - Raytracing CPU</strong>：Spatial Audio 在射线追踪阶段的 CPU 用量，表示为音频帧的百分比。在射线追踪阶段，Spatial Audio 会对环境进行采样以查找听者和发声体之间的潜在反射和衍射路径。Spatial Audio - Raytracing CPU 成本主要取决于几何构造的复杂程度（即三角形和衍射边缘的数量）和所启用的功能（即反射阶数、衍射和对衍射的反射）。该值不受发声体的数量影响。</p>
+</li>
+<li><p><strong>Spatial Audio - Triangles</strong>：当前 3D 环境中的三角形总数。</p>
+</li>
+<li><p>**Total Media (Memory)**：已加载到内存中的媒体文件的总大小。</p>
+</li>
+<li><p><strong>Total Reserved Memory</strong>：预留或映射到物理内存的内存总量（运行时内存分配不一定会使用）。</p>
+</li>
+<li><p><strong>Total Streaming Bandwidth</strong>：在指定时刻，流播放占用的总带宽。此值包含 Low-level I&#x2F;O 传输以及通过 Stream Manager 缓存进行的传输（不需要访问磁盘），因此此值大于或等于总 I&#x2F;O 带宽。</p>
+</li>
+<li><p>**Total Streaming Bandwidth (Low-Level)**：在指定时刻，流播放占用的总带宽。总底层播放流带宽。该值仅会考虑 Low-level I&#x2F;O 传输，并且不考虑 Stream Manager 中通过缓存数据所做的虚拟传输。</p>
+</li>
+<li><p><strong>Total Used Memory</strong>：运行时内存分配所用的内存总量。</p>
+</li>
+</ul>
+<h5 id="2-Show-in-Graph"><a href="#2-Show-in-Graph" class="headerlink" title="2.Show in Graph"></a>2.Show in Graph</h5><p>在坐标图中显示。确定计数器是否显示在 Performance Monitor 坐标图视图中。</p>
+<h5 id="3-Show-in-List"><a href="#3-Show-in-List" class="headerlink" title="3.Show in List"></a>3.Show in List</h5><p>在列表中显示。确定计数器是否显示在 Performance Data 列表中。</p>
+<h5 id="4-Graph-Min"><a href="#4-Graph-Min" class="headerlink" title="4.Graph Min"></a>4.Graph Min</h5><p>坐标图最小值。为各个计数器定义坐标图带的最小值域。选择高亮的字段进行修改。</p>
+<p>在曲线图底部显示的粗线表示当前值小于 Graph Min（图表下限）。</p>
+<h5 id="5-Graph-Max"><a href="#5-Graph-Max" class="headerlink" title="5.Graph Max"></a>5.Graph Max</h5><p>坐标图最大值。为各个计数器定义坐标图带的最大纵轴值域。选择高亮的字段进行修改。</p>
+<p>在曲线图上方显示的粗线表示当前值大于 Graph Max （图表上限）。</p>
+<h5 id="6-Moving-Avg"><a href="#6-Moving-Avg" class="headerlink" title="6.Moving Avg"></a>6.Moving Avg</h5><p>移动平均。定义在多长的采样期间移动平均曲线；值越大，曲线越平滑。</p>
+<p>在设为零时，将不显示任何平均曲线。</p>
+<h3 id="2-3-Advanced-Profiler"><a href="#2-3-Advanced-Profiler" class="headerlink" title="2.3 Advanced Profiler"></a>2.3 Advanced Profiler</h3><p>您可以通过单击 Show Live Data 按钮<img src="/image%5CTypora%5Clive.png" alt="live">来在捕获的同时查看相应信息，或者通过在坐标图中拖动 Performance Monitor 的时间光标来查看特定时间点的信息。</p>
+<p>可按下 <strong>Alt+逗点</strong> (,) 来向左移动一个音频帧，或按下 <strong>Alt+句点</strong> (.) 来向右移动一个音频帧。</p>
+<h4 id="1-Voices-Graph"><a href="#1-Voices-Graph" class="headerlink" title="1.Voices Graph"></a>1.Voices Graph</h4><p>结构中每个元素之间的关系用线条来表示，并且包含元素信息。例如：</p>
+<ol>
+<li><p>对象或总线下方带有*<u>名称的蓝色方框</u>*表示其应用的效果器。</p>
+</li>
+<li><p>事件或对象名称旁边带有*<u>乘号和数字的灰色方框</u>*表示实例的数量。</p>
+</li>
+<li><p>对象或总线名称下方带<u><em>有数字和图标的浅灰色方框</em></u>表示相对音量电平（dB），低通滤波器值（0-100）和高通滤波器值（0-100）。</p>
+</li>
+<li><p>鼠标指向一个对象时，将高亮其整个路径：包括父对象、子对象以及连接线。音频对象和 Auxiliary Bus（辅助总线）之间由虚线连接。</p>
+<blockquote>
+<p>​	<strong>如果虚线是红色的…</strong></p>
+<p>​	红色虚线表示延迟。在音量输出旁边，会以毫秒为单位显示延迟量。</p>
+<p><img src="https://www.audiokinetic.com/images/2022.1.4_8200/?source=Help&id=Images/latency_line.png" alt="img"></p>
+<p>​	如果 Auxiliary Bus 在当前音频帧中正在进行混音，那么后续到达的辅助发送信号就会出现延迟。Wwise 必须等待下一个音频帧，才能将新的辅助发送信号进行混音。为了避免这种情况，请勿向更低层级的Auxiliary Bus 进行辅助发送。</p>
+</blockquote>
+</li>
+<li><p>连接线上的浅灰色方框显示该通路的相对音量、低通滤波器和高通滤波器参数。</p>
+</li>
+<li><p>图中一组元素后面的深灰色背景方框表示游戏对象。左上角的浅灰色方框显示了游戏对象的名称。</p>
+</li>
+<li><p>如果名称显示为灰色，且旁边显示标有 <strong>Virtual</strong> 的浅灰色矩形，表示它是虚声部。</p>
+</li>
+</ol>
+<p><img src="https://www.audiokinetic.com/images/2022.1.4_8200/?source=Help&id=Images/AP_Effect_Graph_Example1.png" alt="img"></p>
+<p>Voice Graph 选项卡中的数据仅在各个捕获周期收集一次。但是，您可以使用 Performance&#x2F;Voice Monitor 中的时间光标来浏览不同时间段的数据。</p>
+<p>凡是列有游戏对象的地方（如 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=game_profiler_capture_log">“Capture Log”一节</a> 中或 Advanced Profiler 的 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=voices">“Voices（语音）”一节</a> 和 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=voices_graph">“Voices Graph 选项卡”一节</a> 选项卡中），都提供对象专有快捷菜单，包含以下选项：</p>
+<ul>
+<li><strong>Mute Game Object</strong>：将该游戏对象关联的所有音频对象静音。</li>
+<li><strong>Unmute Game Object</strong>：为该游戏对象关联的所有音频对象取消静音。</li>
+<li><strong>Solo Game Object</strong>：间接地将其他游戏对象关联的所有音频对象静音。</li>
+<li><strong>Unsolo Game Object</strong>：为其他游戏对象关联的所有音频对象取消静音。</li>
+<li><strong>Search Game Object in Voice Graph</strong>：打开 Advanced Profiler 的 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=voices_graph">“Voices Graph 选项卡”一节</a> 选项卡，将其 Filter 设置为指定的游戏对象。</li>
+</ul>
+<h4 id="2-Voices"><a href="#2-Voices" class="headerlink" title="2.Voices"></a>2.Voices</h4><p>显示有关声音引擎在任一时刻管理的各个声部或播放实例的信息。</p>
+<p>为了使振动对象显示在 Voices 选项卡中，您需要在电脑上安装适当的振动设备驱动程序。</p>
+<p><strong>Game Object</strong> 、 <strong>Target</strong> 、 <strong>Wwise Object</strong> 和 <strong>Bus</strong> 列均显示相应的 Mute 和 Solo 按钮（如 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=busses">“Busses”一节</a> 选项卡文档中所述）。但请注意，游戏对象将对 Wwise 对象产生特殊的影响。如果游戏对象被静音，则其关联的所有 Wwise 对象都将会静音。如果游戏对象被独奏，那么只有其相关的 Wwise 对象可能会播放；这是由它们自身的 Mute 和 Solo 设置决定的。</p>
+<h4 id="3-Busses"><a href="#3-Busses" class="headerlink" title="3.Busses"></a>3.Busses</h4><h4 id="4-Sends"><a href="#4-Sends" class="headerlink" title="4.Sends"></a>4.Sends</h4><h4 id="5-Audio-Devices"><a href="#5-Audio-Devices" class="headerlink" title="5.Audio Devices"></a>5.Audio Devices</h4><h4 id="6-Emitter-Listener-Associations"><a href="#6-Emitter-Listener-Associations" class="headerlink" title="6.Emitter-Listener Associations"></a>6.Emitter-Listener Associations</h4><h4 id="7-Memory"><a href="#7-Memory" class="headerlink" title="7.Memory"></a>7.Memory</h4><h4 id="8-Streams"><a href="#8-Streams" class="headerlink" title="8.Streams"></a>8.Streams</h4><h4 id="9-Streaming-Devices"><a href="#9-Streaming-Devices" class="headerlink" title="9.Streaming Devices"></a>9.Streaming Devices</h4><h4 id="10-CPU"><a href="#10-CPU" class="headerlink" title="10.CPU"></a>10.CPU</h4><h4 id="11-Obs-Occ"><a href="#11-Obs-Occ" class="headerlink" title="11.Obs&#x2F;Occ"></a>11.Obs&#x2F;Occ</h4><h4 id="12-Listeners"><a href="#12-Listeners" class="headerlink" title="12.Listeners"></a>12.Listeners</h4><h4 id="13-SoundBanks"><a href="#13-SoundBanks" class="headerlink" title="13.SoundBanks"></a>13.SoundBanks</h4><h4 id="14-Loaded-Media"><a href="#14-Loaded-Media" class="headerlink" title="14.Loaded  Media"></a>14.Loaded  Media</h4><h4 id="15-Prepared-Events"><a href="#15-Prepared-Events" class="headerlink" title="15.Prepared Events"></a>15.Prepared Events</h4><h4 id="16-Prepared-Game-Sync"><a href="#16-Prepared-Game-Sync" class="headerlink" title="16.Prepared Game Sync"></a>16.Prepared Game Sync</h4><h4 id="17-API"><a href="#17-API" class="headerlink" title="17.API"></a>17.API</h4><h3 id="2-4-Voice-Inspector"><a href="#2-4-Voice-Inspector" class="headerlink" title="2.4 Voice Inspector"></a>2.4 Voice Inspector</h3><h3 id="2-5-Audio-Object-3D-Viewer"><a href="#2-5-Audio-Object-3D-Viewer" class="headerlink" title="2.5 Audio Object 3D Viewer"></a>2.5 Audio Object 3D Viewer</h3><h3 id="2-6-Audio-Object-List"><a href="#2-6-Audio-Object-List" class="headerlink" title="2.6 Audio Object List"></a>2.6 Audio Object List</h3><h3 id="2-7-Audio-Object-Metadaa"><a href="#2-7-Audio-Object-Metadaa" class="headerlink" title="2.7 Audio Object Metadaa"></a>2.7 Audio Object Metadaa</h3><h3 id="2-8-Audio-Object-Meter"><a href="#2-8-Audio-Object-Meter" class="headerlink" title="2.8 Audio Object Meter"></a>2.8 Audio Object Meter</h3><h3 id="2-9-Voice-Monitor"><a href="#2-9-Voice-Monitor" class="headerlink" title="2.9 Voice Monitor"></a>2.9 Voice Monitor</h3><h3 id="2-10-Voice-Explorer"><a href="#2-10-Voice-Explorer" class="headerlink" title="2.10 Voice Explorer"></a>2.10 Voice Explorer</h3><h3 id="2-11-Game-Object-3D-Viewer"><a href="#2-11-Game-Object-3D-Viewer" class="headerlink" title="2.11 Game Object 3D Viewer"></a>2.11 Game Object 3D Viewer</h3><h3 id="2-12-Game-Sync-Monitor"><a href="#2-12-Game-Sync-Monitor" class="headerlink" title="2.12 Game Sync Monitor"></a>2.12 Game Sync Monitor</h3><h3 id="2-13-Profiler-Statistics视图"><a href="#2-13-Profiler-Statistics视图" class="headerlink" title="2.13 Profiler Statistics视图"></a>2.13 Profiler Statistics视图</h3><h2 id="3-Soundbank-Layout"><a href="#3-Soundbank-Layout" class="headerlink" title="3.Soundbank Layout"></a>3.Soundbank Layout</h2><p>Wwise 中有两类 Bank：</p>
+<ul>
+<li><p><strong>Initialization (Init) bank</strong> – 初始化库。一种特殊库，其中包含有关工程的所有通用信息，包括有关总线层级结构、状态、切换开关和 RTPC 的信息。如果条件具备，则它还可能包括音频设备 ShareSet。</p>
+<p>在每次 Wwise 生成 SoundBank 都会自动创建 Initialization Bank。Initialization Bank 通常在游戏开始时加载一次，以便在游戏期间能轻松地获取工程的所有通用信息。它必须是在启动游戏时最先加载的声音包；否则其它声音包（内容）可能会无法加载。Initialization Bank 的文件名为“Init.bnk”。</p>
+</li>
+<li><p><strong>SoundBank</strong> —— 此文件中同时包含事件数据、声音、音乐和振动结构数据或音频文件。与 Initialization Bank 不同，SoundBank 一般在游戏的不同时间加载和卸载，以提高平台内存的利用率。</p>
+</li>
+</ul>
+<h3 id="3-1-Soundbank-Manager"><a href="#3-1-Soundbank-Manager" class="headerlink" title="3.1 Soundbank Manager"></a>3.1 Soundbank Manager</h3><h4 id="1-Soundbank-Settings"><a href="#1-Soundbank-Settings" class="headerlink" title="1.Soundbank Settings"></a>1.Soundbank Settings</h4><ul>
+<li><p>Override Project Soundbank Settings.不沿用工程 SoundBank 设置，用来为 SoundBank 创建自定义设置。</p>
+</li>
+<li><p>Allow SoundBanks to exceed max size.决定是否允许生成超出大小上限的 SoundBank。</p>
+</li>
+<li><p>Use SoundBank names.</p>
+<p>决定在进行以下任务时，使用 SoundBank 名称还是 ID：</p>
+<ul>
+<li><p>命名生成的 SoundBank 文件（例如“Init.bnk”或“1355168291.bnk”）</p>
+</li>
+<li><p>当一个 SoundBank 引用了另一个 SoundBank 中的媒体时，识别目标文件。</p>
+</li>
+<li><p>根据游戏中使用的低级 I&#x2F;O 实现，该选项可能会影响如何调用 AK::SoundBank::LoadBank()。有关详细信息，请参阅 Wwise SDK 文档中的 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=soundengine__banks__general.html">使用 SoundBank 名称 </a>。路径为“声音引擎集成纵览 &gt; 将 Wwise 元素集成到游戏中 &gt; 集成 SoundBank &gt; 集成详情 – SoundBank &gt; 一般信息”。</p>
+</li>
+</ul>
+<p>Default value: true。</p>
+</li>
+<li><p>Generate header file.</p>
+<ul>
+<li><p>创建包含名称与 ID 映射关系的头文件。头文件用于映射 Event、State、Switch 和 Game Parameter。</p>
+</li>
+<li><p>该文件将保存在头文件路径中，其命名为“Wwise_IDs.h”。</p>
+</li>
+<li><p>如果程序员倾向于在代码中使用 ID，则必须生成头文件。</p>
+</li>
+</ul>
+<p>Default value: false</p>
+</li>
+<li><p>Generate Bank Content TXT Files.</p>
+<ul>
+<li><p>创建文件，其中列出各个 SoundBank 内容。内容文件包括有关 Event、总线、状态和切换开关的信息，以及流播放文件和内存媒体文件的完整列表。</p>
+</li>
+<li><p>您可以通过关联列表指定 SoundBank 内容文件的文本文件类型。</p>
+<ul>
+<li>ANSI</li>
+<li>Unicode</li>
+</ul>
+<p>如果文件路径、对象名称或备注中包含非 ANSI 字符，那么应使用 Unicode格式。</p>
+</li>
+</ul>
+</li>
+<li><p>Generate Metadata File.</p>
+<p>为所有音频包生成元数据文件。为每个指定类型（XML 或 JSON）创建一个文件 (SoundbanksInfo.xml&#x2F;SoundbanksInfo.json)，并在其中列出所有生成的 SoundBank 的信息。此文件包含 SoundBank 名称、路径、语言、所含 Event 和文件（AMB、WAV 和 WEM）以及为 Metadata Options 指定的各项详细信息。此选项还会创建一个 PluginInfo 文件（XML 或 JSON），并在其中列出工程中所用全部插件的信息。</p>
+<table>
+<thead>
+<tr>
+<th align="left">在生成 SoundBank 时可能会收到 Invalid info file 错误</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">对于流播放文件，Wwise 默认使用 SoundbanksInfo.xml 来完成 SoundBank 生成后步骤。假如无法找到该文件，系统会发出错误消息。因此，请一定要启用 Generate Metadata File 选项。同时，还要启用 Generate XML Metadata 选项。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Generate Per Bank Metadata File.</p>
+<p>为每个音频包生成元数据文件。为每个指定类型（XML 或 JSON）和单独生成的 SoundBank 创建文件，并在其中列出相关信息。这些文件包含 SoundBank 名称、路径、语言、所含 Event 和文件（AMB、WAV 和 WEM）以及为 Metadata Options 选项指定的各项详细信息。</p>
+</li>
+<li><p>Generate XML Metadata.</p>
+<ul>
+<li><p>生成 XML 元数据。无论启用了哪个 Generate Metadata File 选项，都可在此指定创建 XML 版本。若未启用任何 Generate Metadata File 选项，则将禁用此选项。</p>
+</li>
+<li><p>正如 Generate Metadata File 选项部分所述，Wwise 需要使用 SoundbanksInfo.xml 文件来处理流播放文件。因此，请务必启用此选项。</p>
+</li>
+</ul>
+</li>
+<li><p>Generate JSON Metadata.</p>
+<p>生成 JSON 元数据。无论启用了哪个 Generate Metadata File 选项，都可在此指定创建 JSON 版本。若未启用任何 Generate Metadata File 选项，则将禁用此选项。</p>
+</li>
+<li><p>Metadata Options</p>
+<ul>
+<li><p>Include GUID.包含 GUID。添加 Event 和 SoundBank 的全局唯一标识符。</p>
+</li>
+<li><p>Max Attenuation.</p>
+<p>最大衰减。决定是否在每个 Event 的元数据文件中包含最大衰减信息（详见 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=positioning_attenuation_editor">Attenuation Editor</a> 中的 Max distance 属性）。只有 “Play Event” 和 “Post Event” Action 可以设为非零值。</p>
+<p>Default value: false</p>
+</li>
+<li><p>Estimated duration.</p>
+<p>将尝试计算 SoundBank 中每个 Event 的预期时长。对于各个事件，soundbanksinfo.xml 文件中将包含 DurationType、MinDuration 和 MaxDurations 属性。DurationType 可以是以下值：“OneShot”、“Infinite”、“Mixed”或“Unknown”。“OneShot”表示非循环声音；“Infinite”表示循环声音；“Mixed”表示声音可能无限循环（可能基于随机因素或切换开关）；“Unknown”表示 Wwise 无法确定时长。MinDuration 和 MaxDuration 属性表示事件的最短和最长时长。请注意，这些范围仅为估算值，根据运行时条件不同，可能并不完全准确。</p>
+<p>Default value: false</p>
+</li>
+<li><p>Header file path:</p>
+<p>保存 SoundBank 头文件的路径或位置。</p>
+<p>根据您使用的是工程位置还是当前用户的自定义位置，该路径或位置可能不同。</p>
+</li>
+<li><p>Browse.浏览。打开 Windows 资源管理器或 Mac Finder，以便更改 SoundBank 头文件的默认保存位置。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-Soundbank-Editor"><a href="#3-2-Soundbank-Editor" class="headerlink" title="3.2 Soundbank Editor"></a>3.2 Soundbank Editor</h3><p>此布局包含为工程创建、管理和生成 SoundBank 所需的全部视图，包括 SoundBank Manager、Object Tab Group、Project Explorer 和 Event Viewer。</p>
+<p>为帮助您识别 SoundBank 中手动添加或弃用的工程元素，在 SoundBank Editor 的 Add 和 Game Sync 选项卡上，条目旁边会添加一个星号（*）。</p>
+<ul>
+<li><p><strong>Add</strong> —— 仅显示实际添加到 SoundBank 中的事件、对象层次结构、工作单元和文件夹。自动添加到 SoundBank 中的相应子对象将只显示在 Edit选项卡中。在 Add选项卡中，用户还可以决定各个层级结构元素中那些素信息或媒体类型将包含在 SoundBank 中。</p>
+<ul>
+<li>Event-事件。确定是否在 SoundBank 中包含与特定工程元素关联的 Event。</li>
+<li>Structure-结构。确定是否在 SoundBank 中包含与特定工程元素关联的声音、音乐和振动结构。</li>
+<li>Media-媒体。决定是否在 SoundBank 中包含与该工程元素相关联的媒体。</li>
+</ul>
+</li>
+<li><p><strong>Game Sync</strong> —— 您可以在该列表中调整 SoundBank 的内容，基于特定游戏同步器来启用或弃用特定事件、对象结构或媒体文件。</p>
+<p>例如，假设您为主要角色的脚步声使用了切换容器，且该切换容器包含木头、瓦片、毯子和水四个切换开关。水切换开关仅用于游戏中的一个区域，因此为了避免不必要地加载“水材质脚步”声，除了仅包含水材质的 SoundBank 外，您可以为其它材质域的 SoundBank 将水材质切换开关弃用。</p>
+</li>
+<li><p><strong>Edit</strong> —— 显示了将包含在 SoundBank 中的各个工程元素。该列表详细列出了被添加至 Add 选项卡的对象层级包含的各个元素。您可通过该详细列表来调整 SoundBank 中的内容，弃用特定事件、对象结构或媒体文件。</p>
+<p>显示 SoundBank 中媒体文件的详情，包括采样率、音频格式和文件大小。通过掌握这些附加信息，您可以轻松地微调各个文件的转码设置，以遵守特定平台的限制。要更改媒体文件的转码设置，只需右键点击列表中的条目并选择 Conversion Settings 即可。</p>
+<table>
+<thead>
+<tr>
+<th>Object（对象）</th>
+<th>对象。当前 SoundBank 中所有对象结构、事件和媒体文件的列表。点击列标题栏，可以按字母升序或降序来排序信息。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>采样率</td>
+<td>采样率。SoundBank 中的音频文件的采样率。采样率定义了每秒内对数字音频信号进行采样的次数，单位为赫兹 (Hz)。各个平台的采样率范围各不相同，最高 48,000 Hz。如果媒体文件尚未针对当前平台转码，则采样率信息将以蓝色显示；如果工程缺失原始媒体文件，则以红色显示。</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>SoundBank 中的音频文件的格式，例如 PCM、Vorbis 或 ADPCM。请参阅 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2022.1.4_8200/?source=Help&id=creating_audio_conversion_settings_sharesets#about_audio_formats">“关于音频格式”一节</a> 了解关于为平台选择音频文件格式的详细信息。如果媒体文件尚未针对当前平台转码，则格式信息将以蓝色显示；如果工程缺失原始媒体文件，则以红色显示。</td>
+</tr>
+<tr>
+<td>Memory Size</td>
+<td>内存大小。当 SoundBank 加载至内存中时，已转码的媒体文件将占用的平台内存量。<strong>Unit</strong>：字节如果选择流播放媒体文件，则内存大小将为零。</td>
+</tr>
+<tr>
+<td>Decoded Size</td>
+<td>解码后大小。在当前所选平台下，包含解码后 Opus 或 Vorbis 媒体的 SoundBank 所要使用的游戏内存量。若 SoundBank 不含 Opus 或 Vorbis 媒体文件，则此值与 Data Size 相同。<em>info_outline</em>备注如果 SoundBank 包含 Sound Voice 对象，则与 Data Size 列一样， 根据当前所选语言不同，Decoded Size 列也将更新。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>Prefetch Size</td>
+<td>预取大小。当 SoundBank 加载至内存中时，流播放媒体文件的预取数据将占用多少平台内存量。预取数据将被加载至内存中，以确保流播放媒体文件没有延迟。<strong>Unit</strong>：字节</td>
+</tr>
+<tr>
+<td>File Size</td>
+<td>已转码媒体文件的总大小。该数字不代表将生成 SoundBank 中的数据量，因为还取决于是否流播放媒体文件及其预取状态。<strong>Unit</strong>：字节</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>媒体文件的 9 位唯一识别号。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>Detail</strong> —— 显示与选定 SoundBank 中不同元素的大小相关的详细信息，以及报告可能缺失或已被替换的任何文件。</p>
+<table>
+<thead>
+<tr>
+<th>Types（类型）</th>
+<th>类型。对应 SoundBank 中包含的各种对象类型，如 SFX、Voice 和 Music。如果 SoundBank 包含所有四种对象，则该列将显示“All”（全部）。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Languages（语言）</td>
+<td>语言。当前工程中使用的语言列表。如果使用了多种语言，则这些语言将按字母顺序显示。如果 SoundBank 中不包含 Voice 对象，则该栏为空。</td>
+</tr>
+<tr>
+<td>SFX（音效）</td>
+<td>音效。当前 SoundBank 中声音 SFX 对象占用的内存量。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>Music</td>
+<td>当前 SoundBank 中音乐对象占用的内存量。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>Voice</td>
+<td>语音。特定语言的 Sound Voice 对象占用的内存量。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>Data Size（数据大小）</td>
+<td>数据大小。音效声和特定语言的 Sound Voice 对象占用的内存量。如果超出为该 SoundBank 设置的最大内存量，则当前大小将显示为红色。<strong>Units</strong>：字节<em>info_outline</em>备注即使超出您指定的最大内存量，仍然可以成功生成 SoundBank。</td>
+</tr>
+<tr>
+<td>Free Space</td>
+<td>剩余空间。SoundBank 中的剩余空间量。剩余空间是由最大内存量减去数据大小得到的。如果数据大小超出最大内存量，则剩余空间值将显示为红色。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>Missing Files</td>
+<td>缺失文件。该语言缺失的媒体文件（音效声和 Sound Voice ）数量。</td>
+</tr>
+<tr>
+<td>Files Replaced</td>
+<td>已替换的文件。该语言中缺失且被参考语言的音频文件所取代的 Sound Voice 音频文件数量。</td>
+</tr>
+<tr>
+<td>Memory Size</td>
+<td>内存大小。要加载至内存的 SoundBank 数据所占用的空间量。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>Prefetch Size</td>
+<td>预取大小。流播放媒体文件的预取数据占用的空间量。当加载 SoundBank 时会将该信息加载至内存，以确保流播放媒体文件没有延迟。<strong>Units</strong>：字节</td>
+</tr>
+<tr>
+<td>File Size</td>
+<td>文件大小。生成的 SoundBank 文件的总大小。<strong>Units</strong>：字节</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="4-Mixer-Layout"><a href="#4-Mixer-Layout" class="headerlink" title="4.Mixer Layout"></a>4.Mixer Layout</h2><h3 id="4-1-Mixing-desk"><a href="#4-1-Mixing-desk" class="headerlink" title="4.1 Mixing desk"></a>4.1 Mixing desk</h3><p>界面元素：</p>
+<ul>
+<li><p><img src="/image%5CTypora%5Cchoose.png" alt="choose">：选择混音会话。</p>
+</li>
+<li><p>Editing States：</p>
+<p>编辑状态。与混音会话中的对象相关联的各个 State Group 的名称和相应 State。</p>
+<p>当前所选状态会更改 Mixing Desk 中正在编辑的 State。</p>
+</li>
+<li><p>Follow State：</p>
+<p>跟随状态。决定混音会话中的 State 是否跟随游戏中的 State。</p>
+<p>若启用，则混音会话跟随游戏中的 State 变化。若禁用，则混音会话中的 State 将不跟随游戏中的 State 变化。</p>
+</li>
+<li><p>Push State:</p>
+<p>推送状态。决定混音会话中的状态变化是否会同时更改游戏中的 State。</p>
+<p>若启用，则每次混音会话中的编辑状态变化时，游戏中的 State 也会变化。若禁用，则更改混音会话中的 State 时不会更改游戏中的 State。</p>
+</li>
+<li><p>Copy Custom States…:</p>
+<p>打开 Copy Custom States 对话框，您可以在此将属性设置从一个自定义状态复制到另一个自定义状态。</p>
+</li>
+<li><p>Activity</p>
+<p>活动。使用一系列图标指示总线或对象内是否存在任何音频活动。</p>
+<p>您可以使用以下图标来监视各个对象或总线的活动：</p>
+<ul>
+<li><strong><img src="/image%5CTypora%5Cplayback.png" alt="playback">Voice Playback</strong> —— 指示正在播放对象。对于总线，它指示正在播放的声部信号正在通过总线。</li>
+<li><strong><img src="/image%5CTypora%5Cducking.png" alt="ducking">Ducking</strong> —— 指示是否正在闪避总线。</li>
+<li><strong><img src="/image%5CTypora%5Cbypass.png" alt="bypass">Effect Bypass</strong>（效果器旁通)：指示插入的 Effect 是否被旁通。</li>
+</ul>
+</li>
+<li><p><img src="/image%5CTypora%5Cmute.png" alt="mute">控制对象的 Mute（静音）和 Solo（单独播放)状态，也会显示该对象是否处于被动静音和 Solo 状态。</p>
+</li>
+</ul>
+<h3 id="4-2-Mixing-Desk-Settings"><a href="#4-2-Mixing-Desk-Settings" class="headerlink" title="4.2 Mixing Desk Settings"></a>4.2 Mixing Desk Settings</h3><table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">监视</td>
+<td align="left">&#x2F;</td>
+</tr>
+<tr>
+<td align="left">Activity</td>
+<td align="left">决定 Mixing Desk 中是否显示监视信息。在 Mixing Desk 中可对以下活动进行监视：声部播放总线闪避效果器旁通</td>
+</tr>
+<tr>
+<td align="left">Mute&#x2F;Solo</td>
+<td align="left">确定静音或 Solo 功能是否在 Mixing Desk 中可用。</td>
+</tr>
+<tr>
+<td align="left">Meter</td>
+<td align="left">确定电平表是否在 Mixing Desk 中可用。</td>
+</tr>
+<tr>
+<td align="left">Bus</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Output Bus</td>
+<td align="left">输出总线。决定是否在 Mixing Desk 中显示用于输出对象的 Bus 的名称。</td>
+</tr>
+<tr>
+<td align="left">Is Ducking</td>
+<td align="left">正在闪避。在当前 Bus 输出音频时，决定是否在 Mixing Desk 中显示正在闪避的 Bus 名称。</td>
+</tr>
+<tr>
+<td align="left">Output Bus Volume (horizontal slider)</td>
+<td align="left">输出总线音量(横向滑杆)。决定是否在调音台通道条中显示音量滑杆。此滑杆可用来控制对象 Output Bus 的音量电平。</td>
+</tr>
+<tr>
+<td align="left">Output Bus Low-pass Filter (horizontal slider)</td>
+<td align="left">输出总线低通滤波器(横向滑杆)。决定是否在调音台通道条中显示 Low-pass filter 滑杆。此滑杆可用来控制对象 Output Bus 的滤波器值。</td>
+</tr>
+<tr>
+<td align="left">Output Bus High-pass Filter (horizontal slider)</td>
+<td align="left">输出总线高通滤波器(横向滑杆)。决定是否在调音台通道条中显示 High-pass filter 滑杆。此滑杆可用来控制对象 Output Bus 的滤波器值。</td>
+</tr>
+<tr>
+<td align="left">Game-Defined Auxiliary Sends Volume (horizontal slider)</td>
+<td align="left">游戏定义的辅助发送音量(横向滑杆)。决定是否在 Mixing Desk 中显示指定编号的 Auxiliary Send Bus。</td>
+</tr>
+<tr>
+<td align="left">User-Defined Auxiliary Send 0-3</td>
+<td align="left">用户定义的辅助发送 0-3。决定是否在 Mixing Desk 中显示指定编号的 Auxiliary Send Bus。</td>
+</tr>
+<tr>
+<td align="left">User-Defined Auxiliary Send Volume 0-3</td>
+<td align="left">用户定义的辅助发送音量 0-3。决定是否在 Mixing Desk 中显示指定编号的 Auxiliary Send Volume。</td>
+</tr>
+<tr>
+<td align="left">定位</td>
+<td align="left">&#x2F;</td>
+</tr>
+<tr>
+<td align="left">Attenuation</td>
+<td align="left">衰减。确定是否在 Mixing Desk 中显示衰减共享集信息。</td>
+</tr>
+<tr>
+<td align="left">Center %</td>
+<td align="left">中置百分比。确定是否在 Mixing Desk 中显示Center % 信息。</td>
+</tr>
+<tr>
+<td align="left">Effects</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Effect 0-3</td>
+<td align="left">效果器 0-3。决定是否在 Mixing Desk 中显示 Effect 插槽 0-3 中的 Effect 信息。</td>
+</tr>
+<tr>
+<td align="left">States</td>
+<td align="left">&#x2F;</td>
+</tr>
+<tr>
+<td align="left">State Group</td>
+<td align="left">状态组。决定是否在 Mixing Desk 中显示各个对象的 State Group 信息。</td>
+</tr>
+<tr>
+<td align="left">State Properties</td>
+<td align="left">状态属性。决定是否在 Mixing Desk 中显示添加至各个对象的 State Properties。</td>
+</tr>
+<tr>
+<td align="left">Properties</td>
+<td align="left">&#x2F;</td>
+</tr>
+<tr>
+<td align="left">RTPC</td>
+<td align="left">决定是否在 Mixing Desk 中显示 RTPC 控件。</td>
+</tr>
+<tr>
+<td align="left">Bus Volume (horizontal slider)</td>
+<td align="left">总线音量(横向滑杆)。决定是否在 Mixing Desk 中显示 Bus Volume 信息。</td>
+</tr>
+<tr>
+<td align="left">Voice Volume (horizontal slider)</td>
+<td align="left">音量水平滑杆。确定是否在混音器工具栏中显示水平音量滑杆。此滑杆可让您控制各个对象或总线的音量电平。</td>
+</tr>
+<tr>
+<td align="left">Voice Pitch (horizontal slider)</td>
+<td align="left">声部音高(横向滑杆)。决定是否在调音台通道条中显示横向 Pitch 滑杆。此滑杆可让您控制各个对象或总线的音高值。</td>
+</tr>
+<tr>
+<td align="left">Voice Low-pass filter (horizontal slider)</td>
+<td align="left">声部低通滤波器(横向滑杆)。决定是否在调音台通道条中显示横向 Low-pass filter 滑杆。此滑杆可让您控制各个对象或总线的 LPF 值（有关详细信息，请参见<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=associating_low_pass_filter_values_with_their_corresponding_cutoff_frequencies#wwise_lpf_value_cutoff_frequencies">“Wwise 中 LPF 和 HPF 值对应的截止频率”一节</a>）。</td>
+</tr>
+<tr>
+<td align="left">Voice High-pass filter (horizontal slider)</td>
+<td align="left">声部高通滤波器(横向滑杆)。决定是否在调音台通道条中显示横向 High-pass filter 滑杆。此滑杆可让您控制各个对象或总线的 HPF 值。</td>
+</tr>
+<tr>
+<td align="left">Make-up Gain (vertical fader)</td>
+<td align="left">补偿增益(纵向推子)。决定是否在 Mixing Desk 中显示对象的纵向 Make-up Gain 推子。</td>
+</tr>
+<tr>
+<td align="left">Bus Volume (vertical fader)</td>
+<td align="left">音量纵向推子。确定是否在混音器工具栏中显示垂直音量推子。此推子可用来控制各个 Bus 的音量电平。</td>
+</tr>
+<tr>
+<td align="left">Voice Pitch (vertical fader)</td>
+<td align="left">音高纵向推子。确定是否在混音器工具栏中显示垂直音高推子。此推子可让您控制各个对象或总线的音高值。</td>
+</tr>
+<tr>
+<td align="left">Voice Low-pass filter (vertical fader)</td>
+<td align="left">低通滤波器纵向推子。确定是否在混音器工具栏中显示垂直低通滤波器推子。此推子可让您控制各个对象或总线的 LPF 值（有关详细信息，请参见<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=associating_low_pass_filter_values_with_their_corresponding_cutoff_frequencies#wwise_lpf_value_cutoff_frequencies">“Wwise 中 LPF 和 HPF 值对应的截止频率”一节</a>）。</td>
+</tr>
+<tr>
+<td align="left">Voice High-pass filter (vertical fader)</td>
+<td align="left">高通滤波器纵向滑杆。确定是否在混音器工具栏中显示垂直高通滤波器推子。此推子可让您控制各个对象或总线的 HPF 值。</td>
+</tr>
+<tr>
+<td align="left">Make-up Gain (vertical fader)</td>
+<td align="left">补偿增益。确定是否在 Mixing Desk 中显示 Make-up Gain 信息。</td>
+</tr>
+<tr>
+<td align="left">其它</td>
+<td align="left">&#x2F;</td>
+</tr>
+<tr>
+<td align="left">Object Name</td>
+<td align="left">对象名。确定是否在各个混音器工具栏的底部显示对象或总线的名称。</td>
+</tr>
+<tr>
+<td align="left">Vertical fader height</td>
+<td align="left">纵向推子高度。决定 Mixing Desk 中纵向推子的高度（像素）。</td>
+</tr>
+<tr>
+<td align="left">Meter height</td>
+<td align="left">电平表高度。决定 Mixing Desk 中电平表的高度（像素）。</td>
+</tr>
+</tbody></table>
+<h3 id="4-3-Soundcaster"><a href="#4-3-Soundcaster" class="headerlink" title="4.3 Soundcaster"></a>4.3 Soundcaster</h3><p>利用 Soundcaster 控件，可快速更改、编辑和应用对象、Event、State、Switch、Trigger 和 RTPC 的属性，然后在 Wwise 和游戏中试听结果。</p>
+<h4 id="1-Soundcaster控件"><a href="#1-Soundcaster控件" class="headerlink" title="1.Soundcaster控件"></a>1.Soundcaster控件</h4><ul>
+<li><p>Original</p>
+<p>确定播放的是原始音频源还是转码音频源。</p>
+<p>如果勾选该选项，则对象会以原始的未转码形式播放。如果未勾选该选项，则播放对象的转码版本（如果存在的话）。</p>
+<p>在针对特定平台对某个音频文件做转码时，转码的目的是要满足该平台的特定硬件要求。因此，如果 Wwise 设计工具的运行平台不支持该文件类型，可能会无法播放这些转码文件。</p>
+</li>
+<li><p>Inc,Only</p>
+<p>当勾选该选项时，只有所选平台中包含的对象才可在 Soundcaster 中播放。</p>
+</li>
+<li><p><img src="/image%5CTypora%5Cstop.png" alt="stop">Stop</p>
+<p>停止所有 Soundcaster 模块的播放。</p>
+</li>
+<li><p><img src="/image%5CTypora%5Cpause.png" alt="pause">Pause</p>
+<p>暂停所有 Soundcaster 模块的播放。再次点击此按钮将恢复播放。</p>
+</li>
+<li><p><img src="/image%5CTypora%5CDelay.png" alt="Delay">Delay</p>
+<p>延迟。指示是否对 Event Action、Random Container 或 Sequence Container 应用了延迟。如果存在延迟，则此图标在延迟期间会变成蓝色。</p>
+</li>
+<li><p><img src="/image%5CTypora%5CFade.png" alt="Fade">Fade</p>
+<p>淡变。指示是否对 Event Action、Random Container 或 Sequence Container 应用了淡变。如果存在淡变，则此图标在淡变期间会变成蓝色。</p>
+</li>
+<li><p>Reset Selector菜单</p>
+<p>打开 Reset Selector 菜单，其中有以下选项：</p>
+<ul>
+<li><strong>Reset All</strong>（重置所有），停止播放并将所有属性和设置恢复至原始值。</li>
+<li><strong>Reset All Random and Sequence Containers</strong>（重置所有随机容器和序列容器），让序列容器返回播放列表的开头，或重置随机容器的随机播放属性。</li>
+<li><strong>Reset All Game Parameters</strong>（重置所有Game Parameter），将所有的 Game Parameter 恢复至原始设置。</li>
+<li><strong>Reset All Set Mute</strong>（重置所有设置的静音），清除对象的所有 Mute（静音）动作。</li>
+<li><strong>Reset All Set Voice Pitch</strong>（重置所有音高设置），清除针对对象的所有 Set Voice Pitch 动作。</li>
+<li><strong>Reset All Set Voice Volume</strong>（重置所有音量设置），清除针对对象的所有 Set Voice Volume 动作。</li>
+<li><strong>Reset All Set Bus Volume</strong>（重置所有的总线音量设置），清除针对对象的所有 Set Bus Volume 动作。</li>
+<li><strong>Reset All Set Voice Low-pass Filter</strong>（重置所有的声部低通滤波器设置），清除针对对象的所有 Low-Pass Filter 动作。</li>
+<li><strong>Reset All Bypass Effect</strong>（重置所有旁通效果器），重置针对对象的所有 Bypass Effect（旁通效果器）动作。</li>
+<li><strong>Reset All States</strong>（重置所有状态），清除针对对象的所有 <strong>Set State</strong>（设置状态）动作。</li>
+<li><strong>Reset All Switches</strong>（重置所有切换开关），清除针对对象的 Switch（切换开关）动作。</li>
+<li><strong>Reset All Music Tracks Force Usage</strong>（重置所有强制音乐轨），在 Transport Control（播放控制）中清除强制播放的音乐轨。</li>
+<li><strong>Reset All Source Editor Play Cursors</strong>（重置所有源文件的播放光标），清除针对对象的所有 Source Editor Play Cursor 操作。</li>
+<li><strong>Reset Position</strong> 可以将 Attenuation Preview（衰减预览）控件内的听者位置重置为其默认位置。</li>
+</ul>
+</li>
+<li><p>![voice volume](image\Typora\voice volume.png)Set Voice Volume</p>
+<p>指示是否对对象应用了 Voice Volume 动作。若应用了 Voice Volume 动作，则此图标在播放期间将变为蓝色，并在 Soundcaster 中一直显示为蓝色，直至重置音量。</p>
+</li>
+<li><p><img src="/image%5CTypora%5CPitch.png" alt="Pitch">Set Pitch</p>
+<p>设置音高。指示是否对对象应用了 Pitch 动作。当应用了 Pitch 动作时，此图标在播放期间变成蓝色，并在重置音高之前在 Soundcaster 中一直保持蓝色。</p>
+</li>
+<li><p><img src="/image%5CTypora%5Ccaster_mute.png" alt="caster_mute">Mute</p>
+<p>静音。指示是否对对象应用了 Mute 动作。当应用了 Mute 动作时，此图标在播放期间变成蓝色，并在重置 Mute 之前在 Soundcaster 中一直保持蓝色。</p>
+</li>
+<li><p><img src="/image%5CTypora%5CLowpassfilter.png" alt="Lowpassfilter">Set Low Passfilter</p>
+<p>声部低通滤波器。基于指定频率值针对高频进行衰减的递归滤波器。</p>
+<p>此滤波器的单位表示低通滤波的百分比，其中 0 表示无低通滤波（信号不受影响）而 100 表示最大衰减。</p>
+</li>
+<li><p><img src="/image%5CTypora%5Cnable_bypass.png" alt="nable_bypass">Enabe Bypass</p>
+</li>
+</ul>
+<h4 id="2-Soundcaster模块"><a href="#2-Soundcaster模块" class="headerlink" title="2.Soundcaster模块"></a>2.Soundcaster模块</h4><p>内容比较常规，不再赘述 。</p>
+<h2 id="5-Schematic-View-Layout"><a href="#5-Schematic-View-Layout" class="headerlink" title="5.Schematic View Layout"></a>5.Schematic View Layout</h2><p>会以图形形式显示工程中总线、振动、音乐和声音对象的层次结构。在默认情况下，Schematic View 显示整个工程的层级结构和不同通路连接，但您可以使用 Search 字段筛选视图，只显示某对象的层级结构。</p>
+<table>
+<thead>
+<tr>
+<th align="left">连接类型</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><img src="/image%5CTypora%5Cline_1.png" alt="line_1"></td>
+<td align="left">定义两个节点间的层级结构关系。左侧节点是右侧节点（子节点）的父节点。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Cline_2.png" alt="line_2"></td>
+<td align="left">定义两个节点之间的通路关系。左侧节点为 Audio Bus（音频总线），右侧节点为音频对象。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Cline_3.png" alt="line_3"></td>
+<td align="left">定义两个节点之间的通路关系，其中右侧节点不沿用父对象的通路。左侧节点是总线。右侧节点为音频对象。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Cline_4.png" alt="line_4"></td>
+<td align="left">定义两个节点之间的辅助发送通路关系，其中右侧节点（音频对象）将音频发送到左侧 Auxiliary Bus（辅助总线）。</td>
+</tr>
+<tr>
+<td align="left"><img src="/image%5CTypora%5Cadd.png" alt="add"></td>
+<td align="left">点击将展开示意图，并显示对象的所有子项。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>（图标栏）</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="/image%5CTypora%5Cmaster_bus.png" alt="master_bus">（总线)</td>
+<td>显示对象通路所使用的总线。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cauxiliary_bus.png" alt="auxiliary_bus">（总线)</td>
+<td>显示该对象的用户定义型辅助发送的列表。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Ceffect_1.png" alt="effect_1">（效果器)</td>
+<td>效果器。显示对象所用 Conversion Settings（转码设置）共享集的名称。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Ceffect_2.png" alt="effect_2">（效果器)</td>
+<td>显示已作用于对象的任何效果器。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cposition.png" alt="position">（定位类型)</td>
+<td>显示应用于对象的定位类型（No Positioning、3D Emitter、3D Emitter with Automation、3D Listener with Automation）。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Crtpc.png" alt="rtpc">（游戏参数)</td>
+<td>游戏参数。显示通过 RTPC 影响对象的 Game Parameter。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5CstateGroup.png" alt="stateGroup">（状态组)</td>
+<td>显示对象所属的 State Group。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Csetting.png" alt="setting">（高级设置)</td>
+<td>显示对某一对象的高级设置所作的更改（如播放数限制或音量阈值）。</td>
+</tr>
+</tbody></table>
+<h3 id="Schematic-View-Settings"><a href="#Schematic-View-Settings" class="headerlink" title="Schematic View Settings"></a>Schematic View Settings</h3><p>Schematic View Settings（对象网络视图设置）对话框可让您筛选与 Schematic View 中显示的属性值相关的信息量。</p>
+<table>
+<thead>
+<tr>
+<th align="left">界面元素</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">General</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Icon Strip</td>
+<td align="left">图标栏。显示一行图标，这些图标表示对对象属性所作的更改。</td>
+</tr>
+<tr>
+<td align="left">Mute&#x2F;Solo</td>
+<td align="left">静音／ Solo。显示对象的 Mute 和 Solo 按钮。</td>
+</tr>
+<tr>
+<td align="left">Bus</td>
+<td align="left">总线。显示对象的总线通路。</td>
+</tr>
+<tr>
+<td align="left">Conversion Settings（转码设置）</td>
+<td align="left">转码设置。显示应用于对象的 Conversion Settings 共享集（如存在）。</td>
+</tr>
+<tr>
+<td align="left">Effect（效果器）</td>
+<td align="left">效果器。显示应用于对象的 Effect（如存在）。</td>
+</tr>
+<tr>
+<td align="left">Game Parameters</td>
+<td align="left">游戏参数。显示通过 RTPC 影响对象的 Game Parameter。</td>
+</tr>
+<tr>
+<td align="left">State Group</td>
+<td align="left">显示会影响对象的 State Group（状态组）。</td>
+</tr>
+<tr>
+<td align="left">Advanced Settings</td>
+<td align="left">高级设置。显示已为对象指定的高级设置。</td>
+</tr>
+<tr>
+<td align="left">属性</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Volume</td>
+<td align="left">显示各个工程对象的音量设置。</td>
+</tr>
+<tr>
+<td align="left">Pitch</td>
+<td align="left">显示各个工程对象的音高设置。</td>
+</tr>
+<tr>
+<td align="left">Low-Pass</td>
+<td align="left">显示各个工程对象的声部低通滤波器设置。</td>
+</tr>
+<tr>
+<td align="left">High-Pass</td>
+<td align="left">显示各个工程对象的声部高通滤波器设置。</td>
+</tr>
+</tbody></table>
+<h2 id="6-Interactive-Music-Layout"><a href="#6-Interactive-Music-Layout" class="headerlink" title="6.Interactive Music Layout"></a>6.Interactive Music Layout</h2><p>内容在**<u><em>1.1.1 Elements Type</em></u><strong>中</strong><u><em>1.Folder Type</em></u><strong>中 的</strong><u><em>8.Music Switch Container</em></u>**讲到，不再赘述。</p>
+<h2 id="7-Dialogue-Event-Editor"><a href="#7-Dialogue-Event-Editor" class="headerlink" title="7.Dialogue Event Editor"></a>7.Dialogue Event Editor</h2><p>可以排列和组合状态或切换开关来创建不同“路径”，用于在游戏中动态选择要播放哪个单词或词组。在该编辑器中，可添加并排列想要包含在 Event 中的 State Group或 Switch Group。随后可以选择状态或切换开关的不同组合来定义路径，每条路径可以与一个特定声部或声音对象相关联。在运行时，声音引擎会根据预定义路径来匹配触发的 State 或 Switch，以便确定要播放哪个声音。您还可以使用权重值来决定特定路径被选择的可能性高低。</p>
+<blockquote>
+<p>内容多与Music Switch Container重合，所以只会选择介绍，不多赘述重复内容。</p>
+</blockquote>
+<p><strong>Probability：</strong></p>
+<ul>
+<li>概率。使用该路径播放音频的可能性。</li>
+<li>最终的播放概率是所选路径概率和对白事件概率的组合。</li>
+<li>单位：%</li>
+<li>Default value: 100</li>
+<li>Range: 0 to 100</li>
+</ul>
+<h2 id="8-File-package"><a href="#8-File-package" class="headerlink" title="8.File package"></a>8.File package</h2><p>File Packager是独立的应用程序，可以将 Wwise 生成的 SoundBank、零散媒体以及流播放文件分组，并放到若干个文件包中。</p>
+<p>文件包是将文件系统抽象化之后的独立单元，加载文件包会在内存中创建查找表，它会为 Wwise 指明媒体在 PCK 文件中的位置。您可以通过使用文件包来规避平台文件系统的一些限制，包括文件名长度和文件数量限制。文件包还可帮您更好地管理多语言版本，以及发布后可供下载的内容（DLC）。</p>
+<p>通过将 SoundBanksInfo.xml 文件导入 File Packager 来进行检索，可以获取Wwise 工程的 SoundBank 和流文件的所有信息。</p>
+<blockquote>
+<p><strong>生成 SoundbanksInfo.xml 文件</strong></p>
+<p>在 Project Settings 或 SoundBanks Settings 的 SoundBanks 选项卡下，须始终启用 Generate Metadata Files 选项。同时，还要启用 Generate XML Metadata 选项。利用这些设置，Wwise 可在每次成功生成 SoundBank 时自动生成 SoundbanksInfo.xml 文件。</p>
+</blockquote>
+<p>默认情况下，所有文件都会添加到 default.pck 文件包中，该文件包将生成至各平台 SoundBank 路径的根目录下。也可以创建新的文件包，手动将文件添加至其中并修改文件包的储存位置。</p>
+<p>可以使用 File Packager 手动创建文件包，或者在 SoundBank 生成时使用命令行运行 File Packager 来自动创建。该命令行可以在工程级别设置，也可以在 SoundBank 的 User Setting 中自定义。</p>
+<h3 id="8-1-使用File-Packager"><a href="#8-1-使用File-Packager" class="headerlink" title="8.1 使用File Packager"></a>8.1 使用File Packager</h3><h4 id="1-将SoundBank信息导入File-Packager"><a href="#1-将SoundBank信息导入File-Packager" class="headerlink" title="1.将SoundBank信息导入File Packager"></a>1.将SoundBank信息导入File Packager</h4><ol>
+<li><p>点击 SoundBanks Info file（ SoundBank 信息文件）旁边的 <strong>Browse</strong>（浏览）按钮</p>
+<p>Windows 系统的 Open对话框将会打开。</p>
+</li>
+<li><p>浏览至 SoundBanksInfo.xml 文件位置，选择该文件并点击 <strong>Open</strong>。</p>
+<p>所有 SoundBank 和流文件将被加载到 Files to package 视图中。</p>
+</li>
+</ol>
+<h4 id="2-加载file-packager工程文件"><a href="#2-加载file-packager工程文件" class="headerlink" title="2.加载file packager工程文件"></a>2.加载file packager工程文件</h4><p>选择 .wfpproj 文件并点击 <strong>Open</strong>。</p>
+<p>工程信息将被加载到 File Packager 中。</p>
+<h3 id="8-2-File-packager窗口"><a href="#8-2-File-packager窗口" class="headerlink" title="8.2 File packager窗口"></a>8.2 File packager窗口</h3><table>
+<thead>
+<tr>
+<th align="left">菜单</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Tools &gt; Create and assign packages for all language</td>
+<td align="left">工具 &gt; 为所有语言创建和指派包。为语言创建一个新包。针对创建的各个包，将流播放文件、零散媒体和 SoundBank 指派给相应语音的包。如果该语言的包已经存在，则不创建任何包并且不会修改现有包。</td>
+</tr>
+<tr>
+<td align="left">Tools &gt; Freeze selected packages</td>
+<td align="left">工具 &gt; 冻结所选包。获取所选包并确保所有内容都非常明确（的确在手动添加的文件中）并且没有隐含的内容。该过程将确保没有指派规则引用所选包。做好的包内容将不会更改。在您可为其准备可下载内容的游戏版本之后，可使用该功能。它将确保传输的动态创建包已冻结。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>Files to package</strong></th>
+<th>&#x2F;</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Filename</td>
+<td>文件名。可添加到若干个包的 SoundBank、流播放文件或零散媒体的名称。</td>
+</tr>
+<tr>
+<td>File type</td>
+<td>文件类型：SoundBank、流播放文件或零散媒体。</td>
+</tr>
+<tr>
+<td>Language&#x2F;SFX</td>
+<td>语言&#x2F;音效。与该文件关联的语言。如果文件与任何语言都不关联，则该文件会被认为是音效。</td>
+</tr>
+<tr>
+<td>File size</td>
+<td>文件的大小。</td>
+</tr>
+<tr>
+<td>Packages</td>
+<td>已经包含了文件的包。</td>
+</tr>
+<tr>
+<td>![add to current packkage](image\Typora\add to current packkage.png)</td>
+<td>将所选文件添加到 Package Manager 中所选的包中去</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>Packages</strong></th>
+<th>&#x2F;</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name</td>
+<td>名称。文件包的名称。该名称是输出目录的相对路径，可包含子文件夹，例如“my_folder\package1.pck”。</td>
+</tr>
+<tr>
+<td>Added</td>
+<td>手动添加到包里的文件数量。</td>
+</tr>
+<tr>
+<td>Resulting</td>
+<td>包中包含的结果文件总数。</td>
+</tr>
+<tr>
+<td>Missing</td>
+<td>包中缺失的文件数量。如果文件是手动添加到包中的并且之后从原始 Wwise 工程中删除掉了的话，则这些文件可能会缺失。</td>
+</tr>
+<tr>
+<td>Data size</td>
+<td>数据大小。列在包结果内容中的所有文件总和。</td>
+</tr>
+<tr>
+<td>Header size</td>
+<td>包的近似文件头大小。它表示将包加载到声音引擎中的近似内存占用量。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cfp_add.png" alt="fp_add"></td>
+<td>创建新的包</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cfp_remove.png" alt="fp_remove"></td>
+<td>删除当前包</td>
+</tr>
+<tr>
+<td>![add to current packkage](image\Typora\add to current packkage.png)</td>
+<td>打开 File Order Editor（文件顺序编辑器），您可以在其中以特定顺序排列包内的文件。排列包内文件的顺序可优化磁盘寻道事件。</td>
+</tr>
+<tr>
+<td>Block Size</td>
+<td>块大小。包内数据对齐的字节数。指定什么数字将取决于平台 I&#x2F;O 设备的要求。有关块大小和各个平台 I&#x2F;O 设备限制的详细信息，请参阅 SDK 文档的 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/2021.1.12_7973/?source=SDK&id=streamingmanager__lowlevel.html">Streaming &gt; Low-Level I&#x2F;O</a>（流式 &gt; 底层 I&#x2F;O）部分。每个平台的默认值都是 1。默认值1表示无需对齐。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>Default file assignment</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Assign Language&#x2F;SFX files to:</td>
+<td>将语言&#x2F;音效文件指派给。此版块内的选项用来将与特定语音或音效关联的 SoundBank、零散媒体和流播放文件指派给特定包。仅在文件并非手动指派给包时才会使用默认指派。</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>语言。SoundBank和流播放文件存在的语言&#x2F;音效列表。</td>
+</tr>
+<tr>
+<td>SoundBanks</td>
+<td>音频包。与相应语言&#x2F;音效关联的 SoundBank 自动指派到的包。仅在文件并非手动指派给包时才会使用默认指派。</td>
+</tr>
+<tr>
+<td>Streams</td>
+<td>流播放。与相应语言&#x2F;音效关联的流播放文件自动指派到的包。仅在文件并非手动指派给包时才会使用默认指派。</td>
+</tr>
+<tr>
+<td>LooseMedia</td>
+<td>零散媒体。如果文件没有与相应语言&#x2F;音效存在特定关联，则会自动指派到这种包中。仅在文件并非手动指派给包时才会使用默认指派。</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>&#x2F;</td>
+</tr>
+<tr>
+<td>Assign remaining files to:</td>
+<td>将剩余文件指派给。此版块内的选项用来将所有剩余 SoundBank、流播放文件、外部源和零散媒体连通到特定包。</td>
+</tr>
+<tr>
+<td>SoundBanks</td>
+<td>任何剩余的 SoundBank 会自动指派给这种包。</td>
+</tr>
+<tr>
+<td>Streamed files</td>
+<td>流播放文件。任何剩余流播放文件会自动指派给这种包。</td>
+</tr>
+<tr>
+<td>External source</td>
+<td>外部源。任何剩余外部源都会自动指派给这种包。</td>
+</tr>
+<tr>
+<td>Loose media</td>
+<td>零散媒体。任何其它剩余文件都会自动指派给这种包。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>Package contents</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Manually added file</td>
+<td>已手动添加到包的 SoundBank、流播放文件、外部源或零散媒体。</td>
+</tr>
+<tr>
+<td>Filename</td>
+<td>SoundBank、流播放文件、零散媒体或外部源的名称。</td>
+</tr>
+<tr>
+<td>File type</td>
+<td>文件类型：SoundBank、流播放文件、外部源或零散文件。</td>
+</tr>
+<tr>
+<td>Language&#x2F;SFX</td>
+<td>语言&#x2F;音效。与该文件关联的语言。如果文件与任何语言都不关联，则该文件会被认为是音效。</td>
+</tr>
+<tr>
+<td>File size</td>
+<td>文件的大小。</td>
+</tr>
+<tr>
+<td>Inclusion Mode（仅在 Manually added file 选项卡中可用）</td>
+<td>包含模式。决定SoundBank、其关联的流播放文件或所有零散媒体是否包含在包中。您可以选择以下选项之一：<strong>SoundBank only（仅有SoundBank）<strong><strong>Streamed file（流播放文件）</strong></strong>SoundBank 和流播放文件<strong><strong>Loose media（零散媒体）</strong></strong>SoundBank 和零散媒体<strong><strong>Streamed files and loose media（流播放文件和零散媒体）</strong></strong>All files</strong></td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cfp_remove.png" alt="fp_remove"></td>
+<td>所有文件。从包中删除所选文件。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Resulting content（结果内容）</td>
+<td>SoundBank、流播放文件或零散媒体都包含在包里。此选项卡标题栏中显示的数字表示包中包含的文件总数。此选项卡上的数字可能与 Manually added file 选项卡上的数字不同，因为当手动添加 SoundBank 时，会有多个流播放文件自动添加到相同的包的，而 SoundBank 可能包含对这些流播放文件的引用。</td>
+</tr>
+<tr>
+<td>Filename</td>
+<td>可添加到包中的SoundBank、零散媒体或流播放文件的名称。</td>
+</tr>
+<tr>
+<td>File type</td>
+<td>文件的类型：SoundBank、流播放文件、零散媒体或混合类型。</td>
+</tr>
+<tr>
+<td>Language&#x2F;SFX</td>
+<td>语言／音效。相应文件关联的语言。如果文件与任何语言都不关联，则该文件会被认为是音效。</td>
+</tr>
+<tr>
+<td>File size</td>
+<td>文件的大小。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cfp_copytoclipboard.png" alt="fp_copytoclipboard"></td>
+<td>将 Resulting Content 窗格中的信息复制到 Windows 剪贴板，以便您可以将信息粘贴到新的文件中。</td>
+</tr>
+</tbody></table>
+<h3 id="8-3-File-Order-Editor视图"><a href="#8-3-File-Order-Editor视图" class="headerlink" title="8.3  File Order Editor视图"></a>8.3  File Order Editor视图</h3><p>可以按特定顺序排列包内的文件。对包内的所有文件排序非常耗时而且没有必要。如果包内只有几个文件需要以特定顺序排列，则您可以排列这些文件，然后使用“Remaining files inserted here”（在此处插入剩余文件）占位符来放置包内的所有其它文件。</p>
+<table>
+<thead>
+<tr>
+<th><strong>Package files（包文件）</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Filename</td>
+<td>添加到包中的SoundBank、流播放文件或零散媒体的名称。</td>
+</tr>
+<tr>
+<td>File Type</td>
+<td>文件的类型：SoundBank、流播放文件、零散媒体或混合类型。</td>
+</tr>
+<tr>
+<td>Language&#x2F;SFX</td>
+<td>语言／音效。相应文件关联的语言。如果文件与任何语言都不关联，则该文件会被认为是音效。</td>
+</tr>
+<tr>
+<td>File size</td>
+<td>文件的大小。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Caddtolayout.png" alt="addtolayout"></td>
+<td>将所选文件添加到有序列表内的下一个位置。您还可以从 Package file 视图中直接将文件拖到有序列表内的特定位置。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>File order（文件顺序）</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Filename</td>
+<td>包内已按特定顺序排列的SoundBank、零散媒体或流播放文件的名称。“Remaining files inserted here”占位符表示包内尚未按具体顺序排列的所有文件。</td>
+</tr>
+<tr>
+<td>File Type</td>
+<td>文件的类型：SoundBank、流播放文件、零散媒体或混合类型。</td>
+</tr>
+<tr>
+<td>Language&#x2F;SFX</td>
+<td>语言／音效。相应文件关联的语言。如果文件与任何语言都不关联，则该文件会被认为是音效。</td>
+</tr>
+<tr>
+<td>File size</td>
+<td>文件的大小。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cfp_remove.png" alt="fp_remove"></td>
+<td>从有序列表中删除所选文件。当某个文件从有序列表中显式删除时，该文件仍保留在包中，但已添加回“Remaining files inserted here”占位符。</td>
+</tr>
+<tr>
+<td><img src="/image%5CTypora%5Cfp_removeallmissingfiles.png" alt="fp_removeallmissingfiles"></td>
+<td>从有序列表中删除标记为“missing”的所有文件。</td>
+</tr>
+</tbody></table>
+<h2 id="词汇表"><a href="#词汇表" class="headerlink" title="词汇表"></a>词汇表</h2><h3 id="通用术语"><a href="#通用术语" class="headerlink" title="通用术语"></a>通用术语</h3><ul>
+<li><p>AAC</p>
+<p>Wwise 中可用于 Mac 和 iOS 平台上的一种感知编码音频压缩方法。据说在比特率相似的情况下，AAC 声音品质优于 MP3。压缩是可变的，取决于内容，品质设置可由“quality”（品质）滑杆控制。在 iOS 中，如果有可用的硬件辅助编解码器，则 AAC 会通过该硬件解码器解码。注意，iOS 硬件一次只可解码一个 AAC 声音。</p>
+</li>
+<li><p>AC-3</p>
+<p>针对声音编码算法的一种压缩标准。有关详细信息，请参阅详述此<a target="_blank" rel="noopener" href="http://atsc.org/standard/a522012-digital-audio-compression-ac-3-e-ac-3-standard-12172012/">数字音频压缩标准</a>的文档。</p>
+</li>
+<li><p>ADPCM (Adaptive Differential Pulse Code Modulation)</p>
+<p>自适应差分脉冲编码调制。一种音频文件编码方法，用于量化声音信号与根据该声音信号所做的预测之间的差异。ADPCM 量化步长是自适应的，与直接量化信号的 PCM 编码不同。基本上，ADPCM 以音质为代价，显著缩减了容量和 CPU 占用量。因此，它通常用于移动平台。</p>
+</li>
+<li><p>Ambisonics</p>
+<p>Ambisonics 是一种环绕声技术，可以覆盖水平面声场以及听者上方和下方的区域。通过其 B-format 声场表示法，Ambisonics 能够独立于扬声器配置发挥效果。</p>
+</li>
+<li><p>ADSR (Attack-Decay-Sustain-Release)</p>
+<p>包络的形状由该声音的起音时间（和 Wwise 中的起音曲线）、衰减时间、延音电平和释音时间来决定。</p>
+</li>
+<li><p>位深</p>
+<p>用于描述数字音频文件内每个采样点的位数。在 PCM 音频中，位深决定信号的最大可能动态范围。</p>
+</li>
+<li><p>Bit Rate（比特率）</p>
+<p>每秒发送或接收的数据量（即位数）。比特率越高，处理的文件数据越多，通常分辨率也越高。</p>
+</li>
+<li><p>Cent（音分）</p>
+<p>一种音高度量单位，相当于半音程的 1&#x2F;100。八度音阶由 1200 个音分组成。</p>
+</li>
+<li><p>DC Offset（直流偏置）</p>
+<p>直流表示声音波形的中心。偏置表示到波形中心 0.0 点的距离百分比。</p>
+</li>
+<li><p>dBFS（满量程分贝）</p>
+<p>（分贝满量程）数字系统中的分贝振幅电平，这些系统具有最高的可用电平（如 PCM 编码）。</p>
+</li>
+<li><p>Delay Line（延迟线）</p>
+<p>Delay Line 处理器单元可以将信号延迟若干采样点后输出。</p>
+</li>
+<li><p>Depot（文档库）</p>
+<p>Perforce 版本控制服务器中的中央文件存储库。它包含提交到服务器的所有文件的所有版本。</p>
+</li>
+<li><p>Dithering（抖动）</p>
+<p>在量化前添加到信号中的噪声，用于减少量化过程导致的失真和噪声调制。虽然噪声电平会略有上升，但频谱形状的抖动可让这种上升变得尽可能不明显。这种噪声没有失真的危害大，可以让低电平信号听得更清楚。</p>
+</li>
+<li><p>Downmix（下混）</p>
+<p>将多声道源中的所有声道混合成具有较少声道的兼容版本（例如立体声或单声道）的过程。</p>
+</li>
+<li><p>干声路径</p>
+<p>从声音直接到总线的声部信号基本路径。</p>
+</li>
+<li><p>Dry Signal（干声信号）</p>
+<p>完全由未经处理的原始信号构成的输出。</p>
+</li>
+<li><p>Echo Density（回声密度）</p>
+<p>混响算法每秒产生的回声量。</p>
+</li>
+<li><p>Frequency（频率）</p>
+<p>单位时间对应的循环次数。</p>
+</li>
+<li><p>Gain（增益）</p>
+<p>信号功率或振动的变化。</p>
+</li>
+<li><p>Harmonics（谐波）</p>
+<p>基频的倍数。举例来说，如果基频是 50 Hz，则第二谐波是 100 Hz，第三谐波是 150 Hz，以此类推。</p>
+</li>
+<li><p>Headroom（裕量空间）</p>
+<p>放大器或音频设备中的正常工作电平与削波电平之间的电平差（单位：dB）。</p>
+</li>
+<li><p>High-Pass Filter（高通滤波器）</p>
+<p>一种递归滤波器，用于衰减低于截止频率的频率。此滤波器的单位代表已应用的高通滤波效果器的百分比，其中 0 表示高通滤波（信号不受影响），100 表示最大衰减。</p>
+</li>
+<li><p>HMD (Head Mounted Device)</p>
+<p>头戴显示器，为虚拟现实（VR）开发的设备，旨在基于玩家的头部运动来提供视觉与音频输入。</p>
+</li>
+<li><p>高动态范围音频（HDR 音频）</p>
+<p>一种利用自然声音所跨越的大动态范围电平值来进行混音设计的技术。HDR 也是一个实时系统，可以将宽泛的电平范围动态地映射至更适合于您的声音系统数字输出的范围。</p>
+</li>
+<li><p>HRTF（头部相关传递函数）</p>
+<p>声音通过不同物理介质从空间某点传递到耳朵的方式。成对的 HRTF 可合成双耳声，使声音好像源自于空间中的特定某点。</p>
+</li>
+<li><p>Inharmonicity（不和谐度）</p>
+<p>局部谐波音高与真正谐波之间的偏置比例（基频的整数倍）。</p>
+</li>
+<li><p>Intensity Stereo（强度立体声）</p>
+<p>一种失真音频编码技术，它去除高频内容的相位校准信息，以将它合并到单声道信号中，同时保留强度信息来重构立体声信号。</p>
+</li>
+<li><p>Latency（延迟）</p>
+<p>在计算机内部处理或生成音频信号时所固有的延迟。</p>
+</li>
+<li><p>LFE</p>
+<p>低频效果声道。专门针对 10-120 Hz 低沉声音设计的音频声道的名称。LFE 声道是完全独立的声道，必须以 x.1 媒体文件形式导入 Wwise。</p>
+</li>
+<li><p>Limiting（限幅）</p>
+<p>一种极端的压缩形式，其中输入&#x2F;输出关系变得非常扁平（10:1 或更高）。它对信号电平做出硬性限制。</p>
+</li>
+<li><p>Low-Pass Filter（低通滤波器）</p>
+<p>一种递归滤波器，用于衰减高于截止频率的频率。此滤波器的单位代表已经应用的低通滤波效果器的百分比，其中 0 表示低通滤波（信号不受影响），100 表示最大衰减。</p>
+</li>
+<li><p>Modal density（模态密度）</p>
+<p>模态指音频信号在频域表示法中的峰值。当模拟大多数的声学空间时，增加模态密度可改善混响的逼真度。减低模态密度可能导致嗡嗡声。</p>
+</li>
+<li><p>Noise Shaping（噪声整形）</p>
+<p>一种有助于将数字信号位深减少所造成的杂音最小化的技术。</p>
+</li>
+<li><p>Nyquist 频率</p>
+<p>可准确采样的最高音频频率，相当于采样率的二分之一。Nyquist 采样定理表明，采样率必须至少是输入样本最高频率的两倍才能准确地重构原始信号。</p>
+</li>
+<li><p>Opus</p>
+<p>一个低延迟的音频编解码器，针对语音和通用音频进行了优化，压缩时音质损失方面优于其他编解码器。详请参阅“<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=versions_tips_and_best_practices">“转码技巧和窍门”一节</a>”。</p>
+</li>
+<li><p>Outro（结尾部分）</p>
+<p>声音的末尾部分，对应于开头部分。</p>
+</li>
+<li><p>Passband（通带）</p>
+<p>基本无衰减地通过滤波器的频带。</p>
+</li>
+<li><p>PCM（脉冲编码调制）</p>
+<p>一种音频文件编码方法，采用独特的二进制表示法即脉冲编码。通过测量两个编码点之间的值对它们进行量化；选择与最近点相关的值。</p>
+</li>
+<li><p>PCM 帧（PCM frame）</p>
+<p>PCM 帧包括在给定时刻上所有声道的采样。每帧代表 1&#x2F;采样率秒。</p>
+</li>
+<li><p>Pitch</p>
+<p>声部音高。对象的播放速度。</p>
+</li>
+<li><p>Prediction filter（预测滤波器）</p>
+<p>根据语音信号行为的可预测性对语音信号进行建模的方法，可用作有损音频压缩技术。</p>
+</li>
+<li><p>Quantization（量化）</p>
+<p>将音频文件的值域细分为子域的过程，各个子域由指定值表示。</p>
+</li>
+<li><p>Recursive Filter（递归滤波器）</p>
+<p>一种滤波器，使用先前计算的输出值和当前输入值计算最近的输出。也称为反馈滤波器。</p>
+</li>
+<li><p>Ripple (in passband)（（通带内）波纹）</p>
+<p>通带内最大衰减和最小衰减之差。</p>
+</li>
+<li><p>RMS power（RMS 功率）</p>
+<p>均方根（Root Mean Square）。它是一种测量信号平均振幅的方法，在多数情况下，信号功率比使用峰值振幅时更接近。获得此值的方法是将给定时间窗口期间的采样值的平方加起来，然后计算结果的平方根。</p>
+</li>
+<li><p>Side-Chaining（旁链）</p>
+<p>监视音频信号的电平，并使用音频信息实时操控另一个音频信号。此技术用于自动控制不重要声音的音量，从而在最终混音中更多地强调更加重要的声音。</p>
+</li>
+<li><p>Source Control（版本控制）</p>
+<p>用于管理各种文件（如 Wwise 工程, 工作单元和音频文件）的修改，其中每个文件的修订版本都标记了版本识别号、修改时间和修改人。大多数版本控制系统中都可以比较、还原和合并修订版本。</p>
+</li>
+<li><p>标准配置</p>
+<p>标准离散声道配置，如立体声，4.0，5.1，7.1 和 7.1.4。Ambisonics 不属于标准配置。</p>
+</li>
+<li><p>Tab-delimited File（用制表符分割的文件）</p>
+<p>一种特殊类型的纯文本文件，其中信息通过制表符分割成列。</p>
+</li>
+<li><p>Tap（延迟线分流）</p>
+<p>信号从 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_delay_line">Delay Line（延迟线）</a> 中被提取出来的分流点。</p>
+</li>
+<li><p>VBAP (Vector Base Amplitude Panning)</p>
+<p>矢量基幅值平移。一种常用算法，用于多个扬声器配置下，对若干不同方向的虚拟声源进行精准 3D 定位。</p>
+</li>
+<li><p>Volume</p>
+<p>音量。音频输出的振幅或强度级别。</p>
+</li>
+<li><p>Vorbis</p>
+<p>一种感知编码方法，支持以各种比特率编码音频文件，同时保持非常好的感知声音品质。通过使用 Quality Factor（品质因数）或指定每声道的最大、最小和平均比特率来控制数据压缩效率和感知声音品质的平衡。<em>info_outline</em>备注Audiokinetic 的 Vorbis 专用版本针对所有平台进行了高度优化。</p>
+</li>
+<li><p>WAVEFORMATEXTENSIBLE（扩展型波形文件格式定义结构）</p>
+<p>为具有两个以上声道的格式定义波形音频数据格式的结构。为了在输入时保留 WAV 文件的特定多声道配置，必须将 WAV 头文件中的声道信息定义为扩展型波形文件格式定义结构的声道掩码的一部分。</p>
+</li>
+<li><p>湿声路径</p>
+<p>从基本干声路径中分支后通过 Auxiliary Bus 的声部信号路径，一般会先应用 Effect（如 Reverb）和其他修改，然后再发送到总线。</p>
+</li>
+<li><p>Wet Signal（湿声信号）</p>
+<p>完全由经过处理的声音构成的输出。</p>
+</li>
+<li><p>World Builder（世界编辑器）</p>
+<p>用于创建游戏虚拟环境的应用程序。</p>
+</li>
+</ul>
+<h3 id="Wwise-专用术语"><a href="#Wwise-专用术语" class="headerlink" title="Wwise 专用术语"></a>Wwise 专用术语</h3><ul>
+<li><p>Absolute Propert（绝对属性）</p>
+<p>这些属性通常在顶层父对象上定义，它们会自动下传到各个父项的子对象，例如定位和播放优先级。您可以不沿用顶层父属性，而在层级结构的不同层级定义这些属性。</p>
+</li>
+<li><p>Actor-Mixer（角色混音器）</p>
+<p>角色混音器。若干个声音、振动对象、容器或角色混音器所构成的层级结构。您可以使用角色混音器来控制它下面的所有对象的属性。</p>
+</li>
+<li><p>Additive Type Property（累积型属性）</p>
+<p>此类 Wwise 属性可以通过如 RTPC 和 State 这样的不同设置进行多次更改，各种属性偏置值经过累积得到最终数值。</p>
+</li>
+<li><p>Audio Input（音频输入）</p>
+<p>此处的 Audio Input 是一种源插件的示例，允许通过 Wwise 管线发送游戏生成的音频内容，并由声音引擎处理。</p>
+</li>
+<li><p>Audio Object</p>
+<p>音频对象。由音频缓冲区和 <em>Metadata</em> 构成，在满足所有条件的情况下可传给终端来进行渲染以获得空间化效果。</p>
+</li>
+<li><p>Attenuation（衰减）</p>
+<p>当远离发声源时，声音、音乐或者振动对象的音量会相应地减小。</p>
+</li>
+<li><p>Attenuation ShareSet （衰减共享集）</p>
+<p>基于音源与听者之间相对距离而进行的音量衰减设定。这些设定保存为共享集，可在工程间共享。</p>
+</li>
+<li><p>Audio Bus（音频总线）</p>
+<p>一种可以在 Master Audio Bus 下添加的总线，允许和其他音频总线、辅助总线一起进行编组，以便有效地组织混音。您可重命名、移动和删除这些总线；还可以在总线上加效果器。</p>
+</li>
+<li><p>Audio Source</p>
+<p>音频源。音频文件和声音对象之间的独立抽象层。音频源链接到导入到工程中的音频文件。音频源保持链接到您导入工程中的音频文件，以便您可以在随时引用它。</p>
+</li>
+<li><p>Audio Object</p>
+<p>音频对象。Project Explorer 内 Audio 选项卡中 Master-Mixer Hierarchy、Actor-Mixer Hierarchy 或 Interactive Music Hierarchy 下的所有对象。</p>
+</li>
+<li><p>Auto-ducking</p>
+<p>自动闪避。此动作将降低一个音频信号的音量电平，以便让另一并行音频信号更加突出。</p>
+</li>
+<li><p>Auxiliary Bus</p>
+<p>一种特殊类型的音频总线，通常用于应用混响和延迟等效果器来模拟环境效果器或进行动态混音（*<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_side_chaining">旁链</a>*）。</p>
+</li>
+<li><p>Auxiliary Send（辅助发送）</p>
+<p>用于将音频信号发送到辅助总线的音频信号通路技术。可根据声音对象来控制辅助发送，在使用 SDK API 时，也可根据游戏对象来控制辅助发送。</p>
+</li>
+<li><p>Blend Container（混合容器）</p>
+<p>该组中的对象或容器将被同时播放。此容器中的对象可编组到 Blend Track（混合轨）中，然后使用 RTPC 将属性映射到游戏参数。在同一条Blend Track上的各个对象之间也可以基于游戏参数值来进行交叉淡变。</p>
+</li>
+<li><p>Cache（缓存）</p>
+<p>一个工程文件夹，其中包含您正在开发的平台的所有转码结果文件。在默认情况下，此文件夹存储在本地，但您可以修改它的位置。多个用户不得同时访问缓存文件夹。</p>
+</li>
+<li><p>Child Object（子对象）</p>
+<p>层级结构中位于上层对象或父对象内的对象。</p>
+</li>
+<li><p>Clip</p>
+<p>代表音频源的音乐对象。片段按音乐轨进行排列。</p>
+</li>
+<li><p>Compressor（压缩器）</p>
+<p>一种音频效果插件，通过削弱输入信号高出预定义阈值的任何部分来缩小信号的动态范围。</p>
+</li>
+<li><p>Container（容器）</p>
+<p>若干个对象的组合，包括根据某中既定行为播放的声音、振动对象或容器。 Wwise 中有多种不同类型的 Container，包括 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_random_container">Random Container （随机容器）</a>、<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_sequence_container">Sequence Container （序列容器）</a>、 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_switch_container">Switch Container（切换容器）</a>、 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_blend_container">Blend Container（混合容器）</a>、 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_music_switch_container">Music Switch Container（音乐切换容器）</a> 以及 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_music_playlist_container">Music Playlist Container （音乐播放列表容器）</a>。</p>
+</li>
+<li><p>Control Surface Session（控制器会话）</p>
+<p>一种可保存的工程元素，用来定义 Wwise 如何与使用了 MIDI 或 Mackie 协议的外部控制器设备进行交互。连接了兼容设备并设置了绑定后，即可打开 Control Surface Session（控制器会话）并使用该设备来控制 Wwise 的功能。</p>
+</li>
+<li><p>Conversion Settings（转码设置）</p>
+<p>音频文件参数的组合，包括采样率、音频格式和声道数量，它们定义各个平台的音频文件的总体品质、内存和 CPU 占用。</p>
+</li>
+<li><p>Convolution Reverb（卷积混响）</p>
+<p>一种音频效果器，它利用 IR（冲激响应）模拟真实空间（例如音乐厅、建筑物、街道、汽车内饰、房间、户外、森林等）的声学特性。</p>
+</li>
+<li><p>Cue（提示点）</p>
+<p>附加在音乐段落上的标记，用于指示关键点，例如进入点或退出点。</p>
+</li>
+<li><p>Custom Cue（自定义提示点）</p>
+<p>附加到音乐段落上的用户创建的标记，用于指示关键同步点。Entry cue（入口提示点）和Exit cue（出口提示点）不属于自定义提示点。</p>
+</li>
+<li><p>dB Scaling（分贝定标）</p>
+<p>在表示以分贝为单位的属性时，用于以对数刻度显示坐标图视图 X 轴的选项。</p>
+</li>
+<li><p>Default Work Unit</p>
+<p>XML 文件，其中包含工程中与它们所针对的特定元素相关的所有信息。例如，Event 的 Default Work Unit.wwu 文件包含与 Event 相关的所有信息，State 的 Default Work Unit.wwu 文件包含与 State 相关的所有信息，以此类推。在创建工程时将创建默认工作单元。</p>
+</li>
+<li><p>Definition File（定义文件）</p>
+<p>按 SoundBank 分类列出游戏中所有事件的文本文件。</p>
+</li>
+<li><p>Delay</p>
+<p>一种音频效果器插件，通过将音频信号延迟指定时间段来添加回声。</p>
+</li>
+<li><p>Dialogue Event（对白事件）</p>
+<p>使用一组规则或条件来触发游戏音频的方法，这些规则或条件通过与游戏内的可能条件相匹配的切换开关或状态值来表达。这些切换开关或状态值被安排在路径中，然后被指派到 Wwise 对象。当游戏调用 Dialogue Event 时，游戏先将其当前情形与 Dialogue Event 中定义的情形进行匹配，然后播放相应的对白片段。</p>
+</li>
+<li><p>Diffraction</p>
+<p>对 Wwise 来说，衍射是内建的 Game Parameter（游戏参数） ，由 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/library/edge/?source=SDK&id=spatial__audio.html">Spatial Audio</a> 计算声音和 *<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_shadow_boundary">Shadow Boundary</a>*（阴影边界）之间的偏差角度，大致模拟声波遇到转角或其他障碍物时，衍射声路径的偏移角度。</p>
+</li>
+<li><p>Effect Chain（效果器链）</p>
+<p>以特定顺序应用到对象或总线的一系列效果器。</p>
+</li>
+<li><p>Effect Instance（效果器实例）</p>
+<p>可保存并应用到其他对象或总线上的一组自定义效果器属性。效果器实例属性还可跨对象共享。</p>
+</li>
+<li><p>Effect ShareSet （效果共享集）</p>
+<p>效果共享集。音频效果插件设定，可用于增强游戏中音频效果。这些设定保存为共享集，可在工程间共享。</p>
+</li>
+<li><p>Empty Event</p>
+<p>不包含任何动作或对象的事件。</p>
+</li>
+<li><p>Environmental Effect（环境效果器）</p>
+<p>根据游戏对象在游戏几何图形中的位置更改该对象所生成声音的属性集合的效果器。</p>
+</li>
+<li><p>Event（Action Event）（动作事件）</p>
+<p>触发游戏中音频的方法，使用一个或一系列动作（如播放、静音和暂停）来控制若干个 Wwise 对象。</p>
+</li>
+<li><p>扩展器（Expander）</p>
+<p>Wwise Expander 插件通过削弱输入信号低于预定义阈值的任何部分来扩大信号的动态范围。当信号很弱并低于阈值时，扩展器开始降低信号的增益。当信号等于或高于阈值时，不对信号应用增益衰减。</p>
+</li>
+<li><p>External Source（外部源）</p>
+<p>在运行时将声音对象与音频文件相关联的源插件。通过它可管理原本需要大量开销的大量对白行。它有助于节省运行时的内存，简化在为游戏生成 DLC 内容时有时候需要更换音频文件的过程。</p>
+</li>
+<li><p>File Manager（文件管理器）</p>
+<p>显示有关工程文件和原始导入源文件的信息，以及在适用的情况下管理许多版本控制插件功能的对话框。</p>
+</li>
+<li><p>Flanger（镶边效果器）</p>
+<p>将两个相同信号混合在一起的音频效果，其中一个信号以微小的渐变时间量延迟，以产生扫频式梳状滤波效果。</p>
+</li>
+<li><p>Flat View（扁平视图）</p>
+<p>停靠在布局中的视图。</p>
+</li>
+<li><p>Focus</p>
+<p>百分比值，用于收缩由扩散值生成的虚拟发声体。对于 0% 焦点，虚发声体保持不变，但值越高，各个虚拟点距离源声道原始位置越近。</p>
+</li>
+<li><p>Folder</p>
+<p>Actor-Mixer Hierarchy 中的上层结构，用于管理角色混音器、容器等其它结构。</p>
+</li>
+<li><p>Game Object</p>
+<p>界面、触发器或声音等元素可附加到其上的游戏实体。</p>
+</li>
+<li><p>Game Parameter（游戏参数）</p>
+<p>使用 RTPC 可映射到 Wwise 属性值的游戏参数，例如赛车游戏中的速度和 RPM。</p>
+</li>
+<li><p>Game Sync</p>
+<p>一组 Wwise 元素，包括 State、切换开关、RTPC、触发器和变量，根据游戏中的条件调用它们，并相应地修改音频和振动。</p>
+</li>
+<li><p>Game Unit（游戏计量单位）</p>
+<p>用于计算游戏几何构造的基本长度单位。例如， 秘密潜入游戏的 FPS 可使用节拍作为游戏计量单元，而太空征服游戏可使用光年。</p>
+</li>
+<li><p>Guitar Distortion（吉他失真效果器）</p>
+<p>一种音频效果器，它更改音频波形的形状，引入原始信号中不存在的频率分量。Wwise 吉他失真效果器模拟常用失真“stomp boxes”的行为来获取典型的吉他失真声音。</p>
+</li>
+<li><p>Harmonizer（和声效果器）</p>
+<p>将几个有音调的声部添加到输入信号的音频效果器。</p>
+</li>
+<li><p>Imported folder（导入文件夹）</p>
+<p>隐藏的工程 .cache 文件夹，其中包含导入工程中的、经过特别导入转码过程的音频文件。</p>
+</li>
+<li><p>Image Source（声源虚像）</p>
+<p>发声体相对于房间墙壁所成镜像的位置，在 Wwise Reflection 中根据<a target="_blank" rel="noopener" href="http://interactiveacoustics.info/html/GA_IS.html">声源成像技术</a>计算得出。</p>
+</li>
+<li><p>标志</p>
+<p>Wwise 界面中的特定图标，用于指示特定属性值的状态。例如，RTPC 标志显示属性值是否具有关联的 RTPC。</p>
+</li>
+<li><p>Initialization Bank（初始化库）</p>
+<p>一种特殊类型的库，其中包含工程的所有常规信息（包括有关总线层级结构的信息）和有关状态、切换开关和 RTPC 的信息。每个工程只有一个初始化库，默认情况下它被命名为“Init.bnk”。初始化库必须是启动游戏时加载的第一个库。如果第一个加载的不是它，则后续的 SoundBank 可能会拒绝加载。</p>
+</li>
+<li><p>Input Range（输入范围）</p>
+<p>可为属性输入的完整值域，与滑杆范围相反。</p>
+</li>
+<li><p>Integrity Report（完好度报告）</p>
+<p>Wwise 中生成的一种报告，它显示工程中的错误或问题，并提供修复方案建议。</p>
+</li>
+<li><p>Interactive Music</p>
+<p>一种音乐创作和编曲方法，用于创建响应于游戏内动作的、模块化的配乐。</p>
+</li>
+<li><p>Invalid Events（无效事件）</p>
+<p>已从工程中删除但 SoundBank 中仍包含的 Event。</p>
+</li>
+<li><p>IR（冲激响应）</p>
+<p>测量某个位置（例如音乐厅）真实声学特性所生成的音频文件。卷积混响效果中使用冲激响应来启用对输入信号应用特定位置的声学特性。</p>
+</li>
+<li><p>Layout（布局）</p>
+<p>为方便完成特定任务或工作而组合在一起的一系列视图。</p>
+</li>
+<li><p>Listener</p>
+<p>游戏中的虚拟话筒或振动传感器，帮助将声音指定到特定扬声器或特定马达的振动来模拟 3D 环境。</p>
+</li>
+<li><p>Look-ahead time（预读时间）</p>
+<p>在流播放中，它指为声音引擎查找流播放数据所预留的时间。</p>
+</li>
+<li><p>Master-Mixer Hierarchy</p>
+<p>工程层级结构顶层的总线或一系列总线，您可以根据游戏中的主要类别来编组许多不同的声音、音乐和振动结构。例如，您可以将所有语音或音乐结构组合在一条音频总线下，所有声音效果器组合在另一条音频总线下，以此类推。</p>
+</li>
+<li><p>该总线是主音频总线</p>
+<p>Master Audio Bus 位于嵌套 Work Unit 和 Virtual Folder 的顶层，层级结构中的所有其他子级 Audio Bus 都要设在它的下面。声音信号通过复杂的子总线结构之后，最终的音频输出由 Master Audio Bus 的设置及其应用的效果器决定。</p>
+</li>
+<li><p>master secondary bus（主二路总线）</p>
+<p>Master Secondary Bus 是供二路输出（如游戏控制器）使用的总线，它位于嵌套 Work Unit 和 Virtual Folder 的顶层，层级结构中的所有其他子级 Audio Bus 都要设在它的下面。</p>
+</li>
+<li><p>Matrix Reverb（矩阵混响器）</p>
+<p>专为游戏制作而优化的独特混响效果，它可以平衡品质和性能，包括实时编辑和 RTPC 映射功能。</p>
+</li>
+<li><p>Metadata</p>
+<p>元数据。一组与 <em><a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_side_chaining">Audio Object</a></em> 关联的属性，专门供终端或对象处理器用来生成空间化效果。典型的 Metadata 包括 3D Position、Azimuth、Elevation、Focus 和 Spread。</p>
+</li>
+<li><p>Meter Effect（电平表效果器）</p>
+<p>在不修改信号的情况下测量信号电平的音频效果，另可将此电平作为游戏参数输出。该插件非常实用，可实现*<a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_side_chaining">旁链</a>*，测量后的总线电平可通过 RTPC 驱动其它总线的音量。</p>
+</li>
+<li><p>Meter (Peak)（电平表（峰值））</p>
+<p>显示各个声道的音频信号电平的一系列电平表。虽然音频和辅助总线显示输出信号，但动态效果（例如压缩器和限幅器）通常显示音频输入、音频输出和已应用的增益衰减。</p>
+</li>
+<li><p>Mixing Desk</p>
+<p>一种灵活强大的调音控制台，它将各种总线和对象属性编组到单一视图中，用于实时优化游戏的音频混音。</p>
+</li>
+<li><p>Mixing Session（混音会话）</p>
+<p>您选择的在调音台中使用的一组 Wwise 对象，可在任何时候保存和重新使用它们。</p>
+</li>
+<li><p>调制器包络</p>
+<p>在 MIDI 或常规音频播放中，使用预定义的 ADSR（包络）调整波形的一种技巧。</p>
+</li>
+<li><p>调制器 LFO</p>
+<p>在 MIDI 或常规音频播放中，使用 LFO（低频振荡器）调整波形或音频属性的一种技巧。</p>
+</li>
+<li><p>振动对象</p>
+<p>Wwise 中您为工程创建的单个振动素材的一种表示。通常，这些对象控制着主机的游戏控制器的振动。每个振动对象可以包含数个声源，这些声源决定了游戏中实际生成什么样的振动。</p>
+</li>
+<li><p>Music Clip（音乐片段）</p>
+<p>音乐轨的基本组件，显示为矩形区域，表示一个 WAV 文件。</p>
+</li>
+<li><p>Music Playlist Container （音乐播放列表容器）</p>
+<p>随机或按顺序播放的若干个音乐对象或容器的组合。</p>
+</li>
+<li><p>Music Segment （音乐段落）</p>
+<p>一种多声轨音乐对象，它是 Interactive Music 层级结构的基本单元。</p>
+</li>
+<li><p>Music Switch Container（音乐切换容器）</p>
+<p>根据调用的 Switch 或 State 播放的若干个音乐对象或容器的组合。</p>
+</li>
+<li><p>Music Track （音乐轨）</p>
+<p>可以包含多个独立音乐片段音乐对象，并以波形形式显示它们，使您能够在音乐片段中以视觉方式进行调整。Wwise 中有多种不同类型的 Music Track，包括 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_random_musictrack">Random Music Track</a>、 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_sequence_musictrack">Sequence Music Track</a> 和 <a target="_blank" rel="noopener" href="https://www.audiokinetic.com/zh/library/2021.1.12_7973/?source=Help&id=glossary#glossary_switch_musictrack">Switch Music Track（切换开关音乐轨）</a>。</p>
+</li>
+<li><p>Nested Object（嵌套对象）</p>
+<p>位于另一个对象内的对象。</p>
+</li>
+<li><p>Nested Object（嵌套工作单元）</p>
+<p>嵌套在另一个工作单元内的工作单元。它可以让工程文件的粒度更细，减少在合并版本控制文件时工作组环境中存在的潜在冲突。</p>
+</li>
+<li><p>Noise Gate（噪声门效果器）</p>
+<p>在 Expander 效果插件中创建的一种效果器，它几乎可以完全消除输出信号中的声音。创建噪声门效果器的方式是，设置高扩展率（大于 10:1），阻拦增益衰减到此程度的声音。</p>
+</li>
+<li><p>Object（对象）</p>
+<p>Wwise 中如声音、Motion、角色混音器和容器这样的元素，用于容纳、组合和定义工程层级结构中的声音、语音、振动和音乐。</p>
+</li>
+<li><p>Obstruction</p>
+<p>指游戏中对象（如柱子等）部分挡住声音对象与听者之间空间的一种状况。</p>
+</li>
+<li><p>Occlusion（声笼）</p>
+<p>指游戏中对象（如墙壁等）完全挡住声音对象与听者之间空间的一种状况。</p>
+</li>
+<li><p>Originals（原始音频）文件夹</p>
+<p>此文件夹中包含导入到工程中的音频文件未经改动的副本。此文件夹通常要做版本控制。</p>
+</li>
+<li><p>Orphan file（落单文件）</p>
+<p>不再与声音Motion 或音乐对象相关联的音频文件。在您删除声音对象时不会自动删除这些文件。要删除这些文件，则要清空音频 .cache 文件夹。</p>
+</li>
+<li><p>Output buffer latency（输出缓冲延迟）</p>
+<p>音频播放期间引入的延迟，由 Wwise 使用的输出缓冲去数量决定。</p>
+</li>
+<li><p>Parametric EQ（参数均衡器）</p>
+<p>一种音频效果器插件，通过它可以应用各种滤波器来对声音频谱塑形。</p>
+</li>
+<li><p>Parent Object（父对象）</p>
+<p>层级结构中的对象，其中包含子对象。</p>
+</li>
+<li><p>Peak Limiter（峰值限幅器）</p>
+<p>控制音频信号动态范围的音频效果器。实现方法是削弱对音频信号中暂时超出预定义信号峰值阈值的部分。</p>
+</li>
+<li><p>Physical Folder（实文件夹）</p>
+<p>硬盘上位于 Wwise 工程根下的目录，可包含工程中使用的其他实文件夹或工作单元。实文件夹不能作为容器、 Motion 或声音对象的子对象。</p>
+</li>
+<li><p>Physical Voice（实声部）</p>
+<p>声音引擎播放和处理音频和振动所在的游戏物理环境。当音量电平变得极低时，声音和振动对象可转移到虚拟环境中，由声音引擎进行管理和监视，但不执行音频处理。</p>
+</li>
+<li><p>Pitch Shifter（移调器）</p>
+<p>一种音频效果，可更改音高，但不影响所获音频信号的时长。</p>
+</li>
+<li><p>Point Source（点声源）</p>
+<p>如同从单点发出声音或振动的声源。</p>
+</li>
+<li><p>Post-exit（后尾段）</p>
+<p>出口提示点（exit cue）后的段落区域，可用于互动音乐中的过渡。</p>
+</li>
+<li><p>Pre-entry（前导段）</p>
+<p>入口提示点（entry cue）前的段落区段，可用于互动音乐中的过渡。</p>
+</li>
+<li><p>Prefetch Time（预取时间）</p>
+<p>在流播放中，它指一种小型缓冲区，照顾预取剩余文件数据所需要的延迟时间。</p>
+</li>
+<li><p>Preset（预设）</p>
+<p>对象、效果和声音传播的一组自定义属性，可保存起来供随时复用。</p>
+</li>
+<li><p>Query（查询）</p>
+<p>包含一组特定的搜索条件，用于查找特定对象或工程元素。</p>
+</li>
+<li><p>Random Container （随机容器）</p>
+<p>按随机顺序播放的若干个声音、振动对象或容器的组合。</p>
+</li>
+<li><p>Randomizer（随机化器）</p>
+<p>Wwise 中作用于属性值的一种特殊效果器，通过它您可以定义每次播放对象时可随机使用的可能值域。</p>
+</li>
+<li><p>Random Music Track</p>
+<p>每次播放其父段落时，将按随机顺序播放其子音乐轨。</p>
+</li>
+<li><p>Relative Property（相对属性）</p>
+<p>可在工程层级结构的各个层级上定义的属性，例如音量和音高。这些属性值是累加的，即父项的属性值将累加到子项的属性值上。</p>
+</li>
+<li><p>Reverb</p>
+<p>一种音频效果器插件，用于模拟特定房间或空间的声学特性。</p>
+</li>
+<li><p>Room Coupling（房间配对）</p>
+<p>Wwise Spatial Audio 中的概念，描述声音如何受到其所在房间的声学特性影响，并通过门户（房间开口）和墙壁（经过不同程度的阻塞和遮挡）以漫射场形式传播到相邻房间。</p>
+</li>
+<li><p>RoomVerb 混响器</p>
+<p>一种多功能高品质混响效果器插件，用于模拟特定房间或空间的声学特性。</p>
+</li>
+<li><p>RTPC（实时参数控制）</p>
+<p>实时参数控制（Real Time Parameter Controls）的缩写。一种互动方法，用于通过将游戏参数值映射到 Wwise 中的属性来驱动游戏中的音频。RTPC 还可用于通过将游戏参数映射到切换开关组来驱动切换开关的切换。</p>
+</li>
+<li><p>采样率</p>
+<p>在将模拟信号转换成数字信号或数字转码期间，每秒采样音频信号的频率。</p>
+</li>
+<li><p>Send Volume</p>
+<p>发送到辅助总线的音频信号的电平或振幅。</p>
+</li>
+<li><p>Sequence Container （序列容器）</p>
+<p>根据特定播放列表播放的若干个声音、振动对象或容器的组合。</p>
+</li>
+<li><p>Sequence Music Track</p>
+<p>每次播放其父级段落时，都将按照顺序播放其子音轨。</p>
+</li>
+<li><p>Shadow boundary</p>
+<p>View Region（照明区域，即声波路径未发生改变的区域）和 Shadow Region（阴影区域，即声波由于衍射而发生偏折的区域）的分界线。</p>
+</li>
+<li><p>ShareSet（共享集）</p>
+<p>可在对象之间共享、用于定义效果器或衰减等属性的一组属性。</p>
+</li>
+<li><p>ShortID</p>
+<p>短 ID。在 Wwise 工程内添加对象时，会在相关 Work Unit 文件中创建相应条目，并为其赋予一个 128 位的全局唯一标识符 (GUID) 编号。ShortID 可以是对象 GUID 的 FNV 哈希值，也可以是对象名称的 FNV 哈希值，即生成 32 位标识符。ShortID 的创建取决于对象的类型：对于 Event、Game Sync 和 SoundBank，哈希值为隐式值，不会在 Work Unit 文件 (XML) 中声明。它是 Wwise 工程中对象名称的 32 位 FNV 哈希值。对于所有其他对象（WorkUnit、Sound、Container、Bus 等），ShortID 为 GUID 字节的 32 位 FNV 哈希值。您可以在 SDK 中查看 FNV 哈希算法的 C++ 实现方式：\SDK\include\AK\Tools\Common\AkFNVHash.h</p>
+</li>
+<li><p>Silence Source（空白源）</p>
+<p>一种插件音源，可以指定时长，但在此期间内不会产生声音和振动。</p>
+</li>
+<li><p>Slider Range（滑杆范围）</p>
+<p>使用滑块设置属性时的默认值范围，如果在字段中手动输入此范围之外的值，将会改变滑块范围。</p>
+</li>
+<li><p>SoundBank</p>
+<p>事件数据、声音、音乐、振动结构数据或媒体的编组，可在游戏中特定时刻一起加载至游戏平台内存中。</p>
+</li>
+<li><p>Soundcaster</p>
+<p>Wwise 中的一种视图，可以在其中根据需要插入和移除对象或事件，提供了播放控制、试听和在 Wwise 或游戏中的实时混音等功能。</p>
+</li>
+<li><p>Soundcaster Session（声音选角器会话）</p>
+<p>可被保存的工程元素，包含使用 Soundcaster 创建的特定模拟中所用的 Wwise 对象和事件。</p>
+</li>
+<li><p>WAAPI</p>
+<p>一种允许外部应用程序与 Wwise 进行无缝通信的编程接口。</p>
+</li>
+<li><p>声音对象</p>
+<p>Wwise 工程中您创建的单个音频素材的一种表示。每个声音对象都包含若干声源，即游戏中播放的实际音频内容。请注意，Wwise 文档中使用的大写 “Sound” 是指音频对象，可以是 Sound SFX 或 Sound Voice。</p>
+</li>
+<li><p>Sound SFX（音效声）</p>
+<p>Actor-Mixer Hierarchy 中包含音效、音乐和环境声的的声音对象。</p>
+</li>
+<li><p>Sound Voice（语音声）</p>
+<p>包含对话或游戏语音的声音对象。</p>
+</li>
+<li><p>Source Plug-in（源插件）</p>
+<p>由 Wwise 外部的插件创建的音频或振动源。</p>
+</li>
+<li><p>Spatialization</p>
+<p>Wwise 中用于确定声音或音乐对象在游戏 3D 环境中的实际位置的一种功能。</p>
+</li>
+<li><p>Spread</p>
+<p>扩散到附近扬声器的音频量或百分比，以使声音能够随着距离的增加从低扩散的点声源变为完全扩散的传播源。对于多声道声音，各个声道单独扩散。</p>
+</li>
+<li><p>State（状态）</p>
+<p>根据游戏中的物理和环境条件的变化，对游戏音频属性进行全局偏置或调整。</p>
+</li>
+<li><p>State Group</p>
+<p>将相关的状态进行分组，用来管理游戏环境中的全局更改。</p>
+</li>
+<li><p>Stereo Delay（立体声延迟器）</p>
+<p>一种音频效果器，与内置滤波器一起提供双声道延迟。它有反馈和交叉回馈控件来控制延迟信号从一个声道发送到另一个声道，创建立体声效果。</p>
+</li>
+<li><p>Stinger（插播乐句）</p>
+<p>与当前正在播放音乐叠加并混音的简短乐句。</p>
+</li>
+<li><p>Switch（切换开关）</p>
+<p>Switch 代表游戏中特定元素的替代项，用于帮助管理这些替代项的相应对象。举例而言，如果角色在混凝土表面上奔跑，然后进入草地，则切换容器中的脚步声应随之改变，以匹配地面的变化。</p>
+</li>
+<li><p>Switch Container（切换容器）</p>
+<p>该容器应用了一系列 Swtich 或 State，每一个都包含对应于游戏环境特定变化的一组声音、振动对象或容器。例如，角色脚步声的 Switch Container 可包含角色在游戏中可能行走的草地、混凝土、木材等表面所对应的 Switch。</p>
+</li>
+<li><p>Switch Group （切换开关组）</p>
+<p>将相关的切换开关进行分组，用来管理游戏内指定元素在不同条件下的替代选项。</p>
+</li>
+<li><p>Switch Music Track（切换开关音乐轨）</p>
+<p>根据相关联的切换开关组播放其子音乐轨。</p>
+</li>
+<li><p>Time Stretch</p>
+<p>一种音频效果器，可改变时长但不影响所获音频信号的音高。</p>
+</li>
+<li><p>过渡</p>
+<p>在互动音乐中，使用 Transition 的目的是在源音乐段落和目标音乐段落之间实现无缝过渡。</p>
+</li>
+<li><p>Transition Time（过渡时间）</p>
+<p>同一状态组中从一个状态过渡到另一个状态所使用的时间。在过渡期间，将发生两个状态属性的插值。</p>
+</li>
+<li><p>Transmission（传输）</p>
+<p>Wwise Spatial Audio 中的一个概念，指的是声能通过障碍物后剩下的比例。</p>
+</li>
+<li><p>Tremolo（震音）</p>
+<p>使用无极载波信号调制输入信号振幅的音频效果。</p>
+</li>
+<li><p>Trigger （触发器）</p>
+<p>一种 Game Sync，响应游戏中的突发事件并播放 Stinger（插播乐句）。</p>
+</li>
+<li><p>Virtual Folder（虚拟文件夹）</p>
+<p>起组织作用的对象，显示为一个文件夹，位于工作单元或其子对象中。您可以在虚拟文件夹中放置其他对象，如虚拟文件夹、角色混音器、容器、振动对象或声音。虚拟文件夹不能作为容器、振动或声音的子对象，且在硬盘上没有对应的目录。</p>
+</li>
+<li><p>Virtual Voice（虚声部）</p>
+<p>一种虚拟环境，在此声音和振动由声音引擎管理和监视但不执行处理。当对象的音量电平低于音量阈值时，它们将进入虚声部。</p>
+</li>
+<li><p>Voice</p>
+<p>单独或离散的音频或振动播放实例。</p>
+</li>
+<li><p>Voice Starvation（声部匮乏）</p>
+<p>当声音引擎无法及时向平台硬件缓冲区提供音频数据时，Capture Log 中显示的一种错误消息类型。这种问题发生在 CPU 使用过量的场合。例如，平台 CPU 尝试混合过多声源或者同时使用过多音频效果器。</p>
+</li>
+<li><p>Volume Threshold</p>
+<p>一个特定音量电平，低于此电平，可以明确地确定声音、音乐和振动对象的行为。例如，低于音量阈值的声部可以继续播放、终止或者将其发送到虚声部列表。这些行为可以在对象的 Property Editor 的 Advanced Settings 选项卡中来定义。</p>
+</li>
+<li><p>Workgroup（工作组）</p>
+<p>同时处理同一 Wwise 工程的一组人员。</p>
+</li>
+<li><p>Work Unit（工作单元）</p>
+<p>一个独特的 XML 文件，其中包含与工程中特定部分或元素相关的信息。</p>
+</li>
+</ul>
+
+  <p> — May 6, 2023</p>
+  
+
+
+          <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+        at <a href="https://www.wuyou.com/" target="_blank" rel="noreferrer">Joymeida</a>.</p>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/Todayyyyy/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://space.bilibili.com/285916796?spm_id_from=333.1007.0.0" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Bilibili">
+        <svg class="bilibili svg-hov" width="24" height="20" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg"><title>Bilibili</title>
+          <path d="M23.0146 10.3832C22.9074 10.3832 22.811 10.3832 22.7252 10.3725C22.543 10.3618 22.3608 10.3511 22.1786 10.3511C22.0608 10.3511 22.0608 10.3511 22.05 10.2332L21.8785 8.28256L21.7071 6.66424L21.5892 5.66753L21.482 4.79943L21.289 3.44901C21.2247 2.96678 21.1498 2.4952 21.0533 2.01287C21.0426 1.93791 21.0426 1.92715 21.1284 1.9164C21.4606 1.85209 21.8035 1.81993 22.1465 1.81993H22.2644C22.3179 1.83069 22.3501 1.86284 22.3608 1.92715L22.4037 2.66662L22.7038 6.66424L22.8538 8.4969L22.9503 9.54728L23.0146 10.3832ZM9.87499 1.81993H10.0679C10.1644 1.81993 10.1858 1.85209 10.1858 1.94855L10.2716 3.24543L10.4645 5.93542L10.5824 7.3394L10.6681 8.42194L10.8397 10.2867C10.8397 10.3725 10.8289 10.3832 10.7432 10.3832L9.97145 10.3511C9.9179 10.3618 9.88574 10.3297 9.88574 10.276L9.85359 9.90088C9.82143 9.57943 9.78928 9.25788 9.76788 8.92568L9.59634 7.23229L9.41416 5.69968L9.28554 4.61726L9.14627 3.63118C9.08196 3.19176 9.00689 2.74169 8.93194 2.30227L8.87827 2.00222C8.86763 1.94855 8.87827 1.92715 8.93194 1.9164C9.23198 1.86284 9.52139 1.80929 9.87499 1.81993ZM20.6568 6.13911C20.9247 6.13911 20.9568 6.14986 20.9998 6.407C21.0533 6.72855 21.0962 7.05011 21.1284 7.37156L21.2462 8.41118L21.4713 10.619C21.482 10.6726 21.4713 10.694 21.4177 10.694L20.5817 10.7905C20.496 10.8011 20.4745 10.7905 20.4639 10.7048L19.9815 8.23976L19.6815 6.59993L19.6386 6.37484C19.6279 6.33204 19.6493 6.29989 19.6922 6.28913C20.0244 6.21417 20.346 6.16051 20.6568 6.13911ZM8.471 6.13911C8.7604 6.12835 8.79256 6.16051 8.82472 6.42851C8.89978 6.86793 8.95334 7.2966 8.99625 7.73603L9.13552 9.02203L9.22123 9.89024L9.2963 10.5868C9.2963 10.6833 9.28554 10.7048 9.19983 10.7154L8.4068 10.7905C8.32098 10.8011 8.29958 10.7905 8.28882 10.7048L7.63507 7.3394L7.46364 6.3856C7.45289 6.33204 7.47429 6.29989 7.52795 6.28913C7.86015 6.21417 8.17096 6.16051 8.471 6.13911ZM12.5651 9.46146V10.8333C12.5758 10.8976 12.5437 10.9298 12.4794 10.9191H12.2221C12.04 10.9191 11.8578 10.9298 11.6756 10.9405C11.5791 10.9513 11.5684 10.9513 11.5576 10.8333L11.3862 8.90416L11.3005 7.95036L11.1719 6.49282C11.1611 6.37484 11.1826 6.35344 11.279 6.34269C11.5791 6.31053 11.8792 6.31053 12.1793 6.32129L12.4043 6.35344C12.4901 6.3856 12.5008 6.39635 12.5008 6.48206L12.5329 7.06076L12.5437 7.70387C12.5544 8.29332 12.5651 8.87201 12.5651 9.46146ZM24.7294 9.52577V10.844C24.7294 10.8976 24.708 10.9298 24.6543 10.9191H24.2685C24.1185 10.9191 23.9684 10.9298 23.8291 10.9405C23.7434 10.9513 23.7327 10.9405 23.7219 10.844L23.4969 8.33612L23.3789 7.09291L23.3361 6.46066C23.3254 6.37484 23.3468 6.35344 23.4326 6.35344C23.7862 6.31053 24.1507 6.29989 24.5043 6.34269C24.6437 6.35344 24.6651 6.39635 24.6758 6.53562L24.708 7.96101L24.7294 9.52577ZM20.346 3.85627C20.4531 3.85627 20.5496 3.86703 20.6246 3.87767C20.6782 3.88843 20.6996 3.90983 20.7104 3.9635L20.8496 5.45319C20.8818 5.58182 20.8604 5.60322 20.7318 5.60322L20.3674 5.62462C20.2923 5.63537 20.2602 5.64613 20.2602 5.52826L20.1101 4.3171L20.0673 3.97414C20.0566 3.90983 20.078 3.87767 20.1423 3.86703L20.346 3.85627ZM8.20311 3.85627C8.28882 3.85627 8.37465 3.86703 8.4496 3.87767C8.49251 3.88843 8.51391 3.90983 8.52467 3.9635L8.56747 4.33861L8.67469 5.50675C8.68545 5.59246 8.68545 5.60322 8.59963 5.60322L8.18171 5.62462C8.096 5.63537 8.08525 5.62462 8.07449 5.5389L7.97802 4.68157L7.89231 3.9635C7.88156 3.90983 7.90307 3.87767 7.95662 3.87767C8.03169 3.86703 8.1174 3.85627 8.20311 3.85627ZM12.4794 4.92806V5.66753C12.4901 5.78539 12.4686 5.78539 12.3722 5.78539C12.2329 5.78539 12.1043 5.77475 11.9756 5.76399C11.8899 5.75324 11.8792 5.75324 11.8899 5.66753L11.8578 4.75652C11.8578 4.55294 11.8578 4.34925 11.847 4.14568C11.8364 4.04921 11.847 4.03845 11.9435 4.03845C12.0935 4.03845 12.2435 4.04921 12.3937 4.07061C12.4794 4.07061 12.4794 4.09212 12.4794 4.17783V4.92806ZM24.6543 4.9387V5.67828C24.6543 5.77475 24.6437 5.78539 24.5472 5.78539L24.1399 5.76399C24.0756 5.75324 24.0435 5.72108 24.0542 5.66753L24.0221 4.13492C24.0221 4.04921 24.0327 4.03845 24.1185 4.03845C24.2578 4.03845 24.3864 4.04921 24.515 4.05996C24.6758 4.07061 24.6543 4.10276 24.6543 4.22063V4.9387ZM7.87091 5.5175C7.88156 5.64613 7.87091 5.66753 7.74229 5.67828L7.48504 5.74259C7.39933 5.77475 7.38858 5.75324 7.37793 5.67828L7.10993 4.16708C7.07777 4.07061 7.09917 4.04921 7.19564 4.03845L7.57075 3.97414C7.65658 3.9635 7.67798 3.9635 7.67798 4.04921C7.71013 4.23139 7.74229 4.41357 7.76369 4.59574L7.87091 5.45319V5.5175ZM19.2742 4.04921C19.435 4.01705 19.6064 3.99565 19.7779 3.97414C19.8315 3.9635 19.8529 3.99565 19.8637 4.04921L19.9494 4.63866C19.9923 4.92806 20.0244 5.21735 20.0352 5.50675V5.59246C20.0458 5.63537 20.0244 5.66753 19.9815 5.67828L19.6386 5.75324C19.585 5.76399 19.5636 5.74259 19.5529 5.68893L19.2742 4.09212V4.04921ZM11.6648 5.2067C11.6648 5.37813 11.6541 5.5389 11.6434 5.68893C11.6434 5.74259 11.6219 5.76399 11.5684 5.77475L11.2362 5.8069C11.1826 5.81755 11.1611 5.78539 11.1611 5.73184C11.1397 5.57106 11.1289 5.42104 11.1183 5.26026C11.0968 4.97086 11.0754 4.67081 11.0646 4.37076L11.0432 4.15643C11.0325 4.11352 11.054 4.09212 11.0968 4.09212L11.5362 4.05996C11.6113 4.05996 11.6327 4.07061 11.6327 4.15643L11.6648 5.2067ZM23.8184 5.03517C23.8291 5.23886 23.8291 5.45319 23.8184 5.65677C23.8291 5.75324 23.8077 5.77475 23.7113 5.77475L23.4111 5.8069C23.3575 5.81755 23.3254 5.78539 23.3254 5.73184C23.3146 5.46395 23.2932 5.1853 23.2718 4.9173L23.2289 4.16708C23.2182 4.11352 23.2397 4.09212 23.2825 4.09212L23.7113 4.05996C23.7862 4.05996 23.797 4.07061 23.797 4.15643C23.8184 4.44572 23.8291 4.74588 23.8184 5.03517ZM7.45289 8.68983C7.62442 8.89352 7.65658 9.1185 7.58151 9.36499C7.5172 9.60083 7.39933 9.80441 7.2278 9.97595C6.94915 10.2653 6.6277 10.5011 6.27399 10.6833C5.66314 11.0048 5.03079 11.2299 4.35552 11.3478C3.87329 11.4442 3.39096 11.5086 2.90873 11.5407C2.75871 11.5514 2.60868 11.5514 2.45855 11.5514H2.1371C2.05128 11.5514 2.02988 11.53 2.01913 11.4442L1.94417 10.4046L1.74048 8.35763L1.5155 6.407L1.38688 5.36748L1.2475 4.37076C1.17254 3.82412 1.07608 3.27758 0.979611 2.73094C0.904544 2.29151 0.829587 1.85209 0.73312 1.41277C0.722365 1.35911 0.73312 1.31631 0.786677 1.30555L2.27637 0.683948C2.37284 0.641037 2.45855 0.608881 2.55502 0.587481C2.61933 0.576726 2.65149 0.598236 2.64073 0.662547C2.64073 0.833971 2.64073 1.0055 2.63009 1.18768L2.61933 1.32695C2.60868 1.94855 2.60868 2.57016 2.61933 3.20252C2.63009 3.74916 2.66224 4.30645 2.6944 4.85299C2.74795 5.71044 2.83366 6.56778 2.91949 7.41447C2.91949 7.50018 2.93013 7.50018 3.0266 7.48954C3.20878 7.45738 3.38031 7.44662 3.56249 7.44662C4.13054 7.44662 4.69847 7.51094 5.24512 7.6502C5.72735 7.76818 6.18828 7.92896 6.6491 8.13254C6.87419 8.23976 7.07777 8.36827 7.27071 8.51841C7.34577 8.57196 7.39933 8.62552 7.45289 8.68983ZM19.5315 8.59336C19.7565 8.77554 19.8315 9.02203 19.7672 9.31143C19.7136 9.54728 19.6064 9.75086 19.4456 9.93304C19.1885 10.2224 18.8883 10.4475 18.5561 10.6297C17.9131 10.9834 17.2272 11.2299 16.4984 11.3585C16.1019 11.4335 15.7053 11.4978 15.3087 11.53C15.0837 11.5514 14.8372 11.5621 14.5907 11.5514H14.3013C14.2371 11.5621 14.2049 11.53 14.2049 11.4656C14.1834 11.1656 14.162 10.8654 14.1299 10.5654L13.9583 8.73274L13.7761 7.13582L13.5512 5.33532C13.519 5.02452 13.4761 4.70297 13.4225 4.39217L13.2296 3.19176C13.1439 2.62382 13.0367 2.05578 12.9188 1.48773L12.908 1.41277C12.8866 1.35911 12.908 1.31631 12.9616 1.30555C13.4868 1.09122 14.0012 0.855371 14.5264 0.651792C14.6657 0.598236 14.8372 0.533925 14.8265 0.662547C14.7836 1.05906 14.7944 1.45557 14.7836 1.84144C14.7729 2.16289 14.7729 2.48445 14.7944 2.79525V3.04174C14.7944 3.42761 14.805 3.81347 14.8372 4.18848C14.8587 4.69221 14.8908 5.2067 14.9336 5.71044L15.0301 6.79287C15.0409 6.99644 15.0623 7.18938 15.0944 7.39307C15.0944 7.51094 15.1158 7.50018 15.2123 7.48954C15.4052 7.45738 15.5981 7.44662 15.7911 7.44662C16.4662 7.45738 17.12 7.56449 17.763 7.74667C18.2024 7.86465 18.6205 8.02532 19.0277 8.23976C19.2099 8.33612 19.3707 8.4541 19.5315 8.59336ZM4.03407 10.4797C4.19485 10.3832 4.47349 10.1903 4.85925 9.89024C5.24512 9.57943 5.48086 9.37574 5.57732 9.26863C4.99863 9.01139 4.39843 8.7863 3.77682 8.58272L4.03407 10.4797ZM17.7202 9.32219C17.7524 9.29003 17.7416 9.26863 17.7094 9.24712L17.4522 9.14001C17.0021 8.94708 16.552 8.77554 16.0911 8.62552L16.0268 8.60412C16.0054 8.59336 15.984 8.60412 15.9519 8.61487L16.209 10.4689C16.2412 10.4689 16.2627 10.4582 16.2733 10.4475C16.6913 10.1474 17.1092 9.83657 17.5273 9.50437L17.7202 9.32219Z" fill="#07A3D7"/>>
+          </svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.douyin.com/user/MS4wLjABAAAAPE9XVgwPCmNIxdhblhGfnr4QLbMTdl4hC7znBVYbzXo" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="bilibili svg-hov" width="21" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.88975 11.7577V10.9278C7.60167 10.8822 7.3107 10.8572 7.01905 10.853C4.19551 10.847 1.69577 12.6768 0.847855 15.37C-5.47213e-05 18.0631 1.0008 20.9949 3.31841 22.6075C2.46854 21.6979 1.90009 20.5618 1.68168 19.3363C1.46327 18.1108 1.60423 16.8483 2.08755 15.7011C2.57087 14.5539 3.37589 13.5712 4.40543 12.8715C5.43498 12.1718 6.64504 11.785 7.88957 11.7578L7.88975 11.7577Z" fill="#25F4EE"/>
+          <path d="M8.0463 21.1585C9.62495 21.1563 10.9226 19.9127 10.9917 18.3355V4.2615H13.5628C13.5104 3.96741 13.4853 3.66908 13.4881 3.37036L9.97126 3.37036V17.4308C9.91277 19.016 8.61204 20.2716 7.02585 20.2741C6.55183 20.2701 6.08555 20.1535 5.66541 19.934C5.93771 20.3113 6.29532 20.6189 6.70908 20.8316C7.12284 21.0444 7.58103 21.1564 8.0463 21.1585ZM18.3653 9.03666V8.25439C17.419 8.25476 16.4938 7.97554 15.7056 7.45178C16.3965 8.25495 17.3301 8.81129 18.3653 9.03666Z" fill="#25F4EE"/>
+          <path d="M15.7057 7.45179C14.9293 6.56773 14.5013 5.43124 14.5017 4.25464H13.5629C13.6841 4.90516 13.9367 5.52416 14.3051 6.07385C14.6735 6.62354 15.15 7.09239 15.7057 7.45179ZM7.01909 14.3698C6.36067 14.3731 5.72227 14.5965 5.20538 15.0043C4.68849 15.4122 4.32278 15.9811 4.16639 16.6207C4.01001 17.2603 4.07192 17.9338 4.34229 18.5342C4.61266 19.1345 5.07596 19.6273 5.65855 19.934C5.34002 19.4942 5.14928 18.975 5.10738 18.4335C5.06549 17.8921 5.17408 17.3497 5.42115 16.8661C5.66822 16.3826 6.04417 15.9767 6.50744 15.6934C6.97072 15.4101 7.50329 15.2604 8.04632 15.2608C8.34153 15.2647 8.63469 15.3106 8.91692 15.3973V11.8189C8.62869 11.7757 8.33776 11.7529 8.04632 11.7509H7.88979V14.4717C7.60605 14.3956 7.31273 14.3613 7.01909 14.3698Z" fill="#FE2C55"/>
+          <path d="M18.3654 9.03687V11.7578C16.6136 11.7544 14.9073 11.1999 13.4881 10.1729V17.3221C13.4806 20.8895 10.5865 23.7776 7.01913 23.7776C5.69422 23.78 4.40122 23.3712 3.31848 22.6076C4.20138 23.5572 5.34981 24.219 6.61416 24.5066C7.87851 24.7943 9.20019 24.6945 10.407 24.2203C11.6139 23.7461 12.65 22.9195 13.3803 21.8481C14.1106 20.7767 14.5014 19.5101 14.5017 18.2135V11.0844C15.9256 12.1047 17.634 12.652 19.3857 12.649V9.14546C19.0428 9.14443 18.7009 9.10804 18.3654 9.03687Z" fill="#FE2C55"/>
+          <path d="M13.4881 17.3219V10.1727C14.9115 11.1939 16.6202 11.7413 18.3721 11.7372V9.01633C17.3371 8.79776 16.4013 8.24865 15.7057 7.45179C15.15 7.09239 14.6735 6.62354 14.3051 6.07385C13.9366 5.52416 13.6841 4.90516 13.5628 4.25464H10.9917V18.3357C10.9667 18.9486 10.7513 19.5385 10.3756 20.0234C9.99988 20.5083 9.48243 20.8642 8.89518 21.0414C8.30792 21.2187 7.68002 21.2087 7.09874 21.0127C6.51746 20.8167 6.01167 20.4445 5.65166 19.9478C5.06897 19.6411 4.60557 19.1483 4.33513 18.5479C4.06469 17.9475 4.00274 17.274 4.15914 16.6343C4.31554 15.9947 4.6813 15.4257 5.19826 15.0178C5.71522 14.6099 6.35371 14.3866 7.0122 14.3833C7.30751 14.386 7.60086 14.4318 7.8829 14.5194V11.7984C6.63168 11.8196 5.41367 12.2045 4.37738 12.9059C3.34108 13.6074 2.53127 14.5953 2.04669 15.749C1.56211 16.9028 1.4237 18.1726 1.64832 19.4037C1.87295 20.6348 2.45091 21.7739 3.31174 22.6822C4.40511 23.4206 5.69995 23.8031 7.01907 23.7774C10.5865 23.7774 13.4805 20.8893 13.4881 17.3219Z" fill="black"/>
+          </svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://www.xiaohongshu.com/user/profile/63c792d100000000260123b4" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="bilibili svg-hov" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_6_11)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M23.3473 1.32454C23.1602 1.07019 22.9346 0.835033 22.6707 0.64787C22.1284 0.244751 21.4709 0 20.751 0H3.24415C2.5243 0 1.85723 0.244751 1.31494 0.64787C1.06059 0.835033 0.825435 1.06059 0.638272 1.32454C0.244751 1.86203 0 2.5243 0 3.24895V20.7558C0 21.4757 0.244751 22.1428 0.64787 22.6755C0.835033 22.9298 1.06059 23.165 1.32454 23.3521C1.86683 23.7552 2.5243 24 3.24415 24H20.751C21.4709 24 22.138 23.7552 22.6707 23.3521C22.925 23.165 23.1602 22.9394 23.3473 22.6755C23.7504 22.1332 23.9952 21.4757 23.9952 20.7558V3.24895C23.9952 2.5243 23.7409 1.86203 23.3473 1.32454ZM8.59028 10.9466C8.97421 10.0972 9.40612 9.26215 9.81404 8.42711H11.2202C10.8746 9.11338 10.4907 9.78524 10.246 10.4379C10.817 10.4043 11.3353 10.3755 11.9448 10.3419C11.6185 10.9946 11.3305 11.5753 11.0426 12.156C11.0042 12.2328 10.9658 12.3143 10.9274 12.3911C10.6251 12.9958 10.6251 13.0006 11.2969 13.015C11.3689 13.015 11.4361 13.0246 11.5657 13.039C11.3785 13.4085 11.2106 13.7445 11.033 14.0756C11.0042 14.1284 10.9226 14.1908 10.8698 14.1908C10.3755 14.1908 9.87642 14.2052 9.38212 14.1524C9.02699 14.114 8.88782 13.8404 9.02699 13.5045C9.19496 13.087 9.39652 12.6791 9.58368 12.2663C9.64607 12.1224 9.71326 11.9832 9.80444 11.772C9.53089 11.772 9.32933 11.7768 9.12777 11.772C8.54709 11.7481 8.35033 11.4841 8.59028 10.9466ZM1.78524 15.4289C1.4877 14.9106 1.21896 14.4307 0.945411 13.9508C0.945411 13.8932 1.4829 12.2519 1.36293 10.3947H2.84103C2.84103 10.3947 2.89382 13.874 1.78524 15.4289ZM5.23575 15.2418C5.25015 16.1104 4.65027 16.1104 4.65027 16.1104H3.80084L2.90822 14.9298H3.84403V8.42711H5.25015C5.25015 10.5579 5.24535 13.111 5.23575 15.2418ZM7.28014 15.3521C6.60828 14.7618 6.24355 13.0006 6.25315 10.3851H7.64007C7.53449 11.7624 7.9808 13.6005 7.9808 13.6005C7.9808 13.6005 7.57289 14.5027 7.28014 15.3521ZM10.3227 15.9616C10.2843 16.0336 10.1644 16.1008 10.078 16.1056C9.42531 16.1152 8.76785 16.1104 8.0192 16.1104C8.30234 15.5441 8.53749 15.0834 8.74385 14.6803H10.985C10.7355 15.1698 10.5387 15.5729 10.3227 15.9616ZM16.0528 16.1152H11.009C11.2537 15.6305 11.6905 14.7666 11.6905 14.7666H13.1302V10.3563H12.2328V8.979H15.4817V10.3371H14.5939V14.7714H16.0528V16.1152ZM22.7235 15.0978C22.7235 16.1152 21.7301 16.0864 21.7301 16.0864H20.4343L19.892 14.9202L21.2981 14.925C21.2981 14.925 21.3125 13.8692 21.2981 13.5045C21.2885 13.1974 21.1206 13.0006 20.8086 12.9958C20.1848 12.9814 19.5561 12.991 18.8698 12.991V16.0912H17.4781V13.0102H16.072V11.5753H17.4397V10.3611H16.5327V9.003H17.4541V8.42711H18.8602L18.8698 9.003H19.988C19.988 9.003 21.0198 8.979 21.0246 9.982C21.0294 10.2795 21.0342 11.2537 21.0342 11.5801C22.2196 11.5753 22.7235 11.8152 22.7235 12.6407V15.0978ZM22.1284 10.3995H21.3797V9.68446C21.3797 9.42532 21.5093 9.18536 21.7301 9.04619C21.9796 8.88782 22.3251 8.78704 22.6515 9.09898C22.6659 9.10858 22.6755 9.12298 22.6851 9.13737C23.1362 9.61248 22.781 10.3995 22.1284 10.3995Z" fill="#FF2742"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8795 11.5754H19.8105V10.3564H18.8699L18.8795 11.5754Z" fill="#FF2742"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_6_11">
+          <rect width="24" height="24" fill="white"/>
+          </clipPath>
+          </defs>
+          </svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/js/nanobar.min.js"></script>
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>
