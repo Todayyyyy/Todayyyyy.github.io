@@ -1,0 +1,59 @@
+#title in header
+title: "你好"
+
+#main info
+#owner
+owner: "I am Carol Duan."
+email: duan13330357575@126.com
+info: "一个捣鼓编程的音响工程师、声音设计师:)"
+#description
+desc: >
+  欢迎来到我的个人主页！
+  
+  在这里，你可以找到一些关于音响现场（设备、软件）等的学习文档，以及游戏音频开发的学习文档。
+  
+  欢迎联系以及交流~
+  
+
+#menu
+menu:
+  Works: /Works
+  About: /About
+
+#index/main page max show posts (in number)
+max_post: 4
+
+# Colors use hex color without #
+# Theme color
+tcolor: 0FA0CE
+
+# Define path to user css
+#(could be also located outside of theme)
+# Relative to source/ directory
+usercss: css/user.css
+
+# social profile at the footer/bottom
+footer: true
+placename: Joymeida
+placelink: https://www.wuyou.com/
+github: https://github.com/Todayyyyy/
+bilibili: https://space.bilibili.com/285916796?spm_id_from=333.1007.0.0
+tiktok: https://www.douyin.com/user/MS4wLjABAAAAPE9XVgwPCmNIxdhblhGfnr4QLbMTdl4hC7znBVYbzXo
+redbook: https://www.xiaohongshu.com/user/profile/63c792d100000000260123b4
+
+# Misc
+nanobar: /js/nanobar.min.js
+switch_light: 🌑
+switch_dark: ☀️
+
+# favicon
+favicon: /images/favicon.png
+# thumbnail
+thumbnail: /images/thumbnail.jpg
+
+article:
+  thumbnail: true
+
+# DISQUS comments (sign up to Disqus to get disqus_shortname)
+disqus_enabled: false
+disqus_shortname: https-adisaktijrs-github-io
