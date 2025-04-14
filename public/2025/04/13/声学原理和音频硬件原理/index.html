@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="声学原理和音频硬件原理" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/favicon.webp">
+    <title>段恺乐</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 50%; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/favicon.webp" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">段恺乐</a> 
+            <span class="description">声音设计师丨音乐制作爱好者</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/works/">作品</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    声学原理和音频硬件原理
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-04-13</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：1.8k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：6分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%80%E3%80%81%E6%A8%A1%E6%8B%9F%E5%92%8C%E6%95%B0%E5%AD%97%E9%9F%B3%E9%A2%91%E6%8E%A5%E5%8F%A3%E5%88%86%E7%B1%BB"><span class="post-toc-text">一、模拟和数字音频接口分类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-TRS%EF%BC%9ATip-signal-%E3%80%81Ring-signal-%E3%80%81Sleeve-ground"><span class="post-toc-text">1.TRS：Tip(signal)、Ring(signal)、Sleeve(ground)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-RCA%E6%8E%A5%E5%8F%A3%EF%BC%88Radio-Corporation-of-America%EF%BC%89"><span class="post-toc-text">2.RCA接口（Radio Corporation of America）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-XLR%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">3.XLR接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-AES-EBU%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">4.AES&#x2F;EBU接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5-S-PDIF%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">5.S&#x2F;PDIF接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#6-%E5%90%8C%E8%BD%B4%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">6.同轴接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#7-%E5%85%89%E7%BA%A4%E6%8E%A5%E5%8F%A3"><span class="post-toc-text">7.光纤接口</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BA%8C%E3%80%81%E9%9F%B3%E9%A2%91%E4%BF%A1%E5%8F%B7%E5%88%86%E7%B1%BB%EF%BC%9A%E5%B9%B3%E8%A1%A1%E4%BF%A1%E5%8F%B7%E4%B8%8E%E9%9D%9E%E5%B9%B3%E8%A1%A1%E4%BF%A1%E5%8F%B7"><span class="post-toc-text">二、音频信号分类：平衡信号与非平衡信号</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%89%E3%80%81%E9%98%BB%E6%8A%97"><span class="post-toc-text">三、阻抗</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-%E4%BD%8E%E9%98%BB%E6%8A%97%E6%89%AC%E5%A3%B0%E5%99%A8%EF%BC%88%E5%A6%824%CE%A9%EF%BC%89"><span class="post-toc-text">1.低阻抗扬声器（如4Ω）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-%E9%AB%98%E9%98%BB%E6%8A%97%E6%89%AC%E5%A3%B0%E5%99%A8%EF%BC%88%E5%A6%8216%CE%A9%E6%88%9632%CE%A9%EF%BC%89"><span class="post-toc-text">2.高阻抗扬声器（如16Ω或32Ω）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%9B%E3%80%81%E9%98%BB%E6%8A%97%E7%94%B5%E5%B9%B3%E5%8C%B9%E9%85%8D"><span class="post-toc-text">四、阻抗电平匹配</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><p>作者：段恺乐</p>
+<h2 id="一、模拟和数字音频接口分类"><a href="#一、模拟和数字音频接口分类" class="headerlink" title="一、模拟和数字音频接口分类"></a>一、模拟和数字音频接口分类</h2><h3 id="1-TRS：Tip-signal-、Ring-signal-、Sleeve-ground"><a href="#1-TRS：Tip-signal-、Ring-signal-、Sleeve-ground" class="headerlink" title="1.TRS：Tip(signal)、Ring(signal)、Sleeve(ground)"></a>1.TRS：Tip(signal)、Ring(signal)、Sleeve(ground)</h3><p>分别代表了这种接头的3个触点它的接头外观是圆柱体形状，分别代表了这种接头的3个触点，我们看到的就是被两段绝缘材料隔离开的三段金属柱。</p>
+<p>因此，3.5mm接头和6.3mm接头也被人称为“<strong>小三芯</strong>”和“<strong>大三芯</strong>”。</p>
+<p>通常有三种尺寸：1&#x2F;4”(6.3mm)、1&#x2F;8”(3.5mm)、3&#x2F;32”(2.5mm)，如下图所示，最常见的是3.5mm尺寸的接头。</p>
+<p><a href="/image/ksohtml924/wps8.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/image/ksohtml924/wps8.jpg" alt="img"></a></p>
+<p>如下图所示，为“大三芯”接口的具体结构。</p>
+<p>  <a href="/image/ksohtml924/wps9.png" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/image/ksohtml924/wps9.png" alt="img"></a></p>
+<hr>
+<p>TRS插头：如耳机、随身听等，多出来的那一芯是用来传送语音信号或控制信号；还有一种用于耳机的四芯3.5mm插头则是用来传输平衡信号的。</p>
+<p>二芯的TS接头：可以用来传送非平衡的单声道音频信号，比如电吉他用的线就是二芯的TS线。</p>
+<p>6.3mmTRS插头：可用来传输平衡信号或非平衡立体声信号，也就是说它可以和我们后面要讲的XLR平衡接口一样，能够传输平衡信号，但因制作这样的平衡线成本比较高，所以一般只用在高档专业音频设备上。</p>
+<h3 id="2-RCA接口（Radio-Corporation-of-America）"><a href="#2-RCA接口（Radio-Corporation-of-America）" class="headerlink" title="2.RCA接口（Radio Corporation of America）"></a>2.RCA接口（Radio Corporation of America）</h3><p><a href="/image/ksohtml924/wps10.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/image/ksohtml924/wps10.jpg" alt="img"></a></p>
+<p>采用同轴传输信号的方式，中轴用来传输信号，外沿一圈的接触层用来接地。</p>
+<p>每一根RCA线缆负责传输一个声道的音频信号，因此，可以根据对声道的实际需要，使用与之数量相匹配的RCA线缆。比如要组双声道立体声就需要两根RCA线缆。</p>
+<h3 id="3-XLR接口"><a href="#3-XLR接口" class="headerlink" title="3.XLR接口"></a>3.XLR接口</h3><p>又被称为“卡农口”。它们最早的产品是“cannon X”系列，后来改进产品增加了一个锁定装置(Latch)，于是在“X”后面增加了一个“L”;再后来又围绕着接头的金属触点增加了橡胶封口(Rubber compound)，于是又在“L”后面增加了一个“R”。人们就把三个大写字母组合在一起，称这种接头为“XLR connector”。</p>
+<p><a href="/image/ksohtml924/wps12.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/image/ksohtml924/wps12.jpg" alt="img"></a></p>
+<p>比较常见的三芯XLR接口；有的耳放上面会提供四芯平衡XLR耳机接口。</p>
+<h3 id="4-AES-EBU接口"><a href="#4-AES-EBU接口" class="headerlink" title="4.AES&#x2F;EBU接口"></a>4.AES&#x2F;EBU接口</h3><p>Audio Engineering Society&#x2F;European Broadcast Union(音频工程师协会&#x2F;欧洲广播联盟)。</p>
+<p>基于单根绞合线对来传输数字音频数据的串行位传输协议。</p>
+<p>无须均衡即可在长达100米的距离上传输数据，如果均衡，可以传输更远距离。</p>
+<h3 id="5-S-PDIF接口"><a href="#5-S-PDIF接口" class="headerlink" title="5.S&#x2F;PDIF接口"></a>5.S&#x2F;PDIF接口</h3><p>Sony&#x2F;Philips Digital Interconnect Format</p>
+<p>在某些情况下AES&#x2F;EBU的专业设备和S&#x2F;PDIF的用户设备可以直接连接，但是并不推荐这种做法，因为在电气技术规范和信道状态位中存在非常重要的差别，当混用协议时可能产生无法预知的后果。</p>
+<h3 id="6-同轴接口"><a href="#6-同轴接口" class="headerlink" title="6.同轴接口"></a>6.同轴接口</h3><p>同轴接口分为两种，一种是RCA同轴接口，另一种是BNC同轴接口。前者的外观跟模拟RCA接口没有任何区别，而后者则与我们在电视机上常见的信号接口有点类似，而且加了锁紧设计。同轴线缆接头有两个同心导体，导体和屏蔽层共用同一轴心，线的阻抗是75欧姆。</p>
+<p><a href="/image/ksohtml924/wps13.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/image/ksohtml924/wps13.jpg" alt="img"></a> </p>
+<h3 id="7-光纤接口"><a href="#7-光纤接口" class="headerlink" title="7.光纤接口"></a>7.光纤接口</h3><p>光纤接口的英文名字为TOSLINK，来源于东芝(TOSHIBA)制定的技术标准，器材上一般标为“Optical”。</p>
+<p><a href="/image/ksohtml924/wps14.jpg" title="img" class="gallery-item" style="box-shadow: none;"> <img src="/image/ksohtml924/wps14.jpg" alt="img"></a> </p>
+<h2 id="二、音频信号分类：平衡信号与非平衡信号"><a href="#二、音频信号分类：平衡信号与非平衡信号" class="headerlink" title="二、音频信号分类：平衡信号与非平衡信号"></a>二、音频信号分类：平衡信号与非平衡信号</h2><p>非平衡信号：声波转变成电信号后，直接传送。</p>
+<p>平衡信号：把原始信号反相（相位差为180 度），然后同时传送反相的信号和原始信号。</p>
+<p>平衡传输：一种应用广泛的音频信号传输方式。利用相位抵消的原理将音频信号传输过程中所受的其他干扰降至最低，即：平衡信号送入差动放大器，原信号和反相位信号相减，得到加强的原始信号，由于在传送中，两条线路受到的干扰几乎一样，在相减的过程中，减掉了干扰信号，因此抗干扰能力更强。所以，平衡传输一般出现在专业音频设备上，以及传输距离较远的场合。这种在平衡式信号线中抑制两极导线中所共同有的噪声的现象便称为共模抑制。</p>
+<p>平衡传输需要并列的三根导线来实现，即接地线、热端线、冷端线。因此，平衡输入、输出接头，必须具有三个脚位，如卡侬头，大三芯接头。</p>
+<p>非平衡传输只有两个端子，即：信号端与接地端。</p>
+<h2 id="三、阻抗"><a href="#三、阻抗" class="headerlink" title="三、阻抗"></a>三、阻抗</h2><p>指电流通过扬声器时所遇到的电阻，它是指对交流电的阻碍程度，通常以欧姆（Ω）为单位表示。</p>
+<p>阻抗可反映扬声器对电源的负载特性。（负载：电子元件的峰值功率） </p>
+<p>一般来说，较低的阻抗意味着扬声器对电源的负载更大，因此可能需要更大的功率驱动才能达到更高的音量。而较高的阻抗则需要较少的功率来驱动，但音量可能会较低。</p>
+<p>阻抗匹配非常重要。如果将低阻抗扬声器连接到高阻抗放大器，可能会导致功率损失和声音质量下降。相反，将高阻抗扬声器连接到低阻抗放大器也可能导致过载和损坏。因此，为了获得最佳的音频效果和系统性能，选择合适阻抗匹配的扬声器和放大器是很重要的。</p>
+<h3 id="1-低阻抗扬声器（如4Ω）"><a href="#1-低阻抗扬声器（如4Ω）" class="headerlink" title="1.低阻抗扬声器（如4Ω）"></a>1.低阻抗扬声器（如4Ω）</h3><p>▲优势：低阻抗意味着扬声器对电源的负载较大，它能够吸收更多的功率，并在较低的声压级上产生较高的音量。低阻抗扬声器通常具有更高的灵敏度，能够以较小的功率驱动就产生大音量。</p>
+<p>▲注意事项：在连接低阻抗扬声器时，需要确保放大器或扬声器驱动器具备足够的功率和稳定性，以防止过载和损坏。</p>
+<h3 id="2-高阻抗扬声器（如16Ω或32Ω）"><a href="#2-高阻抗扬声器（如16Ω或32Ω）" class="headerlink" title="2.高阻抗扬声器（如16Ω或32Ω）"></a>2.高阻抗扬声器（如16Ω或32Ω）</h3><p>▲优势：高阻抗扬声器需要较低的功率来驱动，对放大器的要求较低。这使得它们适用于某些特定的应用场景，例如便携式音频设备或静音环境下的私人听音等。高阻抗扬声器通常具有较小的功率需求，并且对信号质量和输出稳定性的要求相对较低。</p>
+<p>▲注意事项：高阻抗扬声器可能在较高的声压级上需要更大的功率才能产生相同的音量，所以在选择时需要确保匹配合适的放大器。</p>
+<h2 id="四、阻抗电平匹配"><a href="#四、阻抗电平匹配" class="headerlink" title="四、阻抗电平匹配"></a>四、阻抗电平匹配</h2></div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-04-13</span>
+            
+            
+             
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/04/13/%E9%9F%B3%E9%A2%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91_%E9%9F%B3%E6%95%88%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91/'>音效助手软件开发归档</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/04/13/%E9%9F%B3%E9%A2%91%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91_%E5%9F%BA%E4%BA%8Effmpeg%E7%9A%84%E9%9F%B3%E9%A2%91%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E5%99%A8/">An Audio Format Converter based on ffmpeg</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2002-2025 Carol 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>

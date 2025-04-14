@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="音效助手软件开发归档" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/favicon.webp">
+    <title>段恺乐</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 50%; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/favicon.webp" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">段恺乐</a> 
+            <span class="description">声音设计师丨音乐制作爱好者</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/works/">作品</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    音效助手软件开发归档
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2025-04-13</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：7.8k</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：32分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%80%E3%80%81%E9%9F%B3%E9%A2%91%E5%8A%9F%E8%83%BD%E7%9A%84%E5%BC%80%E5%8F%91"><span class="post-toc-text">一、音频功能的开发</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A7%94%E6%89%98"><span class="post-toc-text">委托</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="post-toc-text">使用步骤</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="post-toc-text">观察者模式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%A7%94%E6%89%98%E7%B1%BB%E5%9E%8B-%E5%A7%94%E6%89%98%E4%BA%8B%E4%BB%B6"><span class="post-toc-text">委托类型&#x2F;委托事件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%A4%E7%A7%8D%E9%A2%84%E5%AE%9A%E7%9A%84%E4%BA%8B%E4%BB%B6%E6%B3%9B%E5%9E%8B"><span class="post-toc-text">两种预定的事件泛型</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="post-toc-text">Lambda表达式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="post-toc-text">事件绑定</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Hook"><span class="post-toc-text">Hook</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9F%B3%E9%A2%91%E8%AE%BE%E5%A4%87%E8%AF%86%E5%88%AB%E4%B8%8E%E8%8E%B7%E5%8F%96%E5%92%8C%E5%88%87%E6%8D%A2"><span class="post-toc-text">音频设备识别与获取和切换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#public-List-GetAudioDevices-%E6%96%B9%E6%B3%95"><span class="post-toc-text">public List GetAudioDevices()方法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#WaveOut-DeviceCount"><span class="post-toc-text">WaveOut.DeviceCount</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#WaveOut-GetCapabilities-i"><span class="post-toc-text">WaveOut.GetCapabilities(i)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="post-toc-text">实现步骤</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%9F%B3%E9%A2%91%E8%AE%BE%E5%A4%87%E7%9A%84%E5%88%87%E6%8D%A2"><span class="post-toc-text">音频设备的切换</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9F%B3%E9%A2%91%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="post-toc-text">音频管理系统</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6%E6%92%AD%E6%94%BE%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="post-toc-text">音频文件播放的实现步骤</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#WaveStream"><span class="post-toc-text">WaveStream</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#InitializeButtons"><span class="post-toc-text">InitializeButtons()</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="post-toc-text">音频播放管理系统</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-%E9%9F%B3%E9%A2%91%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E5%92%8C%E6%98%A0%E5%B0%84"><span class="post-toc-text">1.音频文件加载和映射</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="post-toc-text">示例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="post-toc-text">注意事项</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#2-%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE%E9%80%BB%E8%BE%91%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">2.音频播放逻辑实现</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#WaveFileReader-%E4%B8%8E-AudioFileReader-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="post-toc-text">WaveFileReader 与 AudioFileReader 的区别</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="post-toc-text">使用场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#3-%E6%92%AD%E6%94%BE%E6%96%87%E4%BB%B6%E9%80%89%E6%8B%A9"><span class="post-toc-text">3.播放文件选择</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E9%9F%B3%E9%87%8F%E5%A4%A7%E5%B0%8F"><span class="post-toc-text">音量大小</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%BF%9B%E5%BA%A6%E6%9D%A1"><span class="post-toc-text">进度条</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BA%8C%E3%80%81%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="post-toc-text">二、快捷键</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#1-%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95"><span class="post-toc-text">1.右键菜单</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#2-%E5%BF%AB%E6%8D%B7%E9%94%AE%E8%AE%BE%E7%BD%AE%E7%AA%97%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="post-toc-text">2.快捷键设置窗口的实现</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#3-%E5%BF%AB%E6%8D%B7%E9%94%AE%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%93%8D%E5%BA%94"><span class="post-toc-text">3.快捷键设置的响应</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%85%A8%E5%B1%80%E5%93%8D%E5%BA%94"><span class="post-toc-text">全局响应</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%89%E3%80%81%E6%93%8D%E4%BD%9C%E5%AD%98%E5%82%A8"><span class="post-toc-text">三、操作存储</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-ApplySettings-%E6%96%B9%E6%B3%95"><span class="post-toc-text">1. ApplySettings 方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Form1-FormClosing-%E6%96%B9%E6%B3%95"><span class="post-toc-text">2. Form1_FormClosing 方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-SaveButtonAudioPaths-%E6%96%B9%E6%B3%95"><span class="post-toc-text">3. SaveButtonAudioPaths 方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-ShowLoginForm-%E6%96%B9%E6%B3%95"><span class="post-toc-text">4. ShowLoginForm 方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%9B%E3%80%81%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%B0%81%E8%A3%85"><span class="post-toc-text">四、软件的封装</span></a></li></ol>
+            
+        
+        <div class=".article-gallery"><h2 id="一、音频功能的开发"><a href="#一、音频功能的开发" class="headerlink" title="一、音频功能的开发"></a>一、音频功能的开发</h2><p>核心功能的开发，利用NAudio.dll组件进行开发。</p>
+<h3 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">delegate</span> <span class="built_in">double</span> <span class="title">Cal</span>(<span class="params"><span class="built_in">double</span> x,<span class="built_in">double</span> y</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Test</span>(<span class="params">Cal f</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.Write(<span class="string">&quot;请输入X:&quot;</span>);</span><br><span class="line">    <span class="built_in">double</span> x=Convert.ToDouble(Console.ReadLine());</span><br><span class="line">    Console.write(<span class="string">&quot;请输入Y:&quot;</span>);</span><br><span class="line">    <span class="built_in">double</span> y= Convert.ToDouble(Console. ReadLine());<span class="comment">//委托方法工作,怎么工作由具体委托决定</span></span><br><span class="line">    <span class="built_in">double</span> result =f(x, y);</span><br><span class="line">    Console.writeLine(<span class="string">&quot;x: &#123;0&#125;与Y:&#123;1&#125;委托方法计算结果为:&#123;2&#125;&quot;</span>，x,y,result);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] <span class="keyword">args</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	Test(<span class="keyword">new</span> Cal(Add));</span><br><span class="line">    Test(Add);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="built_in">double</span> <span class="title">Add</span>(<span class="params"><span class="built_in">double</span> x,<span class="built_in">double</span> y</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>将不变的进行封装，将变的隔离起来，让代码更易于维护。</p>
+<blockquote>
+<p><a href="/image/weituo" title="image-20241029134923881" class="gallery-item" style="box-shadow: none;"> <img src="/image/weituo" alt="image-20241029134923881"></a></p>
+</blockquote>
+<h4 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h4><p>定义委托</p>
+<p>实例化委托（赋予方法）</p>
+<p>使用委托（输入参数）</p>
+<h4 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h4><p>一种事件触发的模式。当定义某个委托之后，其他的类的方法可以订阅这个委托，然后通过这个委托，来统一触发一系列事件。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyEvent?.Invoke(<span class="keyword">this</span>, e); <span class="comment">// 检查是否有任何订阅者，然后触发事件</span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><a href="/image/weituo2" title="image-20241029141958516" class="gallery-item" style="box-shadow: none;"> <img src="/image/weituo2" alt="image-20241029141958516"></a></p>
+<p><a href="/image/weituo3" title="image-20241029142154108" class="gallery-item" style="box-shadow: none;"> <img src="/image/weituo3" alt="image-20241029142154108"></a></p>
+</blockquote>
+<h4 id="委托类型-委托事件"><a href="#委托类型-委托事件" class="headerlink" title="委托类型&#x2F;委托事件"></a>委托类型&#x2F;委托事件</h4><p>定义：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">event</span> OnGameOver onGameOver;</span><br></pre></td></tr></table></figure>
+
+<p>事件委托和常规委托相同，只是事件委托只能从自己的类中进行调用，其他脚本只能进行订阅或者取消，但是不能触发、更改。这样可以防止其他脚本执行相关操作。</p>
+<h4 id="两种预定的事件泛型"><a href="#两种预定的事件泛型" class="headerlink" title="两种预定的事件泛型"></a>两种预定的事件泛型</h4><p>无返回值：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Action&lt;T1,T2,T3&gt;</span><br></pre></td></tr></table></figure>
+
+<p>有返回值：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Func&lt;T1,T2,T3&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">() =&gt;&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>lambda表达式要和委托，事件联合使用。</p>
+<p>例如：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Func&lt;<span class="built_in">int</span> , <span class="built_in">int</span>&gt; func = x =&gt; x+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">Func&lt;<span class="built_in">int</span> , <span class="built_in">int</span>&gt; func;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">fx</span>(<span class="params"><span class="built_in">int</span> x</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>再例如：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Action&lt;<span class="built_in">string</span>&gt; action =msg =&gt;Console.WriteLine(msg);</span><br><span class="line"></span><br><span class="line">Action&lt;<span class="built_in">string</span>&gt; action <span class="built_in">string</span> msg =&gt;Console.WriteLine(msg);</span><br></pre></td></tr></table></figure>
+
+<h4 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">button.Click += (s, e) =&gt; Button_Click(button);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">event</span> EventHandler Click&#123;<span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//delegate void System.EventHandler(object sender, System.EventArgs e)表示将用于处理不具有事件数据的事件的方法。</span></span><br></pre></td></tr></table></figure>
+
+<p>以下两种表述都是错误的：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">button.Click += Button_Click;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">button.Click += Button_Click(Button button);</span><br></pre></td></tr></table></figure>
+
+<p>因为：</p>
+<p><code>Button_Click</code> 方法的签名与 <code>EventHandler</code> 委托不匹配，使用 <code>button.Click += Button_Click;</code> 将会导致编译错误。</p>
+<p><code>EventHandler</code> 的签名是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">csharp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制代码</span><br><span class="line">void EventHandler(object sender, EventArgs e);</span><br></pre></td></tr></table></figure>
+
+<p>假设 <code>Button_Click</code> 方法的签名是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">csharp复制代码private void Button_Click(Button button)</span><br><span class="line">&#123;</span><br><span class="line">    // 处理逻辑</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么在这种情况下，<code>Button_Click</code> 的签名不匹配 <code>EventHandler</code> 委托，因此您不能直接使用方法组来订阅事件。编译器会报错，因为它找不到与 <code>EventHandler</code> 委托匹配的重载。</p>
+<h3 id="Hook"><a href="#Hook" class="headerlink" title="Hook"></a>Hook</h3><p>略…</p>
+<h3 id="音频设备识别与获取和切换"><a href="#音频设备识别与获取和切换" class="headerlink" title="音频设备识别与获取和切换"></a>音频设备识别与获取和切换</h3><p>通过类AudioDeviceManager来实现音频设备的识别。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> NAudio.Wave;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AudioDeviceManager</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;WaveOutCapabilities&gt; <span class="title">GetAudioDevices</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        List&lt;WaveOutCapabilities&gt; devices = <span class="keyword">new</span> List&lt;WaveOutCapabilities&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; WaveOut.DeviceCount; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            devices.Add(WaveOut.GetCapabilities(i));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> devices;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="public-List-GetAudioDevices-方法"><a href="#public-List-GetAudioDevices-方法" class="headerlink" title="public List GetAudioDevices()方法"></a>public List<WaveOutCapabilities> GetAudioDevices()方法</h4><p>通常用于获取系统中可用的音频设备列表，并返回一个包含 <code>WaveOutCapabilities</code> 对象的列表。每个 <code>WaveOutCapabilities</code> 对象描述了一个音频输出设备的特性，比如：</p>
+<ul>
+<li>设备名称</li>
+<li>支持的声道数</li>
+<li>采样率</li>
+<li>支持的位深度</li>
+</ul>
+<h4 id="WaveOut-DeviceCount"><a href="#WaveOut-DeviceCount" class="headerlink" title="WaveOut.DeviceCount"></a><code>WaveOut.DeviceCount</code></h4><p>是一个静态属性，用于获取系统中可用的音频输出设备的数量。这个属性返回一个<strong>整数</strong>，表示当前可以用于音频播放的设备总数。可以用它来遍历每个设备，进而获取设备的详细信息。</p>
+<h4 id="WaveOut-GetCapabilities-i"><a href="#WaveOut-GetCapabilities-i" class="headerlink" title="WaveOut.GetCapabilities(i)"></a>WaveOut.GetCapabilities(i)</h4><p>是一个静态方法，用于获取指定索引 <code>i</code> 的音频输出设备的能力（<code>WaveOutCapabilities</code>）。该方法返回一个 <code>WaveOutCapabilities</code> 对象，其中包含有关设备的详细信息，例如：</p>
+<ul>
+<li><strong>设备名称</strong>：音频设备的描述性名称。</li>
+<li><strong>支持的声道数</strong>：设备支持的声道（单声道或立体声）数量。</li>
+<li><strong>最大采样率</strong>：设备支持的最高采样率。</li>
+<li><strong>最大位深度</strong>：设备支持的最高位深度（如16位、24位等）。</li>
+</ul>
+<h4 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LoadAudioDevices</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> devices = audioDeviceManager.GetAudioDevices();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> device <span class="keyword">in</span> devices)</span><br><span class="line">    &#123;</span><br><span class="line">        comboBoxDevices.Items.Add(device.ProductName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (comboBoxDevices.Items.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        comboBoxDevices.SelectedIndex = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>LoadAudioDevices</code> 方法的功能是加载系统中的音频设备并将它们添加到下拉框（<code>comboBoxDevices</code>）中。具体步骤如下：</p>
+<ol>
+<li><strong>获取音频设备列表</strong>：调用 <code>audioDeviceManager.GetAudioDevices()</code> 方法，获取可用的音频设备列表。</li>
+<li><strong>添加设备到下拉框</strong>：使用 <code>foreach</code> 循环遍历设备列表，将每个设备的名称（<code>device.ProductName</code>）添加到 <code>comboBoxDevices.Items</code> 中。</li>
+<li><strong>选择第一个设备</strong>：如果下拉框中有设备项（<code>Items.Count</code> 大于 0），将 <code>comboBoxDevices.SelectedIndex</code> 设置为 0，默认选择第一个设备。</li>
+<li>注意事项：<ul>
+<li>确保 <code>audioDeviceManager</code> 已正确初始化。</li>
+<li>如果需要处理没有可用设备的情况，可以考虑在下拉框中显示一条提示信息。</li>
+</ul>
+</li>
+</ol>
+<h4 id="音频设备的切换"><a href="#音频设备的切换" class="headerlink" title="音频设备的切换"></a>音频设备的切换</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">comboBoxDevices_SelectedIndexChanged</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (waveOut != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        waveOut.Stop();</span><br><span class="line">        waveOut.Dispose();</span><br><span class="line">        waveOut = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (audioFileReader != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        audioFileReader.Dispose();</span><br><span class="line">        audioFileReader = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(currentFilePath))</span><br><span class="line">    &#123;</span><br><span class="line">        waveOut = <span class="keyword">new</span> WaveOutEvent</span><br><span class="line">        &#123;</span><br><span class="line">            DeviceNumber = comboBoxDevices.SelectedIndex,</span><br><span class="line">            Volume = volumeSlider.Volume</span><br><span class="line">        &#125;;</span><br><span class="line">        audioFileReader = <span class="keyword">new</span> AudioFileReader(currentFilePath);</span><br><span class="line">        waveOut.Init(audioFileReader);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isPlaying)</span><br><span class="line">        &#123;</span><br><span class="line">            waveOut.Play();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个 <code>comboBoxDevices_SelectedIndexChanged</code> 方法的功能是处理用户在设备选择下拉框（<code>comboBoxDevices</code>）中更改选定设备时的逻辑。具体步骤如下：</p>
+<ol>
+<li>**停止并释放现有的 <code>waveOut</code>**：如果 <code>waveOut</code> 不为空，先停止播放并释放其资源。</li>
+<li><strong>释放音频文件读取器</strong>：如果 <code>audioFileReader</code> 不为空，释放其资源。</li>
+<li><strong>检查当前文件路径</strong>：如果 <code>currentFilePath</code> 不为空，则进行下一步：</li>
+<li><strong>创建新的 <code>WaveOutEvent</code> 实例</strong>：<ul>
+<li>设置 <code>DeviceNumber</code> 为所选设备的索引。</li>
+<li>将音量设置为滑块（<code>volumeSlider.Volume</code>）的值。</li>
+</ul>
+</li>
+<li>**初始化 <code>AudioFileReader</code>**：使用当前文件路径创建新的 <code>AudioFileReader</code> 实例，并用其初始化 <code>waveOut</code>。</li>
+<li><strong>播放音频</strong>：如果当前状态为播放（<code>isPlaying</code> 为真），则调用 <code>waveOut.Play()</code> 开始播放。</li>
+</ol>
+<p>注意事项：</p>
+<ul>
+<li>确保在选择新设备时，正确管理资源，防止内存泄漏。</li>
+<li>如果 <code>currentFilePath</code> 可能为空，考虑在此处添加错误处理逻辑。</li>
+</ul>
+<h3 id="音频管理系统"><a href="#音频管理系统" class="headerlink" title="音频管理系统"></a>音频管理系统</h3><h4 id="音频文件播放的实现步骤"><a href="#音频文件播放的实现步骤" class="headerlink" title="音频文件播放的实现步骤"></a>音频文件播放的实现步骤</h4><p><strong>初始化</strong>：在构造函数或初始化方法中实例化 <code>waveOut</code>。</p>
+<p><strong>加载音频数据</strong>：将音频数据加载到 <code>waveOut</code> 中。通常你会使用 <code>AudioFileReader</code> 来读取音频文件。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> audioFile = <span class="keyword">new</span> AudioFileReader(<span class="string">&quot;path/to/audio/file.mp3&quot;</span>);</span><br><span class="line">waveOut.Init(audioFile);</span><br></pre></td></tr></table></figure>
+
+<p><strong>播放音频；</strong></p>
+<p><strong>控制音频</strong>；</p>
+<p><strong>释放资源</strong>：在不再需要时，确保调用 <code>Dispose()</code> 方法释放（waveout和audiofile）资源。</p>
+<h4 id="WaveStream"><a href="#WaveStream" class="headerlink" title="WaveStream"></a><code>WaveStream</code></h4><p>是 NAudio 中的一个基类，用于表示音频数据流，它可以用于处理各种音频格式。</p>
+<p><code>WaveStream</code> 的常见用途：</p>
+<ol>
+<li><strong>加载音频文件</strong>：可以通过继承 <code>WaveStream</code> 的类（如 <code>AudioFileReader</code>）来加载音频文件。</li>
+<li><strong>音频播放</strong>：<code>WaveStream</code> 可以与 <code>WaveOut</code> 或 <code>WaveOutEvent</code> 等输出设备配合使用，以实现音频播放。</li>
+<li><strong>处理流数据</strong>：可以用于处理实时音频流，比如录音或网络音频流。</li>
+</ol>
+<h4 id="InitializeButtons"><a href="#InitializeButtons" class="headerlink" title="InitializeButtons()"></a>InitializeButtons()</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">InitializeButtons</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> button <span class="keyword">in</span> buttonAudioMapping.Keys)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (button != ButtonPlay)</span><br><span class="line">        &#123;</span><br><span class="line">            button.Click += (s, e) =&gt; Button_Click(button);</span><br><span class="line">            button.MouseUp += Button_MouseUp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>点击事件</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">button.Click += (s, e) =&gt; Button_Click(button);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这行代码为 <code>button</code> 的 <code>Click</code> 事件添加了一个匿名方法（lambda 表达式）。当按钮被点击时，这个匿名方法会被调用。</li>
+<li>在这个方法中，调用了 <code>Button_Click(button)</code>，将当前按钮作为参数传递。这样，你可以在 <code>Button_Click</code> 方法中处理点击事件，使用特定于该按钮的逻辑。</li>
+</ul>
+<blockquote>
+<p>Lambda语法：</p>
+<p>(参数列表)&#x3D;&gt;</p>
+<p>{</p>
+<p>​	&#x2F;&#x2F;函数体</p>
+<p>}</p>
+<p>​	&#x2F;&#x2F;“&#x3D;&gt;”意思为goes to。</p>
+</blockquote>
+<h4 id="音频播放管理系统"><a href="#音频播放管理系统" class="headerlink" title="音频播放管理系统"></a>音频播放管理系统</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">byte</span>[] <span class="title">ReadStreamToByteArray</span>(<span class="params">UnmanagedMemoryStream stream</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> memoryStream = <span class="keyword">new</span> MemoryStream())</span><br><span class="line">    &#123;</span><br><span class="line">        stream.CopyTo(memoryStream);</span><br><span class="line">        <span class="keyword">return</span> memoryStream.ToArray();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">InitializeButtonAudioMapping</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    buttonAudioMapping = <span class="keyword">new</span> Dictionary&lt;Button, MemoryStream&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//笑声</span></span><br><span class="line">        &#123; ButtonPlayPause, <span class="keyword">new</span> MemoryStream(ReadStreamToByteArray(Properties.Resources.SFX_001)) &#125;,<span class="comment">// 继续为其他按钮设置音频文件路径</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">InitializeButtons</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> button <span class="keyword">in</span> buttonAudioMapping.Keys)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (button != ButtonPlay)</span><br><span class="line">        &#123;</span><br><span class="line">            button.Click += (s, e) =&gt; Button_Click(button);</span><br><span class="line">            button.MouseUp += Button_MouseUp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Button_Click</span>(<span class="params">Button button</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    HandleButtonClick(button);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleButtonClick</span>(<span class="params">Button button</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!buttonAudioMapping.TryGetValue(button, <span class="keyword">out</span> MemoryStream audioStream))</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox.Show(<span class="string">&quot;音频文件未定义&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (waveStream == <span class="literal">null</span> || waveOut == <span class="literal">null</span> || isPlaying)</span><br><span class="line">    &#123;</span><br><span class="line">        StartPlayback(audioStream);</span><br><span class="line">        ButtonPlay.BackgroundImage = Properties.Resources.pause;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        StartPlayback(audioStream);</span><br><span class="line">        ButtonPlay.BackgroundImage = Properties.Resources.pause;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CleanUp</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (waveOut != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 确保事件处理程序被解绑</span></span><br><span class="line">        waveOut.PlaybackStopped -= OnPlaybackStopped;</span><br><span class="line">        waveOut.Stop();</span><br><span class="line">        waveOut.Dispose();</span><br><span class="line">        waveOut = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (audioFileReader != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        audioFileReader.Dispose();</span><br><span class="line">        audioFileReader = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ButtonPlay_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (waveOut == <span class="literal">null</span> || waveStream == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (buttonAudioMapping.TryGetValue(ButtonPlay, <span class="keyword">out</span> MemoryStream audioStream))</span><br><span class="line">        &#123;</span><br><span class="line">            StartPlayback(audioStream);</span><br><span class="line">            ButtonPlay.BackgroundImage = Properties.Resources.pause;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (waveOut.PlaybackState == PlaybackState.Playing)</span><br><span class="line">        &#123;</span><br><span class="line">            waveOut.Pause();</span><br><span class="line">            isPlaying = <span class="literal">false</span>;</span><br><span class="line">            ButtonPlay.BackgroundImage = Properties.Resources.play;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            waveOut.Play();</span><br><span class="line">            isPlaying = <span class="literal">true</span>;</span><br><span class="line">            ButtonPlay.BackgroundImage = Properties.Resources.pause;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">StartPlayback</span>(<span class="params">MemoryStream audioStream</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    CleanUp();</span><br><span class="line"></span><br><span class="line">    waveOut = <span class="keyword">new</span> WaveOutEvent</span><br><span class="line">    &#123;</span><br><span class="line">        DeviceNumber = comboBoxDevices.SelectedIndex</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 重置流位置</span></span><br><span class="line">    audioStream.Seek(<span class="number">0</span>, SeekOrigin.Begin);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用 WaveFileReader</span></span><br><span class="line">    waveStream = <span class="keyword">new</span> WaveFileReader(audioStream);</span><br><span class="line">    waveOut.Init(waveStream);</span><br><span class="line">    waveOut.PlaybackStopped += OnPlaybackStopped;</span><br><span class="line"></span><br><span class="line">    waveOut.Play();</span><br><span class="line">    isPlaying = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 确保初始化时更新进度条</span></span><br><span class="line">    trackBarProgress.Maximum = (<span class="built_in">int</span>)waveStream.TotalTime.TotalSeconds;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ChangeAudioFile</span>(<span class="params">Button button</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 设置只允许选择 .wav 文件</span></span><br><span class="line">    openFileDialog.Filter = <span class="string">&quot;WAV files (*.wav)|*.wav&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (openFileDialog.ShowDialog() == DialogResult.OK)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> newFilePath = openFileDialog.FileName;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查文件扩展名是否为 .wav（如果需要进一步验证）</span></span><br><span class="line">        <span class="keyword">if</span> (System.IO.Path.GetExtension(newFilePath).ToLower() != <span class="string">&quot;.wav&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;只能选择 .wav 格式的文件！&quot;</span>, <span class="string">&quot;错误&quot;</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        button.Text = System.IO.Path.GetFileNameWithoutExtension(newFilePath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载音频文件为 MemoryStream</span></span><br><span class="line">        <span class="built_in">byte</span>[] audioBytes = System.IO.File.ReadAllBytes(newFilePath);</span><br><span class="line">        System.IO.MemoryStream audioStream = <span class="keyword">new</span> System.IO.MemoryStream(audioBytes);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新 buttonAudioMapping 字典</span></span><br><span class="line">        <span class="keyword">if</span> (buttonAudioMapping.ContainsKey(button))</span><br><span class="line">        &#123;</span><br><span class="line">            buttonAudioMapping[button].Dispose(); <span class="comment">// 释放旧的 MemoryStream</span></span><br><span class="line">            buttonAudioMapping[button] = audioStream;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            buttonAudioMapping.Add(button, audioStream);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新 appSettings 中的音频文件路径</span></span><br><span class="line">        appSettings.ButtonAudioFilePaths[button.Name] = newFilePath;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 自动保存设置</span></span><br><span class="line">        settingsManager.SaveSettings(appSettings);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnPlaybackStopped</span>(<span class="params"><span class="built_in">object</span> sender, StoppedEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    isPlaying = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查是否正在播放其他音频</span></span><br><span class="line">    <span class="keyword">if</span> (waveOut == <span class="literal">null</span> || waveOut.PlaybackState != PlaybackState.Playing)</span><br><span class="line">    &#123;</span><br><span class="line">        ButtonPlay.BackgroundImage = Properties.Resources.play; <span class="comment">// 播放图片</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-音频文件加载和映射"><a href="#1-音频文件加载和映射" class="headerlink" title="1.音频文件加载和映射"></a>1.<strong>音频文件加载和映射</strong></h5><ul>
+<li><code>ReadStreamToByteArray</code> 方法将 <code>UnmanagedMemoryStream</code> 读取到字节数组。</li>
+<li><code>InitializeButtonAudioMapping</code> 方法将音频文件与按钮关联，使用 <code>MemoryStream</code> 存储每个音频文件的内容。</li>
+<li>采用这样的方式储存音频数据原因：</li>
+</ul>
+<p>​	<strong>内存管理</strong>：通过将音频流读取到 <code>MemoryStream</code> 中，可以更灵活地管理内存。<code>MemoryStream</code> 允许在内存中对音频数据进行快速读写操作，而不需要频繁地访问磁盘文件。</p>
+<p>​	<strong>易于处理</strong>：在播放音频时，将其存储在内存中可以加快访问速度，因为它避免了每次播放时都去读取文件系统的延迟。这对于用户体验非常重要。</p>
+<p>​	<strong>数据封装</strong>：使用 <code>ReadStreamToByteArray</code> 方法将音频文件的流转换为字节数组，使得音频文件可以以更加统一的方式存储和使用。这使得将多个按钮与不同的音频文件关联变得简单。</p>
+<p>​	<strong>资源整合</strong>：<code>Properties.Resources</code> 可以将资源嵌入到程序中，方便管理和访问。将其转换为 <code>MemoryStream</code> 使得你可以在运行时直接从嵌入的资源读取数据。</p>
+<p>​	<strong>避免硬编码路径</strong>：直接使用嵌入的资源而不是依赖于文件路径，减少了在文件管理上的复杂性，同时也提高了程序的可移植性。</p>
+<p><code>UnmanagedMemoryStream</code> 是 C# 中的一个类，通常用于处理非托管内存中的数据。与常规的 <code>MemoryStream</code> 不同，<code>UnmanagedMemoryStream</code> 主要用于读取和写入存储在非托管内存中的字节数据。这种类型的流适合处理那些不由 .NET 垃圾回收器管理的内存，例如：</p>
+<ol>
+<li><strong>与 P&#x2F;Invoke 交互</strong>：当你需要调用本地 API（如 Windows API）时，通常需要在非托管内存中操作数据。</li>
+<li><strong>处理大数据</strong>：在处理大文件或数据块时，可以使用非托管内存来提高性能，因为它可以减少内存分配的开销。</li>
+<li><strong>性能优化</strong>：由于它直接在非托管内存中操作，可能会在某些情况下提供更好的性能，特别是在与硬件接口或其他语言的代码交互时。</li>
+</ol>
+<p><code>UnmanagedMemoryStream</code> 通常会在以下情况下使用：</p>
+<ul>
+<li>从操作系统或其他低级 API 中获取数据，并在 C# 中处理。</li>
+<li>在 C# 与 C&#x2F;C++ 等语言的互操作中，用于传递指向非托管内存的指针。</li>
+</ul>
+<p>例子</p>
+<p>一个简单的例子是，你可能会在调用某个非托管函数之前，先在非托管内存中分配空间，然后使用 <code>UnmanagedMemoryStream</code> 来读取或写入数据。</p>
+<p>总之，<code>UnmanagedMemoryStream</code> 是一个强大的工具，适用于需要直接操作非托管内存的场景。</p>
+<blockquote>
+<p><strong>非托管内存</strong>是指不由 .NET 垃圾回收器（GC）管理的内存。这种内存通常由应用程序直接分配和释放，主要用于与底层系统或其他语言（如 C&#x2F;C++）交互。以下是一些关于非托管内存的关键点：</p>
+<ol>
+<li><strong>手动管理</strong>：在使用非托管内存时，开发者需要手动分配和释放内存，使用诸如 <code>Marshal.AllocHGlobal</code> 和 <code>Marshal.FreeHGlobal</code> 等方法。</li>
+<li><strong>性能优化</strong>：非托管内存可以用于处理性能要求较高的场景，比如大型数据结构或高频率的数据交互，因为它可以减少内存分配和回收的开销。</li>
+<li><strong>与系统 API 交互</strong>：许多系统级 API 和库（尤其是 C&#x2F;C++ 编写的）需要使用非托管内存，因为它们不理解 .NET 的内存管理模型。</li>
+<li><strong>数据共享</strong>：非托管内存可以用于在不同语言或模块之间共享数据，例如在 C# 和 C&#x2F;C++ 代码之间传递复杂数据结构。</li>
+<li><strong>可能的内存泄漏</strong>：由于需要手动管理，开发者必须小心以避免内存泄漏或未定义行为，这些都是在非托管内存中比较常见的问题。</li>
+</ol>
+<p>在使用非托管内存时，确保了解其管理方式是非常重要的，以确保程序的稳定性和性能。</p>
+</blockquote>
+<blockquote>
+<p><strong><code>out</code> 关键字</strong>：</p>
+<ul>
+<li>表示这是一个输出参数。在方法内部，必须对其进行赋值。</li>
+<li>调用方法时，不需要在外部声明该变量，只需声明它为 <code>out</code> 类型即可。</li>
+</ul>
+<p><strong>用途</strong>：</p>
+<ul>
+<li><code>out</code> 参数通常用于从方法中返回多个值。在 C# 中，一个方法只能返回一个值，但可以通过 <code>out</code> 参数返回额外的信息或结果。</li>
+<li>在你的例子中，<code>audioStream</code> 是一个 <code>MemoryStream</code> 对象，可能用于返回音频数据的流。</li>
+</ul>
+</blockquote>
+<p><strong>数据流的转换</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">byte</span>[] <span class="title">ReadStreamToByteArray</span>(<span class="params">UnmanagedMemoryStream stream</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> memoryStream = <span class="keyword">new</span> MemoryStream())</span><br><span class="line">    &#123;</span><br><span class="line">        stream.CopyTo(memoryStream);</span><br><span class="line">        <span class="keyword">return</span> memoryStream.ToArray();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的作用是将一个 <code>UnmanagedMemoryStream</code> 对象的内容复制到一个新的 <code>MemoryStream</code> 中，并返回其字节数组。以下是逐步解析：</p>
+<ol>
+<li><strong><code>using</code> 语句</strong>：确保 <code>memoryStream</code> 在使用完后自动释放资源，即使在发生异常时也能保证资源得到释放。</li>
+<li>**<code>stream.CopyTo(memoryStream)</code>**：将 <code>UnmanagedMemoryStream</code> 的内容复制到 <code>memoryStream</code> 中。<code>CopyTo</code> 方法会从源流读取数据并写入到目标流。</li>
+<li>**<code>memoryStream.ToArray()</code>**：将 <code>memoryStream</code> 中的内容转换为字节数组并返回。</li>
+</ol>
+<blockquote>
+<p><code>using</code> 语句在 C# 中用于确保对象在使用完后能够自动释放其占用的资源。主要有以下几个作用：</p>
+<ol>
+<li><strong>自动释放资源</strong>：<code>using</code> 语句会在代码块结束时自动调用对象的 <code>Dispose</code> 方法，释放资源。这在处理需要显式释放资源的对象（如文件流、数据库连接、图形资源等）时特别重要。</li>
+<li><strong>简化代码</strong>：通过使用 <code>using</code>，你不需要显式调用 <code>Dispose</code>，这样可以减少代码的复杂性，并提高可读性。</li>
+<li><strong>异常安全</strong>：即使在 <code>using</code> 语句块中发生异常，<code>Dispose</code> 仍然会被调用，确保资源得到正确释放，从而避免内存泄漏。</li>
+</ol>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>以下是一个简单的示例，展示了如何使用 <code>using</code> 语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">csharp复制代码using (var fileStream = new FileStream(&quot;example.txt&quot;, FileMode.Open))</span><br><span class="line">&#123;</span><br><span class="line">    // 进行文件操作</span><br><span class="line">&#125; // 这里会自动调用 fileStream.Dispose()</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>fileStream</code> 会在 <code>using</code> 块结束后自动关闭，无需手动调用 <code>fileStream.Close()</code> 或 <code>fileStream.Dispose()</code>。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li><code>using</code> 语句只能用于实现了 <code>IDisposable</code> 接口的对象。</li>
+<li>如果对象在 <code>using</code> 块之外的地方仍然被引用，确保对象不会被重复释放。</li>
+</ul>
+</blockquote>
+<p>Dcitionary.Keys返回的是，所有key的集合Dictionary2，值的类型和Dictionary中key的类型一致。</p>
+<h5 id="2-音频播放逻辑实现"><a href="#2-音频播放逻辑实现" class="headerlink" title="2.音频播放逻辑实现"></a>2.音频播放逻辑实现</h5><p>button_click → handle(判断能否播放) → cleanup(释放上一次播放的内存)  → startplay(开始播放)</p>
+<p>音频储存方式变化：audiostream                                                                      → wavestream(可以利用wave的play功能)</p>
+<p><strong><code>out</code> 关键字</strong>：</p>
+<ul>
+<li>表示这是一个输出参数。在<u>方法内部</u>，必须对其进行赋值。</li>
+<li>调用方法时，<u>不需要在外部声明该变量</u>，只需声明它为 <code>out</code> 类型即可。</li>
+</ul>
+<p><strong>用途</strong>：</p>
+<ul>
+<li><code>out</code> 参数通常用于从方法中返回多个值。在 C# 中，一个方法只能返回一个值，但可以通过 <code>out</code> 参数返回额外的信息或结果。</li>
+<li>在例子中，<code>audioStream</code> 是一个 <code>MemoryStream</code> 对象，可能用于返回音频数据的流。</li>
+</ul>
+<p>在这个例子中，<code>TryGetValue</code> 方法尝试从文件中读取音频流，并通过 <code>out</code> 参数返回 <code>MemoryStream</code> 对象。如果成功，调用者可以使用这个流；如果失败，流会被设置为 <code>null</code>。</p>
+<blockquote>
+<h3 id="WaveFileReader-与-AudioFileReader-的区别"><a href="#WaveFileReader-与-AudioFileReader-的区别" class="headerlink" title="WaveFileReader 与 AudioFileReader 的区别"></a><code>WaveFileReader</code> 与 <code>AudioFileReader</code> 的区别</h3><ol>
+<li>**<code>WaveFileReader</code>**：<ul>
+<li>专门用于读取 <code>.wav</code> 文件格式。</li>
+<li>提供对 WAV 文件的解析，包括文件头、采样率、通道数等信息。</li>
+<li>适用于需要处理纯 WAV 数据的场景。</li>
+</ul>
+</li>
+<li>**<code>AudioFileReader</code>**：<ul>
+<li>更通用，能够处理多种音频格式（如 WAV、MP3、AAC 等）。</li>
+<li>内部会根据文件格式自动解码并转换为 PCM 数据。</li>
+<li>适合需要处理不同音频格式的场景。</li>
+</ul>
+</li>
+</ol>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>如果你只处理 WAV 文件，使用 <code>WaveFileReader</code> 可以更高效，因为它针对这种格式进行了优化。</li>
+<li>如果你的应用需要支持多种音频格式，使用 <code>AudioFileReader</code> 会更方便，因为它可以自动处理多种类型的音频数据。</li>
+</ul>
+</blockquote>
+<h5 id="3-播放文件选择"><a href="#3-播放文件选择" class="headerlink" title="3.播放文件选择"></a>3.播放文件选择</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ChangeAudioFile</span>(<span class="params">Button button</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 设置只允许选择 .wav 文件</span></span><br><span class="line">    openFileDialog.Filter = <span class="string">&quot;WAV files (*.wav)|*.wav&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (openFileDialog.ShowDialog() == DialogResult.OK)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> newFilePath = openFileDialog.FileName;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查文件扩展名是否为 .wav（如果需要进一步验证）</span></span><br><span class="line">        <span class="keyword">if</span> (System.IO.Path.GetExtension(newFilePath).ToLower() != <span class="string">&quot;.wav&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;只能选择 .wav 格式的文件！&quot;</span>, <span class="string">&quot;错误&quot;</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        button.Text = System.IO.Path.GetFileNameWithoutExtension(newFilePath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载音频文件为 MemoryStream</span></span><br><span class="line">        <span class="built_in">byte</span>[] audioBytes = System.IO.File.ReadAllBytes(newFilePath);</span><br><span class="line">        System.IO.MemoryStream audioStream = <span class="keyword">new</span> System.IO.MemoryStream(audioBytes);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新 buttonAudioMapping 字典</span></span><br><span class="line">        <span class="keyword">if</span> (buttonAudioMapping.ContainsKey(button))</span><br><span class="line">        &#123;</span><br><span class="line">            buttonAudioMapping[button].Dispose(); <span class="comment">// 释放旧的 MemoryStream</span></span><br><span class="line">            buttonAudioMapping[button] = audioStream;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            buttonAudioMapping.Add(button, audioStream);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新 appSettings 中的音频文件路径</span></span><br><span class="line">        appSettings.ButtonAudioFilePaths[button.Name] = newFilePath;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 自动保存设置</span></span><br><span class="line">        settingsManager.SaveSettings(appSettings);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>设置文件对话框过滤器</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openFileDialog.Filter = <span class="string">&quot;WAV files (*.wav)|*.wav&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这行代码设置文件选择对话框只允许选择 <code>.wav</code> 文件。</p>
+<p><strong>显示对话框并检查用户选择</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (openFileDialog.ShowDialog() == DialogResult.OK)</span><br></pre></td></tr></table></figure>
+
+<p>显示文件对话框，用户选择文件后，如果点击“确定”，则继续执行后续代码。</p>
+<p><strong>获取选择的文件路径</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> newFilePath = openFileDialog.FileName;</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查文件扩展名</strong>（可选）：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (System.IO.Path.GetExtension(newFilePath).ToLower() != <span class="string">&quot;.wav&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">    MessageBox.Show(<span class="string">&quot;只能选择 .wav 格式的文件！&quot;</span>, <span class="string">&quot;错误&quot;</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果用户选择的文件不是 <code>.wav</code> 格式，则弹出错误提示，并退出方法。</p>
+<p><strong>更新按钮文本</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">button.Text = System.IO.Path.GetFileNameWithoutExtension(newFilePath);</span><br></pre></td></tr></table></figure>
+
+<p>将按钮的文本设置为文件名，不包括扩展名。</p>
+<p>**加载音频文件为 <code>MemoryStream</code>**：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">byte</span>[] audioBytes = System.IO.File.ReadAllBytes(newFilePath);</span><br><span class="line">System.IO.MemoryStream audioStream = <span class="keyword">new</span> System.IO.MemoryStream(audioBytes);</span><br></pre></td></tr></table></figure>
+
+<p>读取选择的音频文件的所有字节，并将其存入一个 <code>MemoryStream</code> 中，以便后续播放。</p>
+<p><strong>更新 <code>buttonAudioMapping</code> 字典</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (buttonAudioMapping.ContainsKey(button))</span><br><span class="line">&#123;</span><br><span class="line">    buttonAudioMapping[button].Dispose(); <span class="comment">// 释放旧的 MemoryStream</span></span><br><span class="line">    buttonAudioMapping[button] = audioStream;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    buttonAudioMapping.Add(button, audioStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>检查字典中是否已有该按钮的映射。如果有，先释放旧的 <code>MemoryStream</code>，然后更新为新的流；如果没有，直接添加新的映射。</p>
+<p><strong>更新设置中的音频文件路径</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appSettings.ButtonAudioFilePaths[button.Name] = newFilePath;</span><br></pre></td></tr></table></figure>
+
+<p><strong>自动保存设置</strong>：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">settingsManager.SaveSettings(appSettings);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="音量大小"><a href="#音量大小" class="headerlink" title="音量大小"></a>音量大小</h4><p>…略</p>
+<h4 id="进度条"><a href="#进度条" class="headerlink" title="进度条"></a>进度条</h4><ol>
+<li><code>Timer_Tick</code> 方法</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Timer_Tick</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (waveStream != <span class="literal">null</span> &amp;&amp; !isTrackBarDragging)</span><br><span class="line">    &#123;</span><br><span class="line">        trackBarProgress.Maximum = (<span class="built_in">int</span>)waveStream.TotalTime.TotalSeconds;</span><br><span class="line">        trackBarProgress.Value = (<span class="built_in">int</span>)waveStream.CurrentTime.TotalSeconds;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>作用</strong>：在定时器的每次触发时更新进度条的最大值和当前值。</p>
+</li>
+<li><p>逻辑</p>
+<p>：</p>
+<ul>
+<li>如果 <code>waveStream</code> 不为 <code>null</code> 且当前不在拖动进度条（<code>isTrackBarDragging</code> 为 <code>false</code>），则设置进度条的最大值为音频的总时间（秒），并将当前值更新为音频当前播放时间（秒）。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><code>trackBarProgress_MouseDown</code> 方法</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">trackBarProgress_MouseDown</span>(<span class="params"><span class="built_in">object</span> sender, MouseEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    isTrackBarDragging = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用</strong>：当用户开始拖动进度条时设置标志。</li>
+<li><strong>逻辑</strong>：将 <code>isTrackBarDragging</code> 设置为 <code>true</code>，表示用户正在拖动进度条，此时不应更新音频的播放位置。</li>
+</ul>
+<ol start="3">
+<li><code>trackBarProgress_MouseUp</code> 方法</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">trackBarProgress_MouseUp</span>(<span class="params"><span class="built_in">object</span> sender, MouseEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    isTrackBarDragging = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (waveStream != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        waveStream.CurrentTime = TimeSpan.FromSeconds(trackBarProgress.Value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>作用</strong>：当用户释放鼠标时停止拖动并更新音频播放位置。</p>
+</li>
+<li><p>逻辑</p>
+<p>：</p>
+<ul>
+<li>将 <code>isTrackBarDragging</code> 设置为 <code>false</code>，表示拖动结束。</li>
+<li>如果 <code>waveStream</code> 不为 <code>null</code>，则根据当前进度条的值更新音频的当前播放时间。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li><code>trackBarProgress_ValueChanged</code> 方法</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">trackBarProgress_ValueChanged</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (waveStream != <span class="literal">null</span> &amp;&amp; !isTrackBarDragging)</span><br><span class="line">    &#123;</span><br><span class="line">        waveStream.CurrentTime = TimeSpan.FromSeconds(trackBarProgress.Value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>作用</strong>：当进度条的值发生变化时更新音频播放位置。</p>
+</li>
+<li><p>逻辑</p>
+<p>：</p>
+<ul>
+<li>如果 <code>waveStream</code> 不为 <code>null</code> 且不在拖动进度条，则根据新的进度条值更新音频的当前播放时间。</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、快捷键"><a href="#二、快捷键" class="headerlink" title="二、快捷键"></a>二、快捷键</h2><h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><h5 id="1-右键菜单"><a href="#1-右键菜单" class="headerlink" title="1.右键菜单"></a>1.右键菜单</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Button_MouseUp</span>(<span class="params"><span class="built_in">object</span> sender, MouseEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (e.Button == MouseButtons.Right)</span><br><span class="line">    &#123;</span><br><span class="line">        Button button = sender <span class="keyword">as</span> Button;</span><br><span class="line">        <span class="keyword">if</span> (button == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        ContextMenuStrip contextMenu = <span class="keyword">new</span> ContextMenuStrip();</span><br><span class="line">        ToolStripMenuItem changeAudioFileMenuItem = <span class="keyword">new</span> ToolStripMenuItem(<span class="string">&quot;更改音频文件&quot;</span>);</span><br><span class="line">        ToolStripMenuItem setShortcutKeyMenuItem = <span class="keyword">new</span> ToolStripMenuItem(<span class="string">&quot;设置快捷键&quot;</span>);</span><br><span class="line"></span><br><span class="line">        changeAudioFileMenuItem.Click += (s, <span class="keyword">args</span>) =&gt; ChangeAudioFile(button);</span><br><span class="line">        setShortcutKeyMenuItem.Click += SetShortcutKeyMenuItem_Click;</span><br><span class="line"></span><br><span class="line">        contextMenu.Items.Add(changeAudioFileMenuItem);</span><br><span class="line">        contextMenu.Items.Add(setShortcutKeyMenuItem);</span><br><span class="line">        contextMenu.Show(button, e.Location);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>MouseEventArgs</code> 是 .NET 中用于处理鼠标事件的数据类，继承自 <code>EventArgs</code>。它提供了关于鼠标操作的信息，例如鼠标按钮的状态和鼠标指针的位置。</p>
+<p>主要属性</p>
+<ul>
+<li><strong>Button</strong>:<ul>
+<li>类型: <code>MouseButtons</code></li>
+<li>描述: 指示哪个鼠标按钮被按下或释放（如左键、右键或中键）。</li>
+</ul>
+</li>
+<li><strong>Clicks</strong>:<ul>
+<li>类型: <code>int</code></li>
+<li>描述: 指示在事件发生时鼠标点击的次数。</li>
+</ul>
+</li>
+<li><strong>X</strong>:<ul>
+<li>类型: <code>int</code></li>
+<li>描述: 鼠标指针相对于控件左上角的 X 坐标。</li>
+</ul>
+</li>
+<li><strong>Y</strong>:<ul>
+<li>类型: <code>int</code></li>
+<li>描述: 鼠标指针相对于控件左上角的 Y 坐标。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-快捷键设置窗口的实现"><a href="#2-快捷键设置窗口的实现" class="headerlink" title="2.快捷键设置窗口的实现"></a>2.快捷键设置窗口的实现</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetShortcutKeyMenuItem_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    ToolStripMenuItem menuItem = sender <span class="keyword">as</span> ToolStripMenuItem;</span><br><span class="line">    <span class="keyword">if</span> (menuItem != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        ContextMenuStrip owner = menuItem.Owner <span class="keyword">as</span> ContextMenuStrip;</span><br><span class="line">        <span class="keyword">if</span> (owner != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            Button button = owner.SourceControl <span class="keyword">as</span> Button;</span><br><span class="line">            <span class="keyword">if</span> (button != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">using</span> (<span class="keyword">var</span> shortcutKeyForm = <span class="keyword">new</span> ShortcutKeyForm())</span><br><span class="line">                &#123;</span><br><span class="line">                    isSettingShortcutKey = <span class="literal">true</span>; <span class="comment">// 设置状态为正在设置快捷键</span></span><br><span class="line">                    <span class="keyword">if</span> (shortcutKeyForm.ShowDialog() == DialogResult.OK)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Keys selectedKey = shortcutKeyForm.SelectedKey;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 检查快捷键是否已被其他按钮使用</span></span><br><span class="line">                        <span class="keyword">if</span> (shortcutKeyMapping.ContainsKey(selectedKey))</span><br><span class="line">                        &#123;</span><br><span class="line">                            MessageBox.Show(<span class="string">&quot;此快捷键已被其他按钮使用，请选择其他快捷键。&quot;</span>);</span><br><span class="line">                            isSettingShortcutKey = <span class="literal">false</span>; <span class="comment">// 重置状态</span></span><br><span class="line">                            <span class="keyword">return</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 如果当前按钮已经设置了快捷键，将其从映射中移除</span></span><br><span class="line">                        <span class="keyword">var</span> existingKey = shortcutKeyMapping.FirstOrDefault(x =&gt; x.Value == button).Key;</span><br><span class="line">                        <span class="keyword">if</span> (existingKey != Keys.None)</span><br><span class="line">                        &#123;</span><br><span class="line">                            shortcutKeyMapping.Remove(existingKey);</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 将新的快捷键映射到按钮</span></span><br><span class="line">                        shortcutKeyMapping[selectedKey] = button;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// 更新按钮对应的 Label 文本</span></span><br><span class="line">                        <span class="keyword">if</span> (buttonLabelMapping.TryGetValue(button, <span class="keyword">out</span> Label label))</span><br><span class="line">                        &#123;</span><br><span class="line">                            label.Text = <span class="string">$&quot;快捷键: <span class="subst">&#123;selectedKey&#125;</span>&quot;</span>;</span><br><span class="line">                            label.Visible = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    isSettingShortcutKey = <span class="literal">false</span>; <span class="comment">// 重置状态</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">ShortcutKeyForm</span> : <span class="title">Form</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> Keys SelectedKey &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ShortcutKeyForm</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        InitializeComponent();</span><br><span class="line">        <span class="keyword">this</span>.KeyPreview = <span class="literal">true</span>; <span class="comment">// 使 Form 可以接收按键事件</span></span><br><span class="line">        <span class="keyword">this</span>.Text = <span class="string">&quot;快捷键绑定&quot;</span>; <span class="comment">// 设置窗口标题</span></span><br><span class="line">        <span class="comment">// 设置窗口启动位置为屏幕中心</span></span><br><span class="line">        <span class="keyword">this</span>.StartPosition = FormStartPosition.CenterScreen;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ShortcutKeyForm_KeyDown</span>(<span class="params"><span class="built_in">object</span> sender, KeyEventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 检查是否是 &lt;space&gt; 键</span></span><br><span class="line">        <span class="keyword">if</span> (e.KeyCode == Keys.Space)</span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;不能将 &lt;space&gt; 键设置为快捷键。&quot;</span>);</span><br><span class="line">            e.SuppressKeyPress = <span class="literal">true</span>; <span class="comment">// 防止默认行为</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        SelectedKey = e.KeyCode;</span><br><span class="line">        lblInstruction.Text = <span class="string">$&quot;按下的键: <span class="subst">&#123;SelectedKey&#125;</span>&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">btnConfirm_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.DialogResult = DialogResult.OK;</span><br><span class="line">        <span class="keyword">this</span>.Close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-快捷键设置的响应"><a href="#3-快捷键设置的响应" class="headerlink" title="3.快捷键设置的响应"></a>3.快捷键设置的响应</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">ProcessCmdKey</span>(<span class="params"><span class="keyword">ref</span> Message msg, Keys keyData</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 如果正在设置快捷键，并且尝试设置 &lt;space&gt; 键</span></span><br><span class="line">    <span class="keyword">if</span> (isSettingShortcutKey)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 取消快捷键设置状态</span></span><br><span class="line">        <span class="keyword">if</span> (keyData == Keys.Space)</span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;不能将 &lt;space&gt; 键设置为快捷键。&quot;</span>);</span><br><span class="line">            isSettingShortcutKey = <span class="literal">false</span>; <span class="comment">// 取消设置状态</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 表示事件已处理</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置其他快捷键</span></span><br><span class="line">        shortcutKey = keyData;</span><br><span class="line">        MessageBox.Show(<span class="string">$&quot;快捷键已设置为: <span class="subst">&#123;shortcutKey&#125;</span>&quot;</span>);</span><br><span class="line">        isSettingShortcutKey = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查快捷键是否已被使用</span></span><br><span class="line">        <span class="keyword">if</span> (shortcutKeyMapping.ContainsKey(shortcutKey))</span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;此快捷键已被其他按钮使用，请选择其他快捷键。&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将快捷键映射到按钮上</span></span><br><span class="line">        <span class="keyword">if</span> (buttonLabelMapping.TryGetValue(ButtonPlay, <span class="keyword">out</span> Label label))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 移除旧的快捷键</span></span><br><span class="line">            <span class="keyword">if</span> (shortcutKeyMapping.ContainsKey(shortcutKey))</span><br><span class="line">            &#123;</span><br><span class="line">                shortcutKeyMapping.Remove(shortcutKey);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            label.Text = <span class="string">$&quot;快捷键: <span class="subst">&#123;shortcutKey&#125;</span>&quot;</span>;</span><br><span class="line">            label.Visible = <span class="literal">true</span>;</span><br><span class="line">            shortcutKeyMapping[shortcutKey] = ButtonPlay; <span class="comment">// 为 ButtonPlay 设置快捷键映射</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 表示事件已处理</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理 &lt;space&gt; 键，调用 ButtonPlay_Click</span></span><br><span class="line">    <span class="keyword">if</span> (keyData == Keys.Space)</span><br><span class="line">    &#123;</span><br><span class="line">        ButtonPlay_Click(ButtonPlay, EventArgs.Empty);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 表示事件已处理</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查是否启用了快捷键功能</span></span><br><span class="line">    <span class="keyword">if</span> (isShortcutKeyEnabled &amp;&amp; shortcutKeyMapping.TryGetValue(keyData, <span class="keyword">out</span> Button button))</span><br><span class="line">    &#123;</span><br><span class="line">        Button_Click(button); <span class="comment">// 触发与快捷键关联的按钮点击事件</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 表示事件已处理</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 默认处理其他键</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">base</span>.ProcessCmdKey(<span class="keyword">ref</span> msg, keyData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="全局响应"><a href="#全局响应" class="headerlink" title="全局响应"></a>全局响应</h4><p>具体来说，代码的主要功能是监控按键按下事件，并在特定的快捷键被按下时触发相应按钮的点击事件。</p>
+<ol>
+<li>常量和委托定义</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> WH_KEYBOARD_LL = <span class="number">13</span>; <span class="comment">// 钩子类型</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> WM_KEYDOWN = <span class="number">0x0100</span>; <span class="comment">// 按键按下消息</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">delegate</span> IntPtr <span class="title">LowLevelKeyboardProc</span>(<span class="params"><span class="built_in">int</span> nCode, IntPtr wParam, IntPtr lParam</span>)</span>;</span><br><span class="line"><span class="keyword">private</span> LowLevelKeyboardProc _proc;</span><br><span class="line"><span class="keyword">private</span> IntPtr _hookID = IntPtr.Zero;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>WH_KEYBOARD_LL</code></strong>: 定义了低级键盘钩子的类型。</li>
+<li><strong><code>WM_KEYDOWN</code></strong>: 定义了键按下的消息。</li>
+<li><strong><code>LowLevelKeyboardProc</code></strong>: 定义了一个委托，用于处理键盘事件的回调方法。</li>
+<li><strong><code>_proc</code> 和 <code>_hookID</code></strong>: 存储钩子回调函数和钩子 ID。</li>
+</ul>
+<ol start="2">
+<li>设置钩子</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetHook</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    _proc = HookCallback;</span><br><span class="line">    _hookID = SetWindowsHookEx(WH_KEYBOARD_LL, _proc, IntPtr.Zero, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>SetHook</code></strong>: 用于设置全局键盘钩子。</li>
+<li><strong><code>SetWindowsHookEx</code></strong>: 调用 Windows API 设置钩子，传入钩子类型、回调方法和其他参数。</li>
+</ul>
+<ol start="3">
+<li>钩子回调</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> IntPtr <span class="title">HookCallback</span>(<span class="params"><span class="built_in">int</span> nCode, IntPtr wParam, IntPtr lParam</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (nCode &gt;= <span class="number">0</span> &amp;&amp; wParam == (IntPtr)WM_KEYDOWN)</span><br><span class="line">    &#123;</span><br><span class="line">        Keys key = (Keys)Marshal.ReadInt32(lParam);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查快捷键映射字典</span></span><br><span class="line">        <span class="keyword">if</span> (shortcutKeyMapping.TryGetValue(key, <span class="keyword">out</span> Button button))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 触发与快捷键关联的按钮点击事件</span></span><br><span class="line">            Button_Click(button); <span class="comment">// 替换为你的功能调用</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> CallNextHookEx(_hookID, nCode, wParam, lParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong><code>HookCallback</code></strong>: 钩子回调方法，在每次按键事件触发时被调用。</p>
+</li>
+<li><p>逻辑</p>
+<p>：</p>
+<ul>
+<li>检查 <code>nCode</code> 是否大于等于 0（表示有效的事件）。</li>
+<li>检查 <code>wParam</code> 是否为 <code>WM_KEYDOWN</code>（表示按键按下事件）。</li>
+<li>使用 <code>Marshal.ReadInt32</code> 从 <code>lParam</code> 中读取按键值，并检查是否在 <code>shortcutKeyMapping</code> 字典中存在该键。</li>
+<li>如果存在，则触发对应按钮的点击事件。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>卸载钩子</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">UnhookWindowsHookEx</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    UnhookWindowsHookEx(_hookID);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>UnhookWindowsHookEx</code></strong>: 卸载全局键盘钩子，释放资源。</li>
+</ul>
+<ol start="5">
+<li>DLL 导入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">csharp复制代码[DllImport(&quot;user32.dll&quot;)]</span><br><span class="line">private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);</span><br><span class="line"></span><br><span class="line">[DllImport(&quot;user32.dll&quot;)]</span><br><span class="line">[return: MarshalAs(UnmanagedType.Bool)]</span><br><span class="line">private static extern bool UnhookWindowsHookEx(IntPtr hhk);</span><br><span class="line"></span><br><span class="line">[DllImport(&quot;user32.dll&quot;)]</span><br><span class="line">private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这些 <code>DllImport</code> 属性导入 Windows API 函数，允许 C# 代码调用低级别的钩子功能。</li>
+</ul>
+<ol start="6">
+<li>窗体事件</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnLoad</span>(<span class="params">EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">base</span>.OnLoad(e);</span><br><span class="line">    SetHook();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnFormClosing</span>(<span class="params">FormClosingEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    UnhookWindowsHookEx();</span><br><span class="line">    <span class="keyword">base</span>.OnFormClosing(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>OnLoad</code></strong>: 在窗体加载时设置钩子。</li>
+<li><strong><code>OnFormClosing</code></strong>: 在窗体关闭时卸载钩子，防止资源泄露。</li>
+</ul>
+<h2 id="三、操作存储"><a href="#三、操作存储" class="headerlink" title="三、操作存储"></a>三、操作存储</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ApplySettings</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 设置快捷键</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> kvp <span class="keyword">in</span> appSettings.ShortcutKeys)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> buttonName = kvp.Key;</span><br><span class="line">        <span class="keyword">var</span> key = kvp.Value;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查找与按钮名称对应的按钮控件</span></span><br><span class="line">        <span class="keyword">var</span> button = <span class="keyword">this</span>.Controls.Find(buttonName, <span class="literal">true</span>).FirstOrDefault() <span class="keyword">as</span> Button;</span><br><span class="line">        <span class="keyword">if</span> (button != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (shortcutKeyMapping.ContainsKey(key))</span><br><span class="line">            &#123;</span><br><span class="line">                shortcutKeyMapping.Remove(key); <span class="comment">// 移除旧的键映射</span></span><br><span class="line">            &#125;</span><br><span class="line">            shortcutKeyMapping[key] = button;</span><br><span class="line">            <span class="keyword">if</span> (buttonLabelMapping.TryGetValue(button, <span class="keyword">out</span> Label label))</span><br><span class="line">            &#123;</span><br><span class="line">                label.Text = <span class="string">$&quot;快捷键: <span class="subst">&#123;key&#125;</span>&quot;</span>;</span><br><span class="line">                label.Visible = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置音量</span></span><br><span class="line">    volumeSlider.Volume = appSettings.Volume;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载按钮和音频文件路径映射</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> kvp <span class="keyword">in</span> appSettings.ButtonAudioFilePaths)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> buttonName = kvp.Key;</span><br><span class="line">        <span class="keyword">var</span> filePath = kvp.Value;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> button = <span class="keyword">this</span>.Controls.Find(buttonName, <span class="literal">true</span>).FirstOrDefault() <span class="keyword">as</span> Button;</span><br><span class="line">        <span class="keyword">if</span> (button != <span class="literal">null</span> &amp;&amp; File.Exists(filePath))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">byte</span>[] audioBytes = File.ReadAllBytes(filePath);</span><br><span class="line">            MemoryStream audioStream = <span class="keyword">new</span> MemoryStream(audioBytes);</span><br><span class="line">            buttonAudioMapping[button] = audioStream;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新按钮文本为文件名（不包括扩展名）</span></span><br><span class="line">            button.Text = Path.GetFileNameWithoutExtension(filePath);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Form1_FormClosing</span>(<span class="params"><span class="built_in">object</span> sender, FormClosingEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 保存音量</span></span><br><span class="line">    appSettings.Volume = volumeSlider.Volume;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存快捷键设置</span></span><br><span class="line">    appSettings.ShortcutKeys.Clear();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> kvp <span class="keyword">in</span> shortcutKeyMapping)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> key = kvp.Key;</span><br><span class="line">        <span class="keyword">var</span> button = kvp.Value;</span><br><span class="line">        appSettings.ShortcutKeys[button.Name] = key;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存按钮和音频文件路径映射</span></span><br><span class="line">    SaveButtonAudioPaths();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更新 LastLoginTime</span></span><br><span class="line">    appSettings.LastLoginTime = DateTime.Now;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存设置</span></span><br><span class="line">    settingsManager.SaveSettings(appSettings);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SaveButtonAudioPaths</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> kvp <span class="keyword">in</span> buttonAudioMapping)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> button = kvp.Key;</span><br><span class="line">        <span class="keyword">if</span> (appSettings.ButtonAudioFilePaths.TryGetValue(button.Name, <span class="keyword">out</span> <span class="keyword">var</span> existingFilePath))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 如果已经有文件路径存在，使用现有路径</span></span><br><span class="line">            appSettings.ButtonAudioFilePaths[button.Name] = existingFilePath;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ShowLoginForm</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    DateTime lastLoginTime = DateTime.MinValue; <span class="comment">// 初始化变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从 SettingsManager 加载设置</span></span><br><span class="line">    AppSettings settings = settingsManager.LoadSettings();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查 LastLoginTime 是否存在和非空</span></span><br><span class="line">    <span class="keyword">if</span> (settings.LastLoginTime.HasValue &amp;&amp; DateTime.Now - settings.LastLoginTime.Value &lt; TimeSpan.FromDays(<span class="number">1</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">// 如果上次登录时间在一天内，则不显示登录窗口</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建 LoginForm 实例并传递 SettingsManager</span></span><br><span class="line">    LoginForm loginForm = <span class="keyword">new</span> LoginForm(settingsManager);</span><br><span class="line">    <span class="keyword">if</span> (loginForm.ShowDialog() != DialogResult.OK)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果登录不成功，关闭主窗口</span></span><br><span class="line">        <span class="keyword">this</span>.Close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="1-ApplySettings-方法"><a href="#1-ApplySettings-方法" class="headerlink" title="1. ApplySettings 方法"></a>1. <code>ApplySettings</code> 方法</h3><p>该方法用于应用之前保存的设置，包括快捷键、音量和按钮与音频文件路径的映射。</p>
+<ul>
+<li><strong>快捷键设置</strong>：<ul>
+<li>遍历 <code>appSettings.ShortcutKeys</code> 字典，查找与按钮名称对应的按钮控件。</li>
+<li>如果按钮存在，移除旧的键映射，并将新映射添加到 <code>shortcutKeyMapping</code> 中。</li>
+<li>更新按钮对应的标签，显示当前快捷键。</li>
+</ul>
+</li>
+<li><strong>音量设置</strong>：<ul>
+<li>将音量滑块的值设置为保存的音量。</li>
+</ul>
+</li>
+<li><strong>音频文件路径加载</strong>：<ul>
+<li>遍历 <code>appSettings.ButtonAudioFilePaths</code> 字典，查找与按钮名称对应的音频文件路径。</li>
+<li>如果文件存在，则读取音频文件，存入 <code>buttonAudioMapping</code> 字典中，并更新按钮文本为文件名（不包括扩展名）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-Form1-FormClosing-方法"><a href="#2-Form1-FormClosing-方法" class="headerlink" title="2. Form1_FormClosing 方法"></a>2. <code>Form1_FormClosing</code> 方法</h3><p>该方法在窗体关闭时调用，用于保存用户设置。</p>
+<ul>
+<li><strong>保存音量</strong>：将当前音量滑块的值保存到 <code>appSettings.Volume</code>。</li>
+<li><strong>保存快捷键设置</strong>：清空旧的快捷键设置，并遍历 <code>shortcutKeyMapping</code>，保存新的快捷键到 <code>appSettings.ShortcutKeys</code>。</li>
+<li><strong>保存按钮与音频文件路径映射</strong>：调用 <code>SaveButtonAudioPaths</code> 方法来保存音频文件路径的映射。</li>
+<li><strong>更新最后登录时间</strong>：将当前时间设置为 <code>appSettings.LastLoginTime</code>。</li>
+<li><strong>保存设置</strong>：调用 <code>settingsManager.SaveSettings(appSettings)</code> 将所有设置保存到文件或数据库中。</li>
+</ul>
+<h3 id="3-SaveButtonAudioPaths-方法"><a href="#3-SaveButtonAudioPaths-方法" class="headerlink" title="3. SaveButtonAudioPaths 方法"></a>3. <code>SaveButtonAudioPaths</code> 方法</h3><p>这个方法用于保存按钮与音频文件路径的映射。</p>
+<ul>
+<li>遍历 <code>buttonAudioMapping</code>，对于每个按钮，检查 <code>appSettings.ButtonAudioFilePaths</code> 中是否已经有对应的文件路径。如果有，则保留现有路径（逻辑可能需要补充具体路径更新的部分）。</li>
+</ul>
+<h3 id="4-ShowLoginForm-方法"><a href="#4-ShowLoginForm-方法" class="headerlink" title="4. ShowLoginForm 方法"></a>4. <code>ShowLoginForm</code> 方法</h3><p>该方法用于处理用户登录逻辑。</p>
+<ul>
+<li><strong>最后登录时间检查</strong>：从 <code>settingsManager</code> 中加载设置，检查 <code>LastLoginTime</code> 是否存在且在一天内。如果是，则直接返回，不显示登录窗口。</li>
+<li><strong>显示登录窗口</strong>：如果需要登录，创建 <code>LoginForm</code> 的实例并传递 <code>settingsManager</code>，显示登录对话框。如果用户未成功登录，则关闭主窗口。</li>
+</ul>
+<h2 id="四、软件的封装"><a href="#四、软件的封装" class="headerlink" title="四、软件的封装"></a>四、软件的封装</h2><p>略…</p>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-04-13</span>
+            
+            
+             
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/04/13/%E7%9B%B4%E6%92%AD%E9%9F%B3%E9%A2%91%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/'>直播音频元素的游戏化影视化</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/04/13/%E5%A3%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%92%8C%E9%9F%B3%E9%A2%91%E7%A1%AC%E4%BB%B6%E5%8E%9F%E7%90%86/">声学原理和音频硬件原理</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2002-2025 Carol 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>

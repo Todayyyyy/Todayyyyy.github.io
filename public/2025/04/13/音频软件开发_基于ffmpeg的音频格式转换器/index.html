@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <meta name="description" content="An Audio Format Converter based on ffmpeg" />
+    <meta name="hexo-theme-A4" content="v1.9.7" />
+    <link rel="alternate icon" type="image/webp" href="/img/favicon.webp">
+    <title>段恺乐</title>
+
+    
+        
+<link rel="stylesheet" href="/css/highlight/style1.css">
+
+        
+<link rel="stylesheet" href="/css/reset.css">
+
+        
+<link rel="stylesheet" href="/css/markdown.css">
+
+        
+<link rel="stylesheet" href="/css/fonts.css">
+ 
+         <!--注意：首页既不是post也不是page-->
+        
+        
+        
+<link rel="stylesheet" href="/css/ui.css">
+ 
+        
+<link rel="stylesheet" href="/css/style.css">
+
+
+        
+            <!--返回顶部css-->
+            
+<link rel="stylesheet" href="/css/returnToTop.css">
+
+            
+<link rel="stylesheet" href="/css/unicons.css">
+
+        
+        
+            <!--目录-->
+            
+<link rel="stylesheet" href="/css/toc.css">
+
+        
+    
+
+    
+        
+<link rel="stylesheet" href="/css/returnToLastPage.css">
+
+    
+    
+   
+<link rel="stylesheet" href="/css/lightgallery-bundle.min.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+    
+    
+
+    
+    
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    <body>
+        <script src="/js/darkmode-js.min.js"></script>
+        
+        <script>
+            const options = {
+                bottom: '40px', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '42px', // default: 'unset'
+                time: '0.3s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: ' #e4e4e4 ',  // default: '#fff'
+                buttonColorDark: '#100f2c',  // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true // default: true
+            }
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+        </script>
+        
+        
+            <div class="left-toc-container">
+                <nav id="toc" class="bs-docs-sidebar"></nav>
+            </div>
+        
+        <div class="paper">
+            
+            
+            
+            
+                <div class="shadow-drop-2-bottom paper-main">
+                    
+
+
+<div class="header">
+    <div class="header-container">
+        <style>
+            .header-img {
+                width: 56px;
+                height: auto;
+                object-fit: cover; /* 保持图片比例 */
+                transition: transform 0.3s ease-in-out; 
+                border-radius: 50%; 
+            }
+            
+        </style>
+        <img 
+            alt="^-^" 
+            cache-control="max-age=86400" 
+            class="header-img" 
+            src="/img/favicon.webp" 
+        />
+        <div class="header-content">
+            <a class="logo" href="/">段恺乐</a> 
+            <span class="description">声音设计师丨音乐制作爱好者</span> 
+        </div>
+    </div>
+    
+   
+    <ul class="nav">
+        
+            
+                <li><a href="/">首页</a></li>
+            
+        
+            
+                <li><a href="/works/">作品</a></li>
+            
+        
+            
+                <li><a href="/about/">关于</a></li>
+            
+        
+            
+                <li><a href="/list/">文章</a></li>
+            
+        
+    </ul>
+</div> 
+        
+                    
+                    
+
+                    
+                    
+                    
+                    <!--说明是文章post页面-->
+                    
+                        <div class="post-main">
+    
+
+    
+        
+            
+                <div class="post-main-title" style="text-align: center;">
+                    An Audio Format Converter based on ffmpeg
+                </div>
+            
+        
+      
+    
+
+    
+
+        
+            <div class="post-head-meta-center">
+        
+                
+                    <span>最近更新：2024-12-14</span> 
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                     <span>字数总计：952</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span>阅读估时：4分钟</span>
+                
+                
+                    
+                        &nbsp; | &nbsp;
+                    
+                    <span id="busuanzi_container_page_pv">
+                        阅读量：<span id="busuanzi_value_page_pv"></span>次
+                    </span>
+                
+            </div>
+    
+
+    <div class="post-md">
+        
+            
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#A-small-tool-used-for-Audio-Convertion"><span class="post-toc-text">A small tool used for Audio Convertion</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Background"><span class="post-toc-text">Background</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Structure"><span class="post-toc-text">Structure</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#IsAudioFile"><span class="post-toc-text">IsAudioFile?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GetIntoConvertion"><span class="post-toc-text">GetIntoConvertion</span></a></li></ol></li></ol></li></ol>
+            
+        
+        <div class=".article-gallery"><h1 id="A-small-tool-used-for-Audio-Convertion"><a href="#A-small-tool-used-for-Audio-Convertion" class="headerlink" title="A small tool used for Audio Convertion"></a>A small tool used for Audio Convertion</h1><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>The .wav format is widely used in daily work, especially when mixing audio. However, when communicating with others and clients, the .mp3 format is often preferred.<br>Additionally, there are many other audio formats available today, such as .aac. Therefore, I need a tool to help me convert these audio files into .wav or .mp3 formats.</p>
+<h2 id="Structure"><a href="#Structure" class="headerlink" title="Structure"></a>Structure</h2><h3 id="IsAudioFile"><a href="#IsAudioFile" class="headerlink" title="IsAudioFile?"></a>IsAudioFile?</h3><p>if the files user drag in are not audio files,they are not allowed to effect.</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理拖拽事件</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FileDragBox_DragEnter</span>(<span class="params"><span class="built_in">object</span> sender, DragEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">// 判断是否是文件类型的拖拽</span></span><br><span class="line"> <span class="keyword">if</span> (e.Data.GetDataPresent(DataFormats.FileDrop))</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="built_in">string</span>[] files = (<span class="built_in">string</span>[])e.Data.GetData(DataFormats.FileDrop);</span><br><span class="line">  <span class="comment">// 只接受音频文件（例如：wav, mp3）</span></span><br><span class="line">  <span class="built_in">bool</span> isAudioFile = files.All(<span class="keyword">file</span> =&gt; IsAudioFile(<span class="keyword">file</span>));</span><br><span class="line">  e.Effect = isAudioFile ? DragDropEffects.Copy : DragDropEffects.None;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"> &#123;</span><br><span class="line">  e.Effect = DragDropEffects.None;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FileDragBox_DragDrop</span>(<span class="params"><span class="built_in">object</span> sender, DragEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 获取拖拽的文件路径</span></span><br><span class="line">    <span class="built_in">string</span>[] files = (<span class="built_in">string</span>[])e.Data.GetData(DataFormats.FileDrop);</span><br><span class="line">    <span class="keyword">if</span> (files.Length &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 过滤出音频文件</span></span><br><span class="line">        <span class="keyword">var</span> audioFiles = files.Where(<span class="keyword">file</span> =&gt; IsAudioFile(<span class="keyword">file</span>)).ToArray();</span><br><span class="line">        <span class="keyword">if</span> (audioFiles.Length &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 显示拖拽的文件路径</span></span><br><span class="line">            FileDragBox.Text = <span class="built_in">string</span>.Join(Environment.NewLine, audioFiles);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;只支持音频文件！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断文件是否是音频文件（支持 .wav 和 .mp3 格式）</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">bool</span> <span class="title">IsAudioFile</span>(<span class="params"><span class="built_in">string</span> <span class="keyword">file</span></span>)</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="built_in">string</span>[] supportedExtensions = &#123; <span class="string">&quot;.wav&quot;</span>, <span class="string">&quot;.mp3&quot;</span>, <span class="string">&quot;.flac&quot;</span>, <span class="string">&quot;.aac&quot;</span>, <span class="string">&quot;.ogg&quot;</span> &#125;; <span class="comment">// 可以根据需要扩展</span></span><br><span class="line">  <span class="keyword">return</span> supportedExtensions.Contains(Path.GetExtension(<span class="keyword">file</span>).ToLower());</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="GetIntoConvertion"><a href="#GetIntoConvertion" class="headerlink" title="GetIntoConvertion"></a>GetIntoConvertion</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 处理转换按钮点击事件</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">convertButton_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span>[] files = FileDragBox.Text.Split(<span class="keyword">new</span>[] &#123; Environment.NewLine &#125;, StringSplitOptions.RemoveEmptyEntries);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (files.Length == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox.Show(<span class="string">&quot;请先拖拽文件！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取用户选择的输出格式</span></span><br><span class="line">    <span class="built_in">string</span> selectedFormat = formatComboBox.SelectedItem.ToString().ToLower();</span><br><span class="line">    <span class="built_in">string</span> outputExtension = selectedFormat == <span class="string">&quot;wav&quot;</span> ? <span class="string">&quot;.wav&quot;</span> : <span class="string">&quot;.mp3&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行批量转换</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> <span class="keyword">file</span> <span class="keyword">in</span> files)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> outputFilePath = Path.ChangeExtension(<span class="keyword">file</span>, outputExtension);</span><br><span class="line">        ConvertAudioFile(<span class="keyword">file</span>, outputFilePath);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Accroding to the selection of  itemBox,generate a path that we need,which is the prepare for the convertion.</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 转换音频文件</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ConvertAudioFile</span>(<span class="params"><span class="built_in">string</span> inputFilePath, <span class="built_in">string</span> outputFilePath</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果输入和输出格式相同，直接返回（不进行转换）</span></span><br><span class="line">        <span class="keyword">if</span> (Path.GetExtension(inputFilePath).ToLower() == Path.GetExtension(outputFilePath).ToLower())</span><br><span class="line">        &#123;</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;输入和输出文件格式相同，跳过转换。&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查目标文件是否存在</span></span><br><span class="line">        <span class="keyword">if</span> (File.Exists(outputFilePath))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 提示用户是否覆盖文件</span></span><br><span class="line">            <span class="keyword">var</span> result = MessageBox.Show(<span class="string">$&quot;文件 <span class="subst">&#123;outputFilePath&#125;</span> 已存在，是否覆盖?&quot;</span>, <span class="string">&quot;确认覆盖&quot;</span>, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);</span><br><span class="line">            <span class="keyword">if</span> (result == DialogResult.Yes)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 删除目标文件</span></span><br><span class="line">                File.Delete(outputFilePath);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>; <span class="comment">// 用户选择不覆盖，跳过转换</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 确保 FFmpeg 可用</span></span><br><span class="line">        <span class="built_in">string</span> ffmpegPath = <span class="string">&quot;ffmpeg&quot;</span>; <span class="comment">// 假设 FFmpeg 已经在系统环境变量中</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置命令行参数</span></span><br><span class="line">        <span class="built_in">string</span> arguments = <span class="string">$&quot;-i \&quot;<span class="subst">&#123;inputFilePath&#125;</span>\&quot; \&quot;<span class="subst">&#123;outputFilePath&#125;</span>\&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 启动进程执行 FFmpeg 命令</span></span><br><span class="line">        ProcessStartInfo startInfo = <span class="keyword">new</span> ProcessStartInfo</span><br><span class="line">        &#123;</span><br><span class="line">            FileName = ffmpegPath,</span><br><span class="line">            Arguments = arguments,</span><br><span class="line">            CreateNoWindow = <span class="literal">true</span>,  <span class="comment">// 不显示命令行窗口</span></span><br><span class="line">            UseShellExecute = <span class="literal">false</span>,</span><br><span class="line">            RedirectStandardOutput = <span class="literal">true</span>, <span class="comment">// 重定向标准输出</span></span><br><span class="line">            RedirectStandardError = <span class="literal">true</span>   <span class="comment">// 重定向标准错误</span></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        Process process = Process.Start(startInfo);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置进程超时</span></span><br><span class="line">        <span class="built_in">bool</span> exited = process.WaitForExit(<span class="number">30000</span>);  <span class="comment">// 30秒超时</span></span><br><span class="line">        <span class="keyword">if</span> (!exited)</span><br><span class="line">        &#123;</span><br><span class="line">            process.Kill();</span><br><span class="line">            MessageBox.Show(<span class="string">&quot;转换超时！&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取 FFmpeg 的标准输出和错误信息</span></span><br><span class="line">        <span class="built_in">string</span> output = process.StandardOutput.ReadToEnd();</span><br><span class="line">        <span class="built_in">string</span> error = process.StandardError.ReadToEnd();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 输出 FFmpeg 的日志信息（可用于调试）</span></span><br><span class="line">        Console.WriteLine(<span class="string">&quot;FFmpeg Output: &quot;</span> + output);</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;FFmpeg Error: &quot;</span> + error);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 检查 FFmpeg 进程的退出码，0 表示成功</span></span><br><span class="line">        <span class="keyword">if</span> (process.ExitCode != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 只有当有错误信息时才弹出错误</span></span><br><span class="line">            <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(error))</span><br><span class="line">            &#123;</span><br><span class="line">                MessageBox.Show(<span class="string">$&quot;转换失败: <span class="subst">&#123;error&#125;</span>&quot;</span>, <span class="string">&quot;错误&quot;</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 如果没有错误输出，但退出码非零，可以显示一个通用错误提示</span></span><br><span class="line">                MessageBox.Show(<span class="string">&quot;转换失败，但没有提供错误信息。&quot;</span>, <span class="string">&quot;错误&quot;</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 如果退出码为 0，表示转换成功</span></span><br><span class="line">            MessageBox.Show(<span class="string">$&quot;转换完成: <span class="subst">&#123;outputFilePath&#125;</span>&quot;</span>, <span class="string">&quot;成功&quot;</span>, MessageBoxButtons.OK, MessageBoxIcon.Information);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox.Show(<span class="string">$&quot;错误: <span class="subst">&#123;ex.Message&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Based on the selection of the itemBox, generate the necessary paths, which will prepare for the conversion. Using the input and output paths, FFmpeg will automatically generate the desired audio file by starting an external process.</p>
+</div>
+    </div>
+
+    <div class="post-meta">
+        <i>
+        
+            <span>2025-04-13</span>
+            
+            
+             
+        
+        </i>
+    </div>
+    <br>
+    
+    
+        
+            
+    
+            <div class="post-footer-pre-next">
+                
+                    <span>上一篇：<a href='/2025/04/13/%E5%A3%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%92%8C%E9%9F%B3%E9%A2%91%E7%A1%AC%E4%BB%B6%E5%8E%9F%E7%90%86/'>声学原理和音频硬件原理</a></span>
+                
+
+                
+                    <span class="post-footer-pre-next-last-span-right">下一篇：<a href="/2025/04/13/%E8%B0%83%E9%9F%B3%E5%8F%B0_MIDAS-M32-DN32-LIVE%E8%B0%83%E9%9F%B3%E5%8F%B0%E7%9B%B4%E6%92%AD%E9%93%BE%E8%B7%AF/">MIDAS M32 DN32-LIVE调音台直播链路</a>
+                    </span>
+                
+            </div>
+    
+        
+    
+
+    
+        
+
+     
+</div>
+
+
+
+                                      
+                    
+                    
+                    <div class="footer">
+    
+        <span> 
+            © 2002-2025 Carol 
+
+            
+                
+
+            
+        </span>
+       
+    
+</div>
+
+
+
+<!--这是指一条线往下的内容-->
+<div class="footer-last">
+    
+            <span>🌊看过大海的人不会忘记海的广阔🌊</span>
+            
+                <span class="footer-last-span-right"><i>本站由<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a>驱动｜使用<a target="_blank" rel="noopener" href="https://github.com/HiNinoJay/hexo-theme-A4">Hexo-theme-A4</a>主题</i></span>
+            
+    
+</div>
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!--目录-->
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js" type="text/javascript" ></script>
+        
+<script src="/js/toc.js"></script>
+
+    
+
+    
+<script src="/js/randomHeaderContent.js"></script>
+
+    <!--回到顶部按钮-->
+    
+        
+<script src="/js/returnToTop.js"></script>
+
+    
+
+    
+        
+<script src="/js/returnToLastPage.js"></script>
+
+    
+
+
+
+
+
+<script src="/js/lightgallery/lightgallery.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-thumbnail.umd.min.js"></script>
+
+
+
+<script src="/js/lightgallery/plugins/lg-fullscreen.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-autoplay.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-zoom.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-rotate.umd.min.js"></script>
+
+
+<script src="/js/lightgallery/plugins/lg-paper.umd.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+     
+    if (typeof lightGallery !== "undefined") {
+        var options1 = {
+            selector: '.gallery-item',
+            plugins: [lgThumbnail, lgFullscreen, lgAutoplay, lgZoom, lgRotate, lgPager], // 启用插件
+            thumbnail: true,          // 显示缩略图
+            zoom: true,               // 启用缩放功
+            rotate: true,             // 启用旋转功能能
+            autoplay: true,        // 启用自动播放功能
+            fullScreen: true,      // 启用全屏功能
+            pager: false, //页码,
+            zoomFromOrigin: true,   // 从原始位置缩放
+            actualSize: true,       // 启用查看实际大小的功能
+            enableZoomAfter: 300,    // 延迟缩放，确保图片加载完成后可缩放
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options1); // 修复选择器
+    }
+    
+</script>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> 
+
+                </div>
+            
+            
+                <!-- 回到顶部的按钮-->  
+                <div class="progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+            
+                <!-- 返回的按钮-->  
+                <div class="return-to-last-progress-wrap shadow-drop-2-bottom">
+                    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+                    </svg>
+                </div>
+            
+    </body>
+</html>
