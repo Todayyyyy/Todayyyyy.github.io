@@ -44,12 +44,15 @@ TIPS！电脑端***左侧***有<u>***目录导航***</u>，可以快速定位到
 
 <iframe src="//player.bilibili.com/player.html?bvid=BV1LGfwYSEn6&page=1&high_quality=1&danmaku=0&autoplay=0" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
 
------------------------------
 
 <iframe src="//player.bilibili.com/player.html?bvid=BV1RGfwYUE64&page=1&high_quality=1&danmaku=0&autoplay=0" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
 
 
 # CG制作
+
+## 风暴英雄 CG练习
+
+<iframe src="//player.bilibili.com/player.html?bvid=BV1X2LnziEZX&page=1&high_quality=1&danmaku=0&autoplay=0" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
 
 ## 雷霆游戏丨一念逍遥CG制作
 
